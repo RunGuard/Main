@@ -1,14 +1,14 @@
-package sptech.school;
+package school.sptech;
 
-import sptech.school.Service.dao.DaoDado;
+import school.sptech.service.dao.DaoDado;
+import school.sptech.service.dao.entity.EntidadeDado;
+
 import java.util.Scanner;
 
+//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
+// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-//        ComponenteDao comp = new ComponenteDao();
-//
-//        comp.exibir();
-
         Scanner leitor = new Scanner(System.in);
 
         while(true){

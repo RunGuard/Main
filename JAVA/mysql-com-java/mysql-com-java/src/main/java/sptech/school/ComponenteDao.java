@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-public class ComponenteDao {
+public class    ComponenteDao {
     Componente componente = new Componente();
     Conexao conexao = new Conexao();
     JdbcTemplate con = conexao.getConexaoDoBanco();

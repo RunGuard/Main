@@ -16,9 +16,9 @@ public class Conexao {
         BasicDataSource dataSource = new BasicDataSource();
 
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost/runguard");
-        dataSource.setUsername("martinez");
-        dataSource.setPassword("SPTech#2024");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/runguard");
+        dataSource.setUsername("root");
+        dataSource.setPassword("Mysql123.");
 
         conexaoDoBanco = new JdbcTemplate(dataSource);
     }
