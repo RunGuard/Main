@@ -42,7 +42,7 @@ while run:
     print(f'Total de memória usada: {memoria.used} GB')
 
     # Faz as inserções no banco de dados passando os componentes
-    sql = "INSERT INTO dados (cpuPercent, memoriaPercent, memoriaUsada, fkEquipamento) VALUES (%s, %s, %s, 4)"
+    sql = "INSERT INTO dado (cpuPercent, memoriaPercent, memoriaUsada, fkEquipamento) VALUES (%s, %s, %s, 4)"
 
     # Captura os valores
     val = (cpu,memoria.percent,memoria_usada_formatada)
