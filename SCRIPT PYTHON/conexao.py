@@ -7,9 +7,9 @@ import mysql.connector
 
 # Criação da conexão do Banco de Dados
 mydb = mysql.connector.connect(
-  host="10.18.32.37",
-  user="martinez",
-  password="SPTech#2024",
+  host="",
+  user="",
+  password="",
   database="runguard",
   port=3306 
 )
@@ -42,7 +42,7 @@ while run:
     print(f'Total de memória usada: {memoria.used} GB')
 
     # Faz as inserções no banco de dados passando os componentes
-    sql = "INSERT INTO dados (cpu_porcent, memoria_porcent,memoria_usada, fkEquipamento) VALUES (%s, %s, %s, 4)"
+    sql = "INSERT INTO dados (cpuPercent, memoriaPercent, memoriaUsada, fkEquipamento) VALUES (%s, %s, %s, 4)"
 
     # Captura os valores
     val = (cpu,memoria.percent,memoria_usada_formatada)
