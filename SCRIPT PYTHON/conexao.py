@@ -10,7 +10,7 @@ from socket import gethostname
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
-  password="",
+  password="Ubatuba0815",
   database="runguard",
   port=3306 
 )
@@ -78,3 +78,4 @@ Total de memória usada: {memoria_usada_formatada} GB""")
     mydb.commit()
 
     time.sleep(tempo)
+    
