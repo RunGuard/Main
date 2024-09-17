@@ -17,8 +17,8 @@ public class Conexao {
 
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost/runguard");
-        dataSource.setUsername("martinez");
-        dataSource.setPassword("SPTech#2024");
+        dataSource.setUsername("root");
+        dataSource.setPassword("Ubatuba0815");
 
         conexaoDoBanco = new JdbcTemplate(dataSource);
     }
@@ -26,6 +26,4 @@ public class Conexao {
     public JdbcTemplate getConexaoDoBanco() {
         return conexaoDoBanco;
     }
-
-
 }
