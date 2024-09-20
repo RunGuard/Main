@@ -4,93 +4,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio | RUNguard</title>
+    <title>Home | RunGuard</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <div class="containerheader">
-        <header>
-            <div class="logo">
-                <h1>RUNguard</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li>
-                        <a href="index.html">Serviços</a>
-                    </li>
-                    <li>
-                        <a href="index.html">Sobre</a>
-                    </li>
-                    <li>
-                        <a id="barra_nav">|</a>
-                    </li>
-                    <li>
-                        <a href="cadastro.html" id="botao_cadastro" class="ativo">Cadastro</a>
-                    </li>
-                    <li>
-                        <a href="login.html" class="ativo">Login</a>
-                    </li>
-                </ul>
+    <header class="header">
+        <section class="flex">
+            <a href="#" class="logo">LOGO</a>
+            <nav class="navbar">
+                <a href="#home">Home</a>
+                <a href="#sobre">Sobre</a>
+                <a href="#valores">Valores</a>
+                <a href="#servicos">Nosso Serviço</a>
             </nav>
-        </header>
-    </div>
-    </div>
-    <div id="corpo" class="corpo">
-        <div class="corpo_filho">
-            <h1>Monitore seus servidores e mantenha a corrida a todo vapor</h1>
-            <h3>Monitore Seus Servidores e Mantenha a Corrida a Todo Vapor: Estratégias Avançadas para Maximizar o Desempenho e Garantir a Estabilidade de Seus Sistemas em Ambiente de Alta Demanda</h3>
-            <button>Saiba mais</button>
-        </div>
+        </section>
+    </header>
+
+    <div class="home">
+        <section class="flex">
+            <div class="conteudo">
+                <span>RUNGUARD</span>
+                <p>Monitore seus servidores e mantenha a corrida a todo vapor: estratégias avançadas para maximizar
+                    o desempenho e garantir a estabilidade de seus sistemas em ambiente de alta demanda</p>
+                <a href="" class="btn">Saiba Mais</a>
+            </div>
+        </section>
     </div>
 
-    <div id="corpo2" class="corpo2">
-        <img src="imagens/logo.png" alt="">
-        <div class="texto_sobre">
-            <h1 class="sobre">Sobre Nós</h1><br>
-            <h2>Nós somos a RunGuard, uma empresa que te ajudará a monitorar os servidores do seu aplicativo de corrida da forma
-                mais prática e eficiente possivel, saiba como seus servidores estão trabalhando com nossas métricas rápidas, eficientes e certeiras. nossa equipe especializada estará a disposição!</h2>
+    <section class="valores" id="valores">
+        <div class="titulo">
+            <span>Nossos Valores</span>
+            <h3>O que nós prezamos?</h3>
         </div>
-    </div>
 
-    <div id="corpo3" class="corpo3">
-        <h1 class="sobre">Serviços</h1><br><br>
-        <div class="servicos">
-            <div class="grupo_cards">
+        <section class="box-container">
+            <div class="box">
+                <div class="icone">
+                    <img src="imagens/shape1.png" alt="" class="forma">
+                    <i class="fas fa-1"></i>
+                </div>
+                <h3>Confiança</h3>
+                <p>Priorizamos relações transparentes, construídas com base em promessas cumpridas e credibilidade constante
+                </p>
+            </div>
+
+            <div class="box">
+                <div class="icone">
+                    <img src="imagens/shape1.png" alt="" class="forma">
+                    <i class="fas fa-2"></i>
+                </div>
+                <h3>Segurança</h3>
+                <p>Protegemos cada etapa do processo, garantindo que seus dados e operações estejam sempre seguros.</p>
+            </div>
+
+            <div class="box">
+                <div class="icone">
+                    <img src="imagens/shape1.png" alt="" class="forma">
+                    <i class="fas fa-3"></i>
+                </div>
+                <h3>Inovação</h3>
+                <p>Buscamos constantemente soluções criativas e tecnológicas para superar expectativas e gerar resultados.</p>
+            </div>
+
+            <div class="box">
+                <div class="icone">
+                    <img src="imagens/shape1.png" alt="" class="forma">
+                    <i class="fas fa-4"></i>
+                </div>
+                <h3>Qualidade</h3>
+                <p>Comprometemo-nos com a excelência, oferecendo serviços que atendem e superam os mais altos padrões.</p>
+            </div>
+
+            <div class="box">
+                <div class="icone">
+                    <img src="imagens/shape1.png" alt="" class="forma">
+                    <i class="fas fa-5"></i>
+                </div>
+                <h3>Responsabilidade</h3>
+                <p>Atuamos com ética, assumindo a responsabilidade em cada ação e garantindo um impacto positivo.</p>
+            </div>
+
+            <div class="box">
+                <div class="icone">
+                    <img src="imagens/shape1.png" alt="" class="forma">
+                    <i class="fas fa-6"></i>
+                </div>
+                <h3>Integridade</h3>
+                <p>Nossas decisões e ações são guiadas por princípios sólidos, respeitando sempre os valores fundamentais.</p>
+            </div>
+        </section>
+    </section>
+
+    <section class="sobre" id="sobre">
+        <div class="titulo">
+            <span>Sobre Nós</span>
+            <h3>Conheça nossa história</h3>
+        </div>
+        <div class="container">
+            <div class="sobre-texto">
+                <p>Nossa empresa tem como principal objetivo garantir o funcionamento contínuo e eficiente de servidores que suportam grandes aplicativos de corrida, como Uber e 99. Utilizamos soluções avançadas em Python para monitorar o desempenho dos serviços, assegurando que os sistemas operem com máxima eficiência e sem interrupções. Além disso, fazemos o monitoramento do hardware dos servidores em tempo real, identificando falhas e sobrecargas de maneira preventiva. Nosso foco é ajudar as empresas a manterem suas operações estáveis e seguras, oferecendo tecnologia robusta para otimizar sua infraestrutura e evitar problemas críticos.</p>
+                <a href="#" class="btn">Conheça nossa equipe</a>
+            </div>
+            <div class="sobre-img">
+                <img src="imagens/img-sobre-nos.png" alt="">
+            </div>
+        </div>
+    </section>
+
+    <section class="servicos" id="servicos">
+        <div class="titulo">
+            <span>Serviços</span>
+            <h3>O que te oferecemos?</h3>
+        </div>
+        <div class="container">
             <div class="card">
-                <img src="" alt="">
-                <br>
-                <h2>Monitoramento dos Servidores</h2>
-                <p>Monitore seu servidor em tempo real com a gente, todos os dados coletados são precisos e confiáveis, com opções de monitoramento de mais de uma máquina, saiba como sua CPU e RAM estão trabalhando.</p>
+                <img src="imagens/confiabilidade.jpg" alt="">
+                <div class="conteudo-card">
+                    <h2>
+                        Confiabilidade
+                    </h2>
+                    <p>
+                        Oferecemos uma infraestrutura estável, com alta disponibilidade e redundância, para garantir que seus serviços e sistemas permaneçam operacionais, mesmo em momentos críticos, oferecendo suporte e assistência contínuos.
+                    </p>
+                </div>
             </div>
 
             <div class="card">
-                <img src="" alt="">
-                <br>
-                <h2>Acompanhamento dos dados</h2>
-                <p>Tome decisões precisas acompanhando os dados coletados, com escolha de visualização de dados passados ou atuais, tenha total liberdade de estudar como seus servidores estão se comportando.</p>
+                <img src="imagens/monitoramento.jpg" alt="">
+                <div class="conteudo-card">
+                    <h2>
+                        Monitoramento
+                    </h2>
+                    <p>
+                        Realizamos o monitoramento completo do hardware dos seus servidores e sistemas 24/7, identificando possíveis falhas e quedas de desempenho em tempo real, permitindo intervenções rápidas e eficazes para minimizar qualquer impacto.
+                    </p>
+                </div>
             </div>
 
             <div class="card">
-                <img src="" alt="">
-                <br>
-                <h2>Métricas com os dados</h2>
-                <p>Visualize todos os seus dados com métricas personalizadas, fáceis de interpretar para ajudar na tomada de decisão. Dados como CPU e RAM possuem métricas em nossas Dashboard para facilitar a visão e entender rapidamente o que está errado ou não.</p>
+                <img src="imagens/seguranca.jpg" alt="">
+                <div class="conteudo-card">
+                    <h2>
+                        Segurança
+                    </h2>
+                    <p>
+                        Garantimos uma infraestrutura robusta e segura, com proteção contra ameaças cibernéticas e criptografia, assegurando que seus dados e operações estejam sempre resguardados contra riscos.
+                    </p>
+                </div>
             </div>
         </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-coluna">
+                <h3>Sobre Nós</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.</p>
+            </div>
+            <div class="footer-coluna">
+                <h3>Links Rápidos</h3>
+                <ul>
+                    <li><a href="#">Início</a></li>
+                    <li><a href="#">Valores</a></li>
+                    <li><a href="#">Sobre</a></li>
+                    <li><a href="#">Serviços</a></li>
+                    <li><a href="#">Contato</a></li>
+                </ul>
+            </div>
+            <div class="footer-coluna">
+                <h3>Fale Conosco</h3>
+                <p>Email: runguard@gmail.com</p>
+                <p>Telefone: (11) 1234-5678</p>
+            </div>
+            <div class="footer-coluna">
+                <h3>Siga-nos</h3>
+                <div class="social-icons">
+                    <a href="#"><img src="imagens/facebook.png" alt="Facebook"></a>
+                    <a href="#"><img src="imagens/instagram.png" alt="Instagram"></a>
+                    <a href="#"><img src="imagens/linkedin.png" alt="LinkedIn"></a>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="corpo4">
-        <div class="textos">
-            <h1 class="sobre">Precisa de ajuda?</h1>
-            <h2>fale conosco pelos nossos principais canais de comunicação:</h2><br>
-            <h4> <b><span>Número: 11 99588-5323 | Email: runguard@gmail.com | Linkedin: RunGuard</span></b></h4> <br>
-            <h4>Caso queira saber algo a mais sobre nossa empresa, entre em contato! 
-            </h4>
+        <div class="footer-bottom">
+            <p>&copy; 2024 RunGuard. Todos os direitos reservados.</p>
         </div>
-    </div>
-    </div>
-    </div>
+    </footer>
+
 </body>
 
 </html>
