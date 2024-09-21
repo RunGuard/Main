@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="css/styleFormulario.css">
+    <link rel="shortcut icon" type="imagex/png" href="imagens/logo.png">
     <title>Cadastros</title>
 </head>
 <body>
@@ -19,9 +20,9 @@
                 </div>
                 <div class="input-field">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="CNPJ">
+                    <input type="text" placeholder="CNPJ">
                 </div>
-                <input type="submit" value="Cadastrar" class="btn">
+                <button onclick="cadastrarEmpresa()" class="btn">Cadastrar</button>
                 <p class="account-text">Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a></p>
             </form>
             <form action="" class="sign-up-form">
@@ -46,7 +47,7 @@
                     <i class="fas fa-lock"></i>
                     <input type="text" id="sistemaOperacional"placeholder="Sistema Operacional">
                 </div>
-                <input type="submit" value="Cadastrar" class="btn">
+                <button onclick="cadastrarEquipamento()" class="btn">Cadastrar</button>
               
             </form>
         </div>
