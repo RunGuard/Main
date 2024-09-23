@@ -74,8 +74,7 @@
             <div class="panel right-panel">
                 <div class="content">
                     <h3>Não possui uma conta?</h3>
-                    <p>Peça para que um Administrador do sistema peça um Login!</p>
-                    <button class="btn" id="sign-up-btn">Clique aqui</button>
+                    <p>Peça para que um Administrador do sistema faça um cadastro!</p>
                 </div>
                 <img src="imagens/logo.png" alt="" class="image">
             </div>
@@ -118,6 +117,7 @@
             })
         }).then(function (resposta) {
             console.log("ESTOU NO THEN DO entrar()!")
+            console.log("Bunda")
 
             if (resposta.ok) {
                 console.log(resposta);
@@ -129,7 +129,6 @@
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.idUsuario;
 
-                    alert("Bunda")
                 });
 
             } else {

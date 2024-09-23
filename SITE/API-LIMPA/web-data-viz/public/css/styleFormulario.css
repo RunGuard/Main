@@ -11,7 +11,8 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: #444;
+    background-image: url("/imagens/cadastro_fundo.jpg");
+
 }
 .container {
     position: relative;
@@ -78,11 +79,12 @@ form.sign-up-form {
     border-radius: 50px;
     display: flex;
     align-items: center;
+    justify-content: space-around;
 }
 .input-field i {
     flex: 1;
     text-align: center;
-    color: #666;
+    color: #444;
     font-size: 18px;
 }
 .input-field input {
@@ -94,6 +96,19 @@ form.sign-up-form {
     font-size: 18px;
     font-weight: 600;
     color: #444;
+}
+.input-field select{
+    background: none;
+    width: 83%;
+    height: 100%;
+    color: #444444b4;
+    font-weight: 600;
+    font-size: 18px;
+
+    
+    border: none;
+    margin-right: 5px;
+    outline: none   ;
 }
 .btn {
     width: 150px;
