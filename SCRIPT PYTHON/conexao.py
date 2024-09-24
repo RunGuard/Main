@@ -8,9 +8,9 @@ from socket import gethostname
 
 # Criação da conexão do Banco de Dados
 mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="Ubatuba0815",
+  host="10.18.32.222",
+  user="RunGuard",
+  password="Senha123",
   database="runguard",
   port=3306 
 )

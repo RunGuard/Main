@@ -3,12 +3,6 @@ package sptech.school;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.sql.Connection;
-
-import java.sql.DriverManager;
-
-import java.sql.SQLException;
-
 public class Conexao {
     private JdbcTemplate conexaoDoBanco;
 
@@ -16,9 +10,9 @@ public class Conexao {
         BasicDataSource dataSource = new BasicDataSource();
 
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost/runguard");
-        dataSource.setUsername("root");
-        dataSource.setPassword("Ubatuba0815");
+        dataSource.setUrl("jdbc:mysql://10.18.32.222/runguard");
+        dataSource.setUsername("RunGuard");
+        dataSource.setPassword("Senha123");
 
         conexaoDoBanco = new JdbcTemplate(dataSource);
     }

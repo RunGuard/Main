@@ -3,18 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href="css/style_dash.css">
     <title>Document</title>
 </head>
-<body style="display: flex; flex-direction: column;">
+<body>
 
-    <h1>Dashboard tecnico de TI</h1>
-    <img style="width: 80%;" src="./imagens/dashboard-tecnico.png" alt="">
+    <div class="header">
+        <span><span style="color: #f3b12c;">Olá</span>, <b>Usuário</b>! <br> Logado como: <br> <b style="color: #f3b12c;">Cargo</b></span>
+        <a href="index.html"><img class="logo" src="imagens/logo.png" alt=""></a>
+        <a href="dashs.html" class="dash-icon"><img src="imagens/painel-icon.png" alt=""></a>
+        <a href="index.html"><img src="imagens/casa-icon.png" alt=""></a>
+        <a href="login.html"><img src="imagens/saida-icon.png" alt=""></a>
+    </div>
 
-    <h1>Dashboard Analista de dados </h1>
-    <img style="width: 80%;"  src="./imagens/dash_analista1.png" alt="">
-    <img style="width: 80%;"  src="./imagens/dash_analista2.png" alt="">
+    <div class="content">
+        <div class="titulo">
+            <h1>RunGuard</h1>
+        </div>
 
-    <a href="">Link do google sheets</a>
+        <div class="container-select">
+            <select id="">
+                <option selected disabled>Selecione a máquina desejada</option>
+                <option value="">Máquina 1</option>
+            </select>
+        </div>
+
+        <div class="container-maquina">
+            <img src="imagens/computador-icon.png" alt="">
+            <!-- cortar a parte de baixo da imagem  -->
+            <div class="container-info">
+                <div class="info">
+                    <b>Equipamento</b>
+                    <span>Máquina 1</span>
+                </div>
+                <div class="info">
+                    <b>Porcentagem de cpu</b>
+                    <span>10%</span>
+                </div>
+                <div class="info">
+                    <b>Porcentagem de ram</b>
+                    <span>50%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="visao-geral">
+            <div class="titulo-geral">
+                <span>Visão geral</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="alerta">
+        <div class="titulo-alerta">
+            <span>Alertas</span>
+        </div>
+    </div>
     
 </body>
 </html>

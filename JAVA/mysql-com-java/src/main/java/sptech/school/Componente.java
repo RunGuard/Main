@@ -1,7 +1,5 @@
 package sptech.school;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
 public class Componente {
     private Integer idDados;
     private Double cpuPorcent;
