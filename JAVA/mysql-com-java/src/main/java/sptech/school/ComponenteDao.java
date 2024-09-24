@@ -67,4 +67,13 @@ public class ComponenteDao {
             }
         }
     }
+
+    public List<Componente> exibirTodos() {
+        String query = "SELECT * FROM dados";
+
+        List<Componente> componentes = con.query(query, new BeanPropertyRowMapper<>(Componente.class));
+
+        return componentes;
+    }
+
 }
