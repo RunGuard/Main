@@ -258,6 +258,145 @@ section {
     height: 500px;
 }
 
+.tres{
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    position: relative;
+    z-index: 1000;
+    display: none;
+}
+
+.fundoequipe {
+    width: 100%;
+    height: 100vh;
+    background-color: #0f1923;
+    position: relative;
+    z-index: -1;
+}
+
+.containerequipe {
+    width: 100%;
+    height: 85%;
+    display: flex;
+    transform: scale(0.8);
+    flex-direction: column;
+    align-items: center;
+    font-family: "League Spartan";
+}
+
+.titulo_equipe {
+  margin-top: 50px;
+  width: 100%;
+  font-size: 40px;
+  font-family: "League Spartan";
+  color: #fff;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.texto_equipe {
+  margin-top: 25px;
+  width: 100%;
+  font-size: 25px;
+  font-family: "League Spartan";
+  color: #fff;
+  width: 87%;
+  text-align: justify;
+}
+
+.containercard{
+  display: flex;
+  justify-content: center;
+  place-items: center;
+  padding-block: 2rem;
+  margin: 0 0.3rem;
+}
+
+.alinhamentocardequipe{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.cardcontainer2{
+  display: grid;
+  row-gap: 3.5rem;
+}
+
+.containercard3{
+  display: flex;
+  flex-direction: column;
+}
+
+.cardarticle{
+  position: relative;
+  overflow: hidden;
+}
+
+.cardimagem{
+  width: 328px;
+  border-radius: 1.5rem;
+}
+
+.carddados{
+  width: 280px;
+  background-color: #fff;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 8px 24px hsla(0, 0%, 0%, .15);
+  border-radius: 1rem;
+  position: absolute;
+  bottom: -9rem;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  /* opacity: 0; */
+  transition: opacity 1s 1s;
+}
+
+.carddescricao1{
+  display: block;
+  font-size: 20px;
+  margin-bottom: .25rem;
+}
+
+.titulocard1{
+  font-size: 20px;
+  font-weight: bolder;
+  color: #000000;
+  margin-bottom: .75rem;
+}
+
+.botaocard{
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bolder;
+  color: #000000;
+}
+.botaocard:hover{
+  text-decoration: underline;
+}
+
+.cardarticle:hover .carddados{
+  animation: show-data 1s forwards;
+  opacity: 1;
+  transition: opacity .3s;
+}
+
+.cardarticle:hover{
+  animation: remove-overflow 2s forwards;
+}
+
+.cardarticle:not(:hover){
+  animation: show-overflow 2s forwards;
+}
+
+.cardarticle:not(:hover) .carddados{
+  animation: remove-data 1s forwards;
+}
+
 .servicos .container {
     display: flex;
     flex-direction: row;
