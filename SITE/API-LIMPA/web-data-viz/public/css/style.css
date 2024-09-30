@@ -10,6 +10,33 @@
     border: none;
     text-decoration: none;
 }
+.close-button {
+    background-color: #ff5c5c; 
+    border: none;
+    color: white;
+    padding-bottom: 50%;
+    font-size: 24px; 
+    font-weight: bold; 
+    border-radius: 50%; 
+    width: 40px; 
+    height: 40px; 
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Animação suave ao interagir */
+}
+
+/* Efeito de hover para melhorar a interatividade */
+.close-button:hover {
+    background-color: #e74c3c; /* Cor mais escura ao passar o mouse */
+    transform: scale(1.1); /* Aumenta levemente o botão */
+}
+
+/* Efeito de clique */
+.close-button:active {
+    transform: scale(0.95); /* Encolhe levemente ao clicar */
+}
 
 html {
     font-size: 62.5%;
@@ -354,6 +381,82 @@ section {
   margin-inline: auto;
   /* opacity: 0; */
   transition: opacity 1s 1s;
+}
+/* Estilos gerais dos cards */
+.cardarticle {
+    position: relative;
+    overflow: hidden;
+    width: 220px; /* Ajuste o tamanho conforme necessário */
+    height: 320px;
+    margin: 20px;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    border-radius: 15px; /* Bordas mais suaves */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.cardarticle:hover {
+    transform: scale(1.08); /* Efeito de zoom suave */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2); /* Sombra ao passar o mouse */
+}
+
+.cardimagem {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px; /* Mantém as bordas suaves */
+    transition: filter 0.4s ease; /* Suave transição no hover */
+}
+
+.cardarticle:hover .cardimagem {
+    filter: brightness(0.6); /* Escurece a imagem no hover */
+}
+
+.carddados {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.7); /* Fundo escuro semitransparente */
+    color: rgb(0, 0, 0);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* Inicialmente invisível */
+    transition: height 0.4s ease, opacity 0.4s ease;
+    text-align: center;
+    border-radius: 0 0 15px 15px; /* Suaviza as bordas inferiores */
+}
+
+.cardarticle:hover .carddados {
+    height: 50%; /* Mostra a metade inferior do card com os detalhes */
+    opacity: 1; /* Exibe o texto */
+}
+
+.carddescricao1 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+}
+
+.titulocard1 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-transform: uppercase; /* Letras maiúsculas */
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.carddados span, .carddados h2 {
+    transform: translateY(20px); /* Animação suave de subida */
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.cardarticle:hover .carddados span, 
+.cardarticle:hover .carddados h2 {
+    transform: translateY(0); /* Sobe suavemente quando o hover acontece */
 }
 
 .carddescricao1{
