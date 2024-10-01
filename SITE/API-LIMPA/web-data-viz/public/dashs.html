@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link rel="stylesheet" href="css/style_dash.css">
-    <title>Document</title>
+    <title>DASHBOARD | Runguard</title>
 </head>
-<body>
+<body onload="listarMaquina()">
 
     <div class="header">
         <span><span style="color: #f3b12c;">Olá</span>, <b>Usuário</b>! <br> Logado como: <br> <b style="color: #f3b12c;">Cargo</b></span>
@@ -23,9 +23,8 @@
         </div>
 
         <div class="container-select">
-            <select id="">
+            <select onchange="buscar()" id="select_equipamento">
                 <option selected disabled>Selecione a máquina desejada</option>
-                <option value="">Máquina 1</option>
             </select>
         </div>
 
@@ -35,15 +34,15 @@
             <div class="container-info">
                 <div class="info">
                     <b>Equipamento</b>
-                    <span>Máquina 1</span>
+                    <span id="nome_maquina">Selecione um equipamento</span>
                 </div>
                 <div class="info">
                     <b>Porcentagem de cpu</b>
-                    <span>10%</span>
+                    <span id="cpu_maquina">Selecione um equipamento</span>
                 </div>
                 <div class="info">
                     <b>Porcentagem de ram</b>
-                    <span>50%</span>
+                    <span id="ram_maquina">Selecione um equipamento</span>
                 </div>
             </div>
         </div>
@@ -59,7 +58,97 @@
         <div class="titulo-alerta">
             <span>Alertas</span>
         </div>
+        <div id="lista_alerta" class="lista-alerta">
+            
+        </div>
     </div>
     
 </body>
 </html>
+
+<script>
+listaMaquinasCadastradas = [];
+
+    function listarMaquina() {
+		fetch("/dashboard/listar", {
+			method: "GET",
+		})
+			.then(function (resposta) {
+				resposta.json().then((maquinas) => {
+                    console.log(maquinas)
+                    for (equipamento in maquinas) {
+                        console.log(equipamento)
+                        if(listaMaquinasCadastradas.indexOf(maquinas[equipamento].nome_equipamento) < 0){
+                            listaMaquinasCadastradas.push(maquinas[equipamento].nome_equipamento)
+                            select_equipamento.innerHTML += `<option value='${maquinas[equipamento].idEquipamento}'>${maquinas[equipamento].nome_equipamento}</option>`
+                        
+                            if(maquinas[equipamento].cpu_porcent > 80 || maquinas[equipamento].memoria_porcent > 80) {
+                                lista_alerta.innerHTML += `
+                                <div class="maquina-alerta">
+                                <img src="imagens/computador-icon.png" alt="">
+                                <div class="info">
+                                    <b>Equipamento</b>
+                                <span id="nome_maquina_alerta">${maquinas[equipamento].nome_equipamento}</span>
+                                <button onclick="exibir(${maquinas[equipamento].idEquipamento})">Saiba mais</button>
+                                </div>
+                                </div>
+                                <div id="${maquinas[equipamento].idEquipamento}" class="mensagem-erro">
+                                    <div id="mensagem_erro">
+                                        
+                                    </div>
+                                </div>
+                                `;
+                                if(maquinas[equipamento].cpu_porcent >= 80) {
+                                    mensagem_erro.innerHTML += `<button onclick="fechar(${maquinas[equipamento].idEquipamento})">᰽</button>
+                                            <span>Porcentagem atual de CPU está acima do recomendado</span>`
+                                }
+                                if(maquinas[equipamento].memoria_porcent >= 80) {
+                                    mensagem_erro.innerHTML += `<button onclick="fechar(${maquinas[equipamento].idEquipamento})">᰽</button>
+                                            <span>Porcentagem atual de RAM está acima do recomendado</span>`
+                                }
+                            }
+                    }
+                        }
+
+				});
+			})
+			.catch(function (resposta) {
+				console.log(`#ERRO: ${resposta}`);
+			});
+	}
+
+    function exibir(id) {
+        mensagem_erro = document.getElementById(id)
+        mensagem_erro.style.display = "block";
+    }
+
+    function fechar(id) {
+        mensagem_erro = document.getElementById(id)
+        mensagem_erro.style.display = "none";
+    }
+
+    function buscar() {
+        var idEquipamentoBuscado = select_equipamento.value;
+
+        fetch(`/dashboard/listarDetalhes/${idEquipamentoBuscado}`, {
+			method: "GET",
+		})
+			.then(function (resposta) {
+				resposta.json().then((maquinas) => {
+                    console.log(maquinas)
+                    if(maquinas.length < 1) {
+                        nome_maquina.innerHTML = "Sem dados";
+                        cpu_maquina.innerHTML = "Equipamento sem dados";
+                        ram_maquina.innerHTML = "Equipamento sem dados";
+                    } else {
+                        nome_maquina.innerHTML = `${maquinas[0].nome_equipamento}`;
+                        cpu_maquina.innerHTML = `${maquinas[0].cpu_porcent}%`;
+                        ram_maquina.innerHTML = `${maquinas[0].memoria_porcent}%`;
+                    }
+				});
+			})
+			.catch(function (resposta) {
+				console.log(`#ERRO: ${resposta}`);
+			});
+    }
+</script>
