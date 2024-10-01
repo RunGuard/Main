@@ -84,7 +84,7 @@ a img {
 
 .container-select select {
     padding: 10px 5px;
-    background-color: rgb(184, 184, 184);
+    background-color: rgb(227, 226, 226);
     color: #000000;
     font-size: medium;
     text-align: center;
@@ -102,6 +102,7 @@ a img {
     margin-right: 20px;
     display: flex;
     flex-direction: column;
+    padding: 0.6%;
 }
 
 .titulo-alerta {
@@ -113,6 +114,33 @@ a img {
     width: 100%;
     display: flex;
     justify-content: center;
+}
+
+.alerta img {
+    width: 25%;
+    height: 100%;
+}
+
+.lista-alerta {
+    display: flex;
+    flex-direction: column;
+}
+
+.maquina-alerta {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 1%;
+}
+
+.maquina-alerta .info {
+    width: 70%;
+}
+
+.mensagem-erro {
+    display: none;
 }
 
 .container-maquina {
