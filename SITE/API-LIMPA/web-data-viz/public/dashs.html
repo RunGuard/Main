@@ -10,11 +10,11 @@
 <body onload="listarMaquina()">
 
     <div class="header">
-        <span><span style="color: #f3b12c;">Olá</span>, <b>Usuário</b>! <br> Logado como: <br> <b style="color: #f3b12c;">Cargo</b></span>
+        <span><span style="color: #f3b12c;">Olá</span>, <b id="usuario_nome">Usuário</b>! <br> Logado como: <br> <b id="usuario_cargo" style="color: #f3b12c;">Cargo</b></span>
         <a href="index.html"><img class="logo" src="imagens/logo.png" alt=""></a>
         <a href="dashs.html" class="dash-icon"><img src="imagens/painel-icon.png" alt=""></a>
         <a href="index.html"><img src="imagens/casa-icon.png" alt=""></a>
-        <a href="login.html"><img src="imagens/saida-icon.png" alt=""></a>
+        <a href="loginAtual.html"><img src="imagens/saida-icon.png" alt=""></a>
     </div>
 
     <div class="content">
@@ -68,6 +68,8 @@
 
 <script>
 listaMaquinasCadastradas = [];
+document.getElementById("usuario_nome").innerHTML = sessionStorage.NOME_USUARIO
+document.getElementById("usuario_cargo").innerHTML = sessionStorage.CARGO_USUARIO
 
     function listarMaquina() {
 		fetch("/dashboard/listar", {
@@ -77,34 +79,40 @@ listaMaquinasCadastradas = [];
 				resposta.json().then((maquinas) => {
                     console.log(maquinas)
                     for (equipamento in maquinas) {
-                        console.log(equipamento)
-                        if(listaMaquinasCadastradas.indexOf(maquinas[equipamento].nome_equipamento) < 0){
-                            listaMaquinasCadastradas.push(maquinas[equipamento].nome_equipamento)
-                            select_equipamento.innerHTML += `<option value='${maquinas[equipamento].idEquipamento}'>${maquinas[equipamento].nome_equipamento}</option>`
+                        if(listaMaquinasCadastradas.indexOf(maquinas[equipamento].nomeEquipamento) < 0){
+                            listaMaquinasCadastradas.push(maquinas[equipamento].nomeEquipamento)
+                            select_equipamento.innerHTML += `<option value='${maquinas[equipamento].idEquipamento}'>${maquinas[equipamento].nomeEquipamento}</option>`
                         
-                            if(maquinas[equipamento].cpu_porcent > 80 || maquinas[equipamento].memoria_porcent > 80) {
+                            if(maquinas[equipamento].cpuPercent > 80 || maquinas[equipamento].memoriaPercent > 80) {
                                 lista_alerta.innerHTML += `
                                 <div class="maquina-alerta">
                                 <img src="imagens/computador-icon.png" alt="">
                                 <div class="info">
                                     <b>Equipamento</b>
-                                <span id="nome_maquina_alerta">${maquinas[equipamento].nome_equipamento}</span>
+                                <span id="nome_maquina_alerta">${maquinas[equipamento].nomeEquipamento}</span>
                                 <button onclick="exibir(${maquinas[equipamento].idEquipamento})">Saiba mais</button>
                                 </div>
                                 </div>
                                 <div id="${maquinas[equipamento].idEquipamento}" class="mensagem-erro">
-                                    <div id="mensagem_erro">
-                                        
+                                    <div id="mensagem_erro_${maquinas[equipamento].idEquipamento}">
                                     </div>
                                 </div>
                                 `;
-                                if(maquinas[equipamento].cpu_porcent >= 80) {
-                                    mensagem_erro.innerHTML += `<button onclick="fechar(${maquinas[equipamento].idEquipamento})">᰽</button>
-                                            <span>Porcentagem atual de CPU está acima do recomendado</span>`
+                                if(maquinas[equipamento].cpuPercent >= 80) {
+                                    idDiv = `mensagem_erro_${maquinas[equipamento].idEquipamento}`
+                                    
+                                    mensagem = `<button onclick="fechar(${maquinas[equipamento].idEquipamento})">᰽</button>
+                                    <span>Porcentagem atual de CPU está acima do recomendado</span>`
+
+                                    configurarMensagem(idDiv, mensagem)
                                 }
-                                if(maquinas[equipamento].memoria_porcent >= 80) {
-                                    mensagem_erro.innerHTML += `<button onclick="fechar(${maquinas[equipamento].idEquipamento})">᰽</button>
-                                            <span>Porcentagem atual de RAM está acima do recomendado</span>`
+                                if(maquinas[equipamento].memoriaPercent >= 80) {
+                                    idDiv = `mensagem_erro_${maquinas[equipamento].idEquipamento}`
+                                    
+                                    mensagem = `<button onclick="fechar(${maquinas[equipamento].idEquipamento})">᰽</button>
+                                    <span>Porcentagem atual de RAM está acima do recomendado</span>`
+
+                                    configurarMensagem(idDiv, mensagem)
                                 }
                             }
                     }
@@ -116,6 +124,11 @@ listaMaquinasCadastradas = [];
 				console.log(`#ERRO: ${resposta}`);
 			});
 	}
+
+    function configurarMensagem(div, mensagem) {
+        local_mensagem = document.getElementById(div)
+        local_mensagem.innerHTML += `${mensagem}`
+    }
 
     function exibir(id) {
         mensagem_erro = document.getElementById(id)
@@ -141,9 +154,9 @@ listaMaquinasCadastradas = [];
                         cpu_maquina.innerHTML = "Equipamento sem dados";
                         ram_maquina.innerHTML = "Equipamento sem dados";
                     } else {
-                        nome_maquina.innerHTML = `${maquinas[0].nome_equipamento}`;
-                        cpu_maquina.innerHTML = `${maquinas[0].cpu_porcent}%`;
-                        ram_maquina.innerHTML = `${maquinas[0].memoria_porcent}%`;
+                        nome_maquina.innerHTML = `${maquinas[0].nomeEquipamento}`;
+                        cpu_maquina.innerHTML = `${maquinas[0].cpuPercent}%`;
+                        ram_maquina.innerHTML = `${maquinas[0].memoriaPercent}%`;
                     }
 				});
 			})

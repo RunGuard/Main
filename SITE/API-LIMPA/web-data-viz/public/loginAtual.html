@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/styleFormulario.css">
+    <link rel="shortcut icon" type="imagex/png" href="imagens/logo.png">
+    <title>Login</title>
+</head>
+
+<body onload="listar()">
+    <div class="container">
+        <div class="signin-signup">
+            <form onsubmit="submitForm(event)" action="" class="sign-in-form">
+                <a href="index.html"><-Home</a>
+                <h2 class="title">Login</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Email" id="input_email_login">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Senha" id="input_senha_login">
+                </div>
+                <button onclick="entrar()" class="btn">Login</button>
+            </form>
+            <form onsubmit="submitForm(event)" action="" class="sign-up-form">
+                <h2 class="title">Cadastro de Funcionário</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="input_nome" placeholder="Nome">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <select id="select_cargo">
+                        <option value="0" selected disabled>Cargo</option>
+                        <option value=2>Analista de dados</option>
+                        <option value=1>Técnico de infraestrutura</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="text" id="input_email" placeholder="Email">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="input_senha" placeholder="Senha">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="text" id="input_cpf" placeholder="CPF">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <select id="select_empresa">
+                        <option value="0" selected disabled>Empresa</option>
+                    </select>
+                </div>
+                <button onclick="cadastrar()" class="btn">Cadastrar</button>
+            </form>
+        </div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <h3>Já possui uma conta?</h3>
+                    <p>Se redirecione para o outro formuário clicando no botão abaixo para fazer seu login</p>
+                    <button class="btn" id="sign-in-btn">Clique aqui</button>
+                </div>
+                <img src="imagens/logo.png" alt="" class="image">
+            </div>
+            <div class="panel right-panel">
+                <div class="content">
+                    <h3>Não possui uma conta?</h3>
+                    <p>Peça para que um Administrador do sistema faça um cadastro!</p>
+                </div>
+                <img src="imagens/logo.png" alt="" class="image">
+            </div>
+        </div>
+    </div>
+    <script src="js/animacao.js"></script>
+</body>
+
+</html>
+
+<script>
+
+    function submitForm(event) {
+        event.preventDefault();
+    }
+
+    let listaEmpresasCadastradas = [];
+
+    function entrar() {
+
+        var emailVar = input_email_login.value;
+        var senhaVar = input_senha_login.value;
+
+        if (emailVar == "" || senhaVar == "") {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
+            finalizarAguardar();
+            return false;
+        }
+        else {
+            setInterval(sumirMensagem, 5000)
+        }
+
+        console.log("FORM LOGIN: ", emailVar);
+        console.log("FORM SENHA: ", senhaVar);
+
+        fetch("/empresas/autenticar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: emailVar,
+                senhaServer: senhaVar
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+                    console.log(JSON.stringify(json));
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.idUsuario;
+                    sessionStorage.CARGO_USUARIO = json.cargo;
+
+                });
+
+                setTimeout(()=>{
+                    window.location.href = "dashs.html"
+                }, 2000)
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+        return false;
+    }
+
+    // Array para armazenar empresas cadastradas para validação de código de ativação 
+
+    function cadastrar() {
+        var nomeVar = input_nome.value;
+        var cargoVar = select_cargo.value;
+        var emailVar = input_email.value;
+        var senhaVar = input_senha.value;
+        var cpfVar = input_cpf.value;
+        var fkEmpresa = select_empresa.value;
+
+        fetch("/empresas/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                nomeServer: nomeVar,
+                cargoServer: cargoVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+                cpfServer: cpfVar,
+                fkEmpresaServer: fkEmpresa
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+
+                    setTimeout(() => {
+                        window.location = "loginAtual.html";
+                    }, "2000");
+
+                    limparFormulario();
+                    // finalizarAguardar();
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro!";
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+                finalizarAguardar();
+            });
+
+        return false;
+    }
+
+    function listar() {
+        fetch("/empresas/listar", {
+            method: "GET",
+        })
+            .then(function (resposta) {
+                resposta.json().then((empresas) => {
+                    empresas.forEach((empresa) => {
+                        listaEmpresasCadastradas.push(empresa);
+                        select_empresa.innerHTML += `<option value='${empresa.idEmpresa}'>${empresa.razaoSocial}</option>`
+                        console.log("listaEmpresasCadastradas")
+                    });
+                });
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+    }
+
+
+    function sumirMensagem() {
+        cardErro.style.display = "none"
+    }
+
+</script>

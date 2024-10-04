@@ -4,26 +4,32 @@
 import psutil
 import time
 import mysql.connector
-from socket import gethostname
+import socket 
+import pandas as pd
+import platform
 
 # Criação da conexão do Banco de Dados
 mydb = mysql.connector.connect(
-  host="10.18.32.222",
-  user="RunGuard",
-  password="Senha123",
+  host="localhost",
+  user="root",
+  password="Ubatuba0815",
   database="runguard",
   port=3306 
 )
 
 mycursor = mydb.cursor()
 
+sistemaOperacional = platform.system()
 run = True
+dados = []
 
 # Função para converter os valores de Bytes para Gigabytes
 def byte_para_gb(byte):
     return byte / (1024 ** 3)
 
-nomeMaquina = gethostname()
+nomeMaquina = socket.gethostname()
+memoria_total = psutil.virtual_memory().total
+cpu_versao = platform.processor()
 
 tempo = int(input("Digite o intevalo de tempo que você quer entre os cadastros: "))
 
@@ -34,14 +40,18 @@ while run:
     print('=======================')
     print("Pressione Ctrl+C para interromper o script")
     
-    cpu = psutil.cpu_percent() # Obtém quanto a CPU está em porcentagem
-    memoria = psutil.virtual_memory() # Obtém quanto a Memória está em porcentagem
-    memoria_usada = byte_para_gb(memoria.used) # Converte os bytes para Gigabyte do memória usada
-    memoria_usada_formatada = f'{memoria_usada:.1f}' # Formata o número para melhor gravação no banco
+    # Obtém quanto a CPU está em porcentagem
+    cpu = psutil.cpu_percent() 
+    # Obtém quanto a Memória está em porcentagem
+    memoria = psutil.virtual_memory() 
+    # Converte os bytes para Gigabyte do memória usada
+    memoria_usada = byte_para_gb(memoria.used) 
+    # Formata o número para melhor gravação no banco
+    memoria_usada_formatada = f'{memoria_usada:.1f}' 
 
 
     #Select para verificação da inserção do equipamento
-    instrucaoVerEquipamento = "SELECT * FROM equipamento WHERE nome_equipamento = %s" 
+    instrucaoVerEquipamento = "SELECT * FROM equipamento WHERE nomeEquipamento = %s" 
     mycursor.execute(instrucaoVerEquipamento, ([nomeMaquina]))
 
     #Função para utilizar o resultado do mycursor, se não da erro de unread result
@@ -50,12 +60,12 @@ while run:
 
     #Função para verificar (apartir do select de cima) se já existe um equipamento com esse nome para fazer inserção automática dele
     if mycursor.rowcount < 1: 
-        sql = "INSERT INTO equipamento VALUES (default, %s, %s)"
-        values = (nomeMaquina, fkEmpresa)
+        sql = "INSERT INTO equipamento VALUES (default, %s, %s, %s, %s, %s)"
+        values = (nomeMaquina,cpu_versao, memoria_total, sistemaOperacional, fkEmpresa)
         mycursor.execute(sql, values) 
         mydb.commit()
 
-    instrucaoID = "SELECT idEquipamento FROM equipamento WHERE nome_equipamento LIKE %s"
+    instrucaoID = "SELECT idEquipamento FROM equipamento WHERE nomeEquipamento LIKE %s"
     valuesID = ([nomeMaquina])
     mycursor.execute(instrucaoID, valuesID)
     idEquipamento_tupla = mycursor.fetchone()
@@ -63,19 +73,35 @@ while run:
     #Seleção do id selecionado
     idEquipamento = idEquipamento_tupla[0]
 
-    # Imprime as informações no terminal para uma visualização
+    # Imprime as informações no terminal para visualização
     print(f"""A CPU está em {cpu} %
 A memória está em {memoria.percent} %
 Total de memória usada: {memoria_usada_formatada} GB""")
 
     # Faz as inserções no banco de dados passando os componentes
-    sql = "INSERT INTO dados (cpu_porcent, memoria_porcent,memoria_usada, fkEquipamento) VALUES (%s, %s, %s, %s)"
+    sql = "INSERT INTO dados (idDado, cpuPercent, memoriaPercent, memoriaUsada, dtHora, fkEquipamento) VALUES (default, %s, %s, %s, default, %s)"
     val = (cpu,memoria.percent,memoria_usada_formatada, idEquipamento)
 
-    # Executa a query e os valores
     mycursor.execute(sql,val)
-
     mydb.commit()
+
+    sql = "SELECT * FROM dados"
+
+    mycursor.execute(sql)
+    dados_coletados = mycursor.fetchall()
+    mydb.commit()
+
+    print(dados_coletados)
+
+    # Cria um DataFrame a partir da lista de dados
+    df = pd.DataFrame(dados)
+
+    caminho_arquivo = "~/dadosServidor.csv"
+
+    # Salva o DataFrame em um arquivo CSV
+    df.to_csv(caminho_arquivo, index=True, encoding='utf-8')
+
+    print('Dados salvos com sucesso!')
 
     time.sleep(tempo)
     
