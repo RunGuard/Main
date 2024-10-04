@@ -15,7 +15,8 @@
 <body onload="listar()">
     <div class="container">
         <div class="signin-signup">
-            <form action="" class="sign-in-form">
+            <form onsubmit="submitForm(event)" action="" class="sign-in-form">
+                <a href="index.html"><-Home</a>
                 <h2 class="title">Login</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
@@ -27,7 +28,7 @@
                 </div>
                 <button onclick="entrar()" class="btn">Login</button>
             </form>
-            <form action="" class="sign-up-form">
+            <form onsubmit="submitForm(event)" action="" class="sign-up-form">
                 <h2 class="title">Cadastro de Funcionário</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
@@ -86,6 +87,11 @@
 </html>
 
 <script>
+
+    function submitForm(event) {
+        event.preventDefault();
+    }
+
     let listaEmpresasCadastradas = [];
 
     function entrar() {
@@ -117,7 +123,6 @@
             })
         }).then(function (resposta) {
             console.log("ESTOU NO THEN DO entrar()!")
-            console.log("Bunda")
 
             if (resposta.ok) {
                 console.log(resposta);
@@ -128,8 +133,13 @@
                     sessionStorage.EMAIL_USUARIO = json.email;
                     sessionStorage.NOME_USUARIO = json.nome;
                     sessionStorage.ID_USUARIO = json.idUsuario;
+                    sessionStorage.CARGO_USUARIO = json.cargo;
 
                 });
+
+                setTimeout(()=>{
+                    window.location.href = "dashs.html"
+                }, 2000)
 
             } else {
 
@@ -144,65 +154,25 @@
         }).catch(function (erro) {
             console.log(erro);
         })
-
         return false;
     }
-
 
     // Array para armazenar empresas cadastradas para validação de código de ativação 
 
     function cadastrar() {
-        // aguardar();
-
-        //Recupere o valor da nova input pelo nome do id
-        // Agora vá para o método fetch logo abaixo
         var nomeVar = input_nome.value;
         var cargoVar = select_cargo.value;
         var emailVar = input_email.value;
         var senhaVar = input_senha.value;
         var cpfVar = input_cpf.value;
-        // var confirmacaoSenhaVar = input_senha_confirmado.value;
         var fkEmpresa = select_empresa.value;
 
-        // Verificando se há algum campo em branco
-        // if (
-        //   nomeVar == "" ||
-        //   emailVar == "" ||
-        //   senhaVar == "" ||
-        //   confirmacaoSenhaVar == "" ||
-        // ) {
-        //   cardErro.style.display = "block";
-        //   mensagem_erro.innerHTML =
-        //     "(Mensagem de erro para todos os campos em branco)";
-
-        //   finalizarAguardar();
-        //   return false;
-        // } else {
-        //   setInterval(sumirMensagem, 5000);
-        // }
-
-        // Verificando se o código de ativação é de alguma empresa cadastrada
-        // for (let i = 0; i < listaEmpresasCadastradas.length; i++) {
-        //   if (listaEmpresasCadastradas[i].codigo_ativacao == codigoVar) {
-        //     idEmpresaVincular = listaEmpresasCadastradas[i].id
-        //     console.log("Código de ativação válido.");
-        //     break;
-        //   } else {
-        //     cardErro.style.display = "block";
-        //     mensagem_erro.innerHTML = "(Mensagem de erro para código inválido)";
-        //     finalizarAguardar();
-        //   }
-        // }
-
-        // Enviando o valor da nova input
         fetch("/empresas/cadastrar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                // crie um atributo que recebe o valor recuperado aqui
-                // Agora vá para o arquivo routes/usuario.js
                 nomeServer: nomeVar,
                 cargoServer: cargoVar,
                 emailServer: emailVar,
@@ -215,10 +185,6 @@
                 console.log("resposta: ", resposta);
 
                 if (resposta.ok) {
-                    // cardErro.style.display = "block";
-
-                    // mensagem_erro.innerHTML =
-                    //   "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
 
                     setTimeout(() => {
                         window.location = "loginAtual.html";
@@ -238,7 +204,6 @@
         return false;
     }
 
-    // Listando empresas cadastradas 
     function listar() {
         fetch("/empresas/listar", {
             method: "GET",
@@ -249,7 +214,6 @@
                         listaEmpresasCadastradas.push(empresa);
                         select_empresa.innerHTML += `<option value='${empresa.idEmpresa}'>${empresa.razaoSocial}</option>`
                         console.log("listaEmpresasCadastradas")
-                        // console.log(listaEmpresasCadastradas[0].codigo_ativacao)
                     });
                 });
             })
