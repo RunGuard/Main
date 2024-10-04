@@ -105,13 +105,108 @@
         <div class="container">
             <div class="sobre-texto">
                 <p>Nossa empresa tem como principal objetivo garantir o funcionamento contínuo e eficiente de servidores que suportam grandes aplicativos de corrida, como Uber e 99. Utilizamos soluções avançadas em Python para monitorar o desempenho dos serviços, assegurando que os sistemas operem com máxima eficiência e sem interrupções. Além disso, fazemos o monitoramento do hardware dos servidores em tempo real, identificando falhas e sobrecargas de maneira preventiva. Nosso foco é ajudar as empresas a manterem suas operações estáveis e seguras, oferecendo tecnologia robusta para otimizar sua infraestrutura e evitar problemas críticos.</p>
-                <a href="#" class="btn">Conheça nossa equipe</a>
+                <a onclick="abrir()" class="btn">Conheça nossa equipe</a>
             </div>
             <div class="sobre-img">
                 <img src="imagens/img-sobre-nos.png" alt="">
             </div>
         </div>
     </section>
+    <section id="divEquipe" class="tres">
+        <div class="fundoequipe">
+            <div class="containerequipe">
+                <button style="padding-bottom: 2%;padding-right: 5%;" class="btn close-button" onclick="fechar()">Fechar</button>
+            <div class="titulo_equipe">
+              <h1>Conheça a equipe RunGuard</h1>
+              <div class="texto_equipe">
+                Nossa equipe é composta por seis sócios dedicados que combinam conhecimento profundo e tecnologia de ponta
+                para oferecer uma experiência incomparável. Focamos em você e nas suas necessidades, garantindo
+                disponibilidade contínua e eficiência operacional através de soluções personalizadas e centradas no cliente.
+                Com a RunGuard, você não apenas gerencia seus ATMs; você os potencializa. Descubra como nossa expertise
+                pode elevar a performance e a segurança das suas operações.
+              </div>
+            </div>
+    
+            <div class="containercard">
+              <div class="cardcointainer2">
+                <article class="cardarticle">
+                  <img src="imagens/fotoilys.jpg" class="cardimagem">
+    
+                  <div class="carddados">
+                    <span class="carddescricao1">Cargo: Full Stack</span>
+                    <h2 class="titulocard1">Nome: Ilys Maroto</h2>
+                  </div>
+              </div>
+              </article>
+    
+              <div class="containercard">
+                <div class="cardcointainer2">
+                  <article class="cardarticle">
+                    <img src="imagens/fotoAnne.jpg" class="cardimagem">
+    
+                    <div class="carddados">
+                      <span class="carddescricao1">Cargo: Full Stack</span>
+                      <h2 class="titulocard1">Nome: Anne Caroline</h2>
+                    </div>
+                </div>
+    
+    
+                <div class="containercard">
+                  <div class="cardcointainer2">
+                    <article class="cardarticle">
+                      <img src="imagens/diegofoto.png" class="cardimagem" data-cardo="Lucas Coltre Roque">>
+    
+                      <div class="carddados">
+                        <span class="carddescricao1">Cargo: Full Stack</span>
+                        <h2 class="titulocard1">Nome: Diego Campos</h2>
+                      </div>
+                  </div>
+    
+    
+                  <div class="containercard">
+                    <div class="cardcointainer2">
+                      <article class="cardarticle">
+                        <img src="imagens/duarte.jpeg" class="cardimagem" data-cardo="Lucas Coltre Roque">>
+    
+                        <div class="carddados">
+                          <span class="carddescricao1">Cargo: Full Stack</span>
+                          <h2 class="titulocard1">Nome: Guilherme Duarte</h2>
+                        </div>
+                    </div>
+    
+    
+                    <div class="containercard">
+                      <div class="cardcointainer2">
+                        <article class="cardarticle">
+                          <img src="imagens/fotoroque.jpg" class="cardimagem" data-cardo="Lucas Coltre Roque">>
+    
+                          <div class="carddados">
+                            <span class="carddescricao1">Cargo: Full Stack</span>
+                            <h2 class="titulocard1">Nome: Lucas Coltre Roque</h2>
+                          </div>
+                      </div>
+    
+    
+                      <div class="containercard">
+                        <div class="cardcointainer2">
+                          <article class="cardarticle">
+                            <img src="imagens/fotoPerfilAlexandre.jpg" class="cardimagem"
+                              data-cardo="Lucas Coltre Roque">>
+    
+                            <div class="carddados">
+                              <span class="carddescricao1">Cargo: Full Stack</span>
+                              <h2 class="titulocard1">Nome: Alexandre Vasconelos</h2>
+                            </div>
+                        </div>
+                        </article>
+                      </div>
+                    </div>
+                  </div>
+    
+                </div>
+              </div>
+      </section>       
+</section>
 
     <section class="servicos" id="servicos">
         <div class="titulo">
@@ -195,3 +290,13 @@
 </body>
 
 </html>
+
+<script>
+    divEquipe = document.getElementById("divEquipe");
+    function abrir() {
+        divEquipe.style.display = "flex";
+    }
+    function fechar() {
+        divEquipe.style.display = "none";
+    }
+</script>
