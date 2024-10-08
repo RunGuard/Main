@@ -39,23 +39,23 @@ while run:
 
     # Adiciona os dados à lista
     dados.append({
-        'Nome': nome,
-        'CPU (%)': cpu,
-        'Memória RAM (GB)': memoria.percent
+        'nome': nome,
+        'cpu': cpu,
+        'memoria': memoria.percent
     })
 
     # Cria um DataFrame a partir da lista de dados
     df = pd.DataFrame(dados)
 
-    caminho_arquivo = "dados.csv"
+    caminho_arquivo = "dados.json"
 
-    # Salva o DataFrame em um arquivo CSV
-    df.to_csv(caminho_arquivo, index=True, encoding='utf-8')
+    # Salva o DataFrame em um arquivo json
+    df.to_json(caminho_arquivo, orient='records', lines=False)
 
     print('Dados salvos com sucesso!')
 
     nome_bucket = "s3-raw-runguard"
-    chave_bucket = "dados.csv"
+    chave_bucket = "dados.json"
 
     # Faz upload de um arquivo para um bucket específico com um nome específico para o arquivo
     s3_client.upload_file(caminho_arquivo, nome_bucket, chave_bucket)
