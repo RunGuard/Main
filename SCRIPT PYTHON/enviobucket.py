@@ -1,12 +1,22 @@
-# API do Captura dados - Sprint 2 - RunGuard
-
-# Importação das bibliotecas
 import psutil
 import time
 import mysql.connector
-import socket 
 import pandas as pd
+import boto3
 import platform
+import socket
+
+
+run = True
+
+# Configuração do cliente
+s3_client = boto3.client(
+'s3',
+aws_access_key_id='',
+aws_secret_access_key='',
+aws_session_token='',
+region_name='')
+
 
 # Criação da conexão do Banco de Dados
 mydb = mysql.connector.connect(
@@ -35,20 +45,24 @@ tempo = int(input("Digite o intevalo de tempo que você quer entre os cadastros:
 
 fkEmpresa = input("Digite a o código de sua empresa: ")
 
-# Loop para capturar os dados e cadastrar no Banco de Dados
+
 while run:
     print('=======================')
     print("Pressione Ctrl+C para interromper o script")
-    
-    # Obtém quanto a CPU está em porcentagem
-    cpu = psutil.cpu_percent() 
-    # Obtém quanto a Memória está em porcentagem
-    memoria = psutil.virtual_memory() 
-    # Converte os bytes para Gigabyte do memória usada
-    memoria_usada = byte_para_gb(memoria.used) 
-    # Formata o número para melhor gravação no banco
-    memoria_usada_formatada = f'{memoria_usada:.1f}' 
 
+
+    # Obtém as informações da CPU e da memória
+    cpu = psutil.cpu_percent()  # Porcentagem de uso da CPU
+    memoria = psutil.virtual_memory()  # Informações da memória
+
+    memoria_usada = byte_para_gb(memoria.used)  # Converte bytes para Gigabytes
+    memoria_usada_formatada = f'{memoria_usada:.1f}'  # Formata o número
+
+    # Imprime as informações no terminal
+
+    print(f'Nome salvo: {nomeMaquina}')
+    print(f'A CPU está em {cpu} %')
+    print(f'A memória está em {memoria.percent} %')
 
     #Select para verificação da inserção do equipamento
     instrucaoVerEquipamento = "SELECT * FROM equipamento WHERE nomeEquipamento = %s" 
@@ -93,15 +107,28 @@ Total de memória usada: {memoria_usada_formatada} GB""")
 
     print(dados_coletados)
 
+    # Adiciona os dados à lista
+    dados.append({
+        'nome': nomeMaquina,
+        'cpu': cpu,
+        'memoria': memoria.percent
+    })
+
     # Cria um DataFrame a partir da lista de dados
     df = pd.DataFrame(dados)
 
-    caminho_arquivo = "~/dadosServidor.csv"
+    caminho_arquivo = "dados.json"
 
-    # Salva o DataFrame em um arquivo CSV
-    df.to_csv(caminho_arquivo, index=True, encoding='utf-8')
+    # Salva o DataFrame em um arquivo json
+    df.to_json(caminho_arquivo, orient='records', lines=False)
+
 
     print('Dados salvos com sucesso!')
 
+    nome_bucket = "s3-raw-runguard"
+    chave_bucket = "dados.json"
+
+
+    # Faz upload de um arquivo para um bucket específico com um nome específico para o arquivo
+    s3_client.upload_file(caminho_arquivo, nome_bucket, chave_bucket)
     time.sleep(tempo)
-    
