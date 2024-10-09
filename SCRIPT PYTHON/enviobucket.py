@@ -6,6 +6,7 @@ import boto3
 import platform
 import socket
 
+
 run = True
 
 # Configuração do cliente
@@ -15,6 +16,7 @@ aws_access_key_id='',
 aws_secret_access_key='',
 aws_session_token='',
 region_name='')
+
 
 # Criação da conexão do Banco de Dados
 mydb = mysql.connector.connect(
@@ -48,6 +50,7 @@ while run:
     print('=======================')
     print("Pressione Ctrl+C para interromper o script")
 
+
     # Obtém as informações da CPU e da memória
     cpu = psutil.cpu_percent()  # Porcentagem de uso da CPU
     memoria = psutil.virtual_memory()  # Informações da memória
@@ -56,6 +59,7 @@ while run:
     memoria_usada_formatada = f'{memoria_usada:.1f}'  # Formata o número
 
     # Imprime as informações no terminal
+
     print(f'Nome salvo: {nomeMaquina}')
     print(f'A CPU está em {cpu} %')
     print(f'A memória está em {memoria.percent} %')
@@ -118,10 +122,12 @@ Total de memória usada: {memoria_usada_formatada} GB""")
     # Salva o DataFrame em um arquivo json
     df.to_json(caminho_arquivo, orient='records', lines=False)
 
+
     print('Dados salvos com sucesso!')
 
     nome_bucket = "s3-raw-runguard"
     chave_bucket = "dados.json"
+
 
     # Faz upload de um arquivo para um bucket específico com um nome específico para o arquivo
     s3_client.upload_file(caminho_arquivo, nome_bucket, chave_bucket)
