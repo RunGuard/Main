@@ -17,6 +17,7 @@
 
     <div class="container">
         <div class="signin-signup">
+
             <form onsubmit="submitForm(event)" class="sign-in-form">
                 <h2 class="title">Cadastro de Empresa</h2>
                 <div class="input-field">
@@ -29,6 +30,7 @@
                 </div>
                 <button onclick="cadastrarEmpresa()" class="btn">Cadastrar</button>
                 <p class="account-text">Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a></p>
+
             </form>
             <form onsubmit="submitForm(event)" class="sign-up-form">
                 <h2 class="title">Cadastro de Equipamento</h2>
@@ -61,6 +63,7 @@
         <div class="panels-container">
             <div class="panel left-panel">
                 <div class="content">
+
                     <a style="color: aliceblue;" href="index.html"><-Home</a>
                     <h3>Não possue uma Empresa Cadastrada?</h3>
                     <p>Se redirecione para o outro formuário clicando no botão abaixo para cadastrar uma empresa!</p>
@@ -235,8 +238,7 @@
                 .then(function (resposta) {
                     console.log("resposta: ", resposta);
 
-                    if (resposta.ok) {
-                        
+
                     } else {
                         throw "Houve um erro ao tentar realizar o cadastro!";
                     }
