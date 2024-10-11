@@ -20,11 +20,11 @@ region_name='')
 
 # Criação da conexão do Banco de Dados
 mydb = mysql.connector.connect(
-  host="localhost",
-  user="root",
-  password="Ubatuba0815",
-  database="runguard",
-  port=3306 
+  host="",
+  user="",
+  password="",
+  database="",
+  port= 3306
 )
 
 mycursor = mydb.cursor()

@@ -24,8 +24,8 @@
     transition: background-color 0.3s ease, transform 0.2s ease; 
     
 }
-.close-button span{
-    padding-left: 35px;
+.close-button  h3{
+    padding-left: 2%;
     color: black;
     font-size: 24px; 
 }
@@ -377,7 +377,7 @@ section {
 }
 
 .close-button {
-    background-color: #ff5c5c; 
+    /* background-color: #ff5c5c;  */
     border: none;
     color: white;
     padding-bottom: 50%;
@@ -394,7 +394,7 @@ section {
 }
 /* Efeito de hover para melhorar a interatividade */
 .close-button:hover {
-    background-color: #e74c3c; /* Cor mais escura ao passar o mouse */
+    /* background-color: #e74c3c; Cor mais escura ao passar o mouse */
     transform: scale(1.1); /* Aumenta levemente o botão */
 }
 /* Efeito de clique */
