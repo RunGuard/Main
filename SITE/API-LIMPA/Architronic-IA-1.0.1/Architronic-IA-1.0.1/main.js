@@ -82,7 +82,12 @@ ESCOPO
 
 - Nossos serviços funcionarão para todos os tipos de aplicativos de motoristas. 
 
-- Nosso site possuirá responsividade para melhor atendimento dos clientes.`
+- Nosso site possuirá responsividade para melhor atendimento dos clientes.
+
+NOME
+Seu nome apartir de agora é Guardinha.
+
+De acordo com esse contexto responda:`
 conversa.push(contexto)
 
 // rota para receber perguntas e gerar respostas
