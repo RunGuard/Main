@@ -43,12 +43,46 @@ app.listen(PORTA_SERVIDOR, () => {
 });
 
 var conversa = []
-var contexto = `* **Objetivo e propósito:** Você está sendo usado em um projeto de monitoramento de servidores de aplicativos de corrida e está sendo usado para possibilitar que o usuário possa abrir requisições através de você
-    * **Domínio:** RunGuard.com
-    * **Público-alvo:** Serão usuários destinados a ter um monitoramento de dashboards do projeto
-    * **Restrições e limitações:** Você será utilizado somente para consulta sobre informações do projeto RunGuard e abertura de chamados de requisição no jira
-    * **Nome:** Seu nome agora é Guardinha
-    Baseado nesse contexto responda: `
+var contexto = `CONTEXTO:
+O Brasil é um país em grande crescimento urbano, em 1960 as taxas de urbanização do país eram de 45,52%, já atualmente este número chegou em quase 85%, de acordo com o IBGE. Além disso, São Paulo e Rio de Janeiro são consideradas as únicas megalópoles da América Latina. Tudo isso se soma com o fato de que o Brasil acumula quase 2 Trilhões de dólares em PIB. Dado esse vasto crescimento, é óbvio se pensar que uma coisa tão básica quanto a locomoção das pessoas, seja para trabalho, escola ou mesmo viagens e passeios, seja algo muito forte no país, porém, não é isso que ocorre. 
+
+Infelizmente o Brasil tem um grande déficit no seu transporte público, são mais de 215 milhões de habitantes em um país em que uma única estação de metrô demora, em média, 8 anos para ser construída, média que geralmente é extrapolada. Além disso, o preço de transportes públicos do tipo ônibus aumenta a cada ano, sendo o último aumento de mais de 13,5%. Isso gera uma gigantesca insatisfação por parte da população, onde apenas 1,5% das pessoas dizem gostar dos trens do país e 8,5% dizem gostar dos ônibus. Por esses motivos e muitos outros, o carro é o terceiro maior meio de locomoção do país. 
+
+Para resolver esse problema, as pessoas começaram a optar por uma forma mais barata, prática, rápida, segura e confortável de locomoção: os aplicativos de corrida. Para metrificação do tamanho desse uso, os maiores serviços de locomoção do Brasil, Uber e 99, tem crescido a cada ano 25 e 40% respectivamente, o que representa 93,35 bilhões de reais e 150 milhões de usuários para a Uber e 80 milhões de reais com mais de 50 milhões de usuários para a 99. Além disso, a quantidade de pessoas que trabalham com aplicativos de corrida no Brasil chega aos 87 milhões, já que os aplicativos podem render quase 500 reais por semana trabalhando pouco mais de 2 horas por dia, de acordo com a Uber e a 99. 
+Portanto, é possível notar que esses aplicativos não só geram mobilidade fácil, mas também emprego, deixando tanto motoristas quanto clientes muito dependentes de seus serviços, esses que são feitos 100% digitalmente, via aplicativo. Esse sistema, por sua vez, é armazenado em servidores que necessitam de cuidados especiais, pois se falharem, por poucos minutos, podem gerar para a empresa, prejuízos, queda de usuários e deixá-la com a imagem comprometida, tudo por causa de algo completamente evitável com o correto monitoramento de seus servidores, para garantir o funcionamento pleno dos mesmos. 
+
+Surge então nesse contexto, a RunGuard, buscando manter os servidores e seus componente seguros através de um sistema de monitoramento de processadores e memória visto que, em momentos de pico, esses são os principais componentes atingidos. Entregando, também, confiabilidade e segurança para os clientes e usuário do sistema. 
+
+ 
+OBJETIVO 
+
+Desenvolver um sistema de monitoramento de servidores para empresas de aplicativos de corrida, garantido a previsibilidade de problemas e maior velocidade de manutenção e reparos, permitindo o aumento do tempo de uptime dos serviços. 
+
+ 
+
+JUSTIFICATIVA 
+
+Viabilizar a previsibilidade de falhas técnicas evitando downtimes dos serviços. 
+
+ 
+
+ESCOPO 
+
+- Criaremos um site onde os usuários poderão fazer cadastro e monitorar como estão os servidores; 
+
+- Criaremos tabelas no banco de dados para que todos os dados sejam mantidos e fiquem em segurança; 
+
+- Utilizaremos servidores para guardar os dados; 
+
+- Utilizaremos scripts em Python para capturar os dados das máquinas necessárias; 
+
+- Utilizaremos código em Java para conectar o site com o banco de dados; 
+
+- Scripts em Python estarão configurados em uma instância EC2;  
+
+- Nossos serviços funcionarão para todos os tipos de aplicativos de motoristas. 
+
+- Nosso site possuirá responsividade para melhor atendimento dos clientes.`
 conversa.push(contexto)
 
 // rota para receber perguntas e gerar respostas
