@@ -68,11 +68,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .mensagem {
   padding: 12px 15px; 
   margin: 5px 0;
+  width: fit-content;
   max-width: 75%; 
   clear: both;
   position: relative;
@@ -80,10 +82,11 @@
   margin-right: 15px;
   font-size: 16px; 
   color: #000;
+  text-align: justify;
 }
+
 .mensagem.assistente {
   background-color: #FFDC60;
-  text-align: left;
   float: left;
   border-radius: 15px 15px 15px 0;
 }
@@ -91,7 +94,6 @@
 .mensagem.usuario {
   background-color: #d1d1d1;
   color: black;
-  text-align: right;
   float: right;
   border-radius: 15px 15px 0 15px;
 }
