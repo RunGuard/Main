@@ -8,65 +8,103 @@
 </head>
 <body>
 
-    <div class="centralizar">
-        <div class="content">
+    
+<button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="robo.png" alt=""></button>
 
-          <main class="main-content">
-          
-            <section class="espaco-chat">
-              <div class="caixa-chat">
-                <div class="titulo-chat">Teste</div>
-                
-                <section class="espaco-mensagem">
-                  <div class="caixa-mensagem">
-                    <!-- mens dele -->
-                    <div class="caixa-mensagens">
-                        <h3>Resposta da IA:</h3>
-                       
-                      <div class="caixa-imagem-usuario-mensagem"></div>
-                      <div class="caixa-menssagem-usuario-outros"> <div id="resposta"></div></div>
-                    </div>
-                  </div>
-                    <!-- sua mens -->
-                    <div class="caixa-mensagem">
-                      <div class="caixa-mensagens"></div>
-                      <div class="caixa-imagem-usuario-mensagem"></div>
-                      <div class="caixa-menssagem-usuario-princ"></div>
-                    </div>
-                    
-                    
-                  </div>
-                </section>
-                
-                <section class="espaco-enviar-mensagem">
-                  <div class="caixa-enviar-figura"></div>
-                  <textarea id="pergunta" type="text" placeholder="Digite a pergunta..."></textarea>
-                  <button onclick="gerarResposta()">Gerar Resposta</button>
-                </section>
-              
-              </div>
-            </section>
-          </main>
-          </div>
+<div id="janelaChat" class="janela-chat">
+    <div class="cabecalho-chat">
+        <div style="display: flex; align-items: center;">
+            <img style="width: 100%;" src="robo-branco.png" alt="Perfil do assistente">
+            <span>Guardinha</span>
+        </div>
+        <!-- add imagem de um X -->
+        <button style="background: none; border: none; color: white; cursor: pointer; font-size: larger;" onclick="fecharChat()">᰽</button> 
+    </div>
+    <div id="corpoChat" class="corpo-chat">
+        <div class="mensagem assistente">
+            Olá! <br> 
+            Sou o assistente virtual da RunGuard e me chamo Guardinha. <br>
+            <b>Como posso ajudar?</b>
+        </div>
+        <div class="hora-mensagem assistente" id="horaDeAbertura"></div> <!-- add pelo id a hora -->
+    </div>
+    <div class="rodape-chat">
+        <input type="text" id="entradaUsuario" placeholder="Escreva sua mensagem..." />
+        <button onclick="gerarResposta()">⟹</button>
+    </div>
+</div>
 
-    <script>
+<script>
+  var conversa = []
+
+    function abrirChat() {
+        document.getElementById("janelaChat").style.display = "flex";
+    }
+
+    function fecharChat() {
+        document.getElementById("janelaChat").style.display = "none";
+    }
+
+    function obterHoraAtual() {
+        const options = {
+            timeZone: 'America/Sao_Paulo',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+        const agora = new Date();
+        return agora.toLocaleTimeString('pt-BR', options);
+    }
         
-        async function gerarResposta() {
-            const pergunta = document.getElementById('pergunta').value;
+    async function gerarResposta() {
+      const pergunta = document.getElementById('entradaUsuario').value;
 
-            const response = await fetch('/perguntar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ pergunta })
-            });
+      var entrada = document.getElementById("entradaUsuario");
+      var mensagem = entrada.value.trim();
 
-            const data = await response.json();
+      const response = await fetch('/perguntar', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ pergunta })
+        });
 
-            resposta.style.display = 'block';
-            document.getElementById('resposta').innerText = data.resultado;
+      const data = await response.json();
+
+      conversa.push(mensagem)
+      conversa.push(data.resultado)
+
+        if (mensagem !== "") {
+            var mensagemUsuario = document.createElement("div");
+            mensagemUsuario.classList.add("mensagem", "usuario");
+            mensagemUsuario.innerText = mensagem;
+            document.getElementById("corpoChat").appendChild(mensagemUsuario);
+
+            var horaUsuario = document.createElement("div");
+            horaUsuario.classList.add("hora-mensagem");
+            horaUsuario.innerText = obterHoraAtual();
+            document.getElementById("corpoChat").appendChild(horaUsuario);
+
+            entrada.value = "";
+
+            setTimeout(function() {
+                var mensagemAssistente = document.createElement("div");
+                mensagemAssistente.classList.add("mensagem", "assistente");
+                mensagemAssistente.innerText = data.resultado;
+                document.getElementById("corpoChat").appendChild(mensagemAssistente);
+
+                var horaAssistente = document.createElement("div");
+                horaAssistente.classList.add("hora-mensagem", "assistente");
+                horaAssistente.innerText = obterHoraAtual();
+                document.getElementById("corpoChat").appendChild(horaAssistente);
+
+                document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+            }, 1000);
+
+            document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
         }
+    }
 
     </script>
     

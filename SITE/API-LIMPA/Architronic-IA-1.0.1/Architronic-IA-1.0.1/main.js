@@ -42,12 +42,26 @@ app.listen(PORTA_SERVIDOR, () => {
     console.info(`A API Architronic iniciada, acesse http://localhost:${PORTA_SERVIDOR}`);
 });
 
+var conversa = []
+var contexto = `* **Objetivo e propósito:** Você está sendo usado em um projeto de monitoramento de servidores de aplicativos de corrida e está sendo usado para possibilitar que o usuário possa abrir requisições através de você
+    * **Domínio:** RunGuard.com
+    * **Público-alvo:** Serão usuários destinados a ter um monitoramento de dashboards do projeto
+    * **Restrições e limitações:** Você será utilizado somente para consulta sobre informações do projeto RunGuard e abertura de chamados de requisição no jira
+    * **Nome:** Seu nome agora é Guardinha
+    Baseado nesse contexto responda: `
+conversa.push(contexto)
+
 // rota para receber perguntas e gerar respostas
 app.post("/perguntar", async (req, res) => {
     const pergunta = req.body.pergunta;
 
+    var perguntaFormat = `Usuario: ${pergunta}`
+    conversa.push(perguntaFormat)
+
     try {
-        const resultado = await gerarResposta(pergunta);
+        const resultado = await gerarResposta(conversa);
+        var resultadoFormat = `IA: ${resultado}`
+        conversa.push(resultadoFormat)
         res.json( { resultado } );
     } catch (error) {
         res.status(500).json({ error: 'Erro interno do servidor' });
@@ -55,14 +69,13 @@ app.post("/perguntar", async (req, res) => {
 
 });
 
-// função para gerar respostas usando o gemini
 async function gerarResposta(mensagem) {
     // obtendo o modelo de IA
     const modeloIA = chatIA.getGenerativeModel({ model: "gemini-pro" });
 
     try {
         // gerando conteúdo com base na pergunta
-        const resultado = await modeloIA.generateContent(`Em um paragráfo responda: ${mensagem}`);
+        const resultado = await modeloIA.generateContent(`${mensagem}`);
         const resposta = await resultado.response.text();
         
         console.log(resposta);
