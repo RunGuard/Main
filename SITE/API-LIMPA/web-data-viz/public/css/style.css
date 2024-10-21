@@ -15,20 +15,39 @@
     border: none;
     color: white;
     border-radius: 50%; 
-    width: 10%; 
-    height: 65%; 
+    width: 100%; 
+    height: 100%; 
     display: flex;
     justify-content: center;
     align-items: center; 
     cursor: pointer; 
     transition: background-color 0.3s ease, transform 0.2s ease; 
-    
 }
-.close-button  h3{
-    padding-left: 2%;
+
+.close-button h3 {
+    margin: 0; /* Remove margens extras */
     color: black;
-    font-size: 24px; 
+    font-size: 24px; /* Tamanho padrão */
 }
+
+/* Ajuste para telas pequenas */
+@media (max-width: 768px) {
+    .close-button h3 {
+        font-size: 20px; /* Diminui o tamanho da fonte em telas médias */
+    }
+}
+
+/* Ajuste para telas muito pequenas */
+@media (max-width: 480px) {
+    .close-button {
+        width: 80%; /* Ajusta o tamanho do botão */
+        height: 80%; /* Ajusta a altura */
+    }
+    .close-button h3 {
+        font-size: 16px; /* Diminui o tamanho da fonte em telas muito pequenas */
+    }
+}
+
 b{
     color: #ffdc60;
    text-shadow:
@@ -71,6 +90,10 @@ section {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: -20px;
+    padding-right: 20px;
+    padding-left: 20px;
+
 
 }
 
@@ -81,7 +104,7 @@ section {
 }
 
 .header .flex .navbar a:hover {
-    color: #292930;
+    color: #868686;
 
 }
 
@@ -105,6 +128,7 @@ section {
     align-items: center;
     flex-wrap: wrap;
     gap: 2rem;
+    margin-bottom: 2000x;
 }
 
 .home .flex .conteudo {
@@ -203,9 +227,10 @@ section {
 .valores .box-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, 35rem);
-    gap: 2rem;
+    gap: 1rem;
     align-items: flex-start;
     justify-content: center;
+    width: 70%;
 }
 
 .valores .titulo {
@@ -479,10 +504,142 @@ section {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 50px;
+    /* padding: 50px; */
+}   
+.titulocard1 { 
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-transform: uppercase; /* Letras maiúsculas */
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.carddados span, .carddados h2 {
+    transform: translateY(20px); /* Animação suave de subida */
+    transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.cardarticle:hover .carddados span, 
+.cardarticle:hover .carddados h2 {
+    transform: translateY(0); /* Sobe suavemente quando o hover acontece */
+}
+
+.carddescricao1 {
+    display: block;
+}
+
+.servicos .container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    /* padding: 50px; */
 }   
 
 .card {
+    width: 300px;
+    height: 450px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    color: #fff;
+    box-shadow: 0 10px 30px 5px rgba(0, 0, 0, 0.2);
+    margin-left: 20px;
+    display: flex; /* Adicionado */
+    flex-direction: column; /* Adicionado */
+    justify-content: center; /* Adicionado */
+    align-items: center; /* Adicionado */
+}
+.servicos .card p {
+    position: absolute;
+    opacity: 0; /* Inicialmente invisível */
+    max-width: 80%;
+    transition: opacity .3s ease-out; /* Transição de opacidade suave */
+    bottom: 60px; /* Ajustado para ficar 60px do fundo */
+    left: 50%; /* Alinha ao centro horizontalmente */
+    transform: translate(-50%, 0); /* Centraliza horizontalmente */
+    font-size: 12px;
+    text-align: center; /* Centraliza o texto */
+}
+
+
+.servicos .card img {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.9;
+    transition: opacity .2s ease-out;
+}
+
+.servicos .card h2 {
+    position: absolute;
+    inset: auto auto 30px 30px; /* Mantenha este para o h2 */
+    margin: 0;
+    transition: inset .3s .3s ease-out;
+    font-weight: normal;
+    text-transform: uppercase;
+    font-size: 18px;
+    height: 50px;
+}
+
+/* .servicos .card h2 b {
+    transition: opacity .3s ease-out; /* Transição suave 
+}
+.servicos .card h2 b {
+    opacity: 1;
+} */
+
+.servicos .card p {
+    position: absolute;
+    opacity: 0; /* Inicialmente invisível */
+    max-width: 80%;
+    transition: opacity .3s ease-out; /* Transição de opacidade suave */
+    bottom: 20px; /* Ajustado para ficar 20px do fundo */
+    left: 50%; /* Alinha ao centro horizontalmente */
+    transform: translate(-50%, 0); /* Centraliza horizontalmente */
+    font-size: 12px;
+    text-align: center; /* Centraliza o texto */
+}
+
+/* Ao passar o mouse sobre o card, o <b> dentro do <h2> desaparece */
+.servicos .card:hover h2 b {
+    opacity: 1; /* Faz o <b> desaparecer no hover */
+}
+
+/* Faz o h2 subir no hover */
+.servicos .card:hover h2 {
+    inset: auto auto 220px 30px; 
+    margin-top: -200px;
+}
+
+/* Apresenta o <p> ao passar o mouse */
+.servicos .card:hover p {
+    opacity: 1; /* Mostra o <p> no hover */
+    transition: opacity .5s ease-in; /* Transição suave */
+    margin-bottom: 200PX;
+}
+
+/* Transição da imagem ao passar o mouse */
+.servicos .card:hover img {
+    transition: opacity .3s ease-in;
+    opacity: 1; /* Mantenha a opacidade ao passar o mouse */
+}
+.card {
+    width: 300px;
+    height: 450px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    color: #fff;
+    box-shadow: 0 10px 30px 5px rgba(0, 0, 0, 0.2);
+    margin-left: 20px;
+}
+.servicos .card {
     width: 300px;
     height: 450px;
     border-radius: 10px;
@@ -513,7 +670,61 @@ section {
     font-weight: normal;
     text-transform: uppercase;
     font-size: 18px;
+    z-index: 2; /* Coloca o título acima da imagem */
 }
+
+.servicos .card p {
+    position: absolute;
+    opacity: 0;
+    max-width: 80%;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    font-size: 12px;
+    text-align: center;
+    z-index: 3; /* Garante que o texto fique acima da imagem */
+    transition: opacity .3s ease-out, transform .3s ease-out;
+}
+
+.servicos .card:hover p {
+    opacity: 1;
+    transform: translate(-50%, -50%); /* Centraliza no meio durante o hover */
+    transition: opacity .5s ease-in, transform .5s ease-in;
+}
+
+.servicos .card:hover img {
+    transition: opacity .3s ease-in;
+    opacity: 0.7; /* Diminui a opacidade da imagem durante o hover */
+}
+
+.servicos .card img {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.9;
+    transition: opacity .2s ease-out;
+}
+
+.servicos .card h2 {
+    position: absolute;
+    inset: auto auto 30px 30px;
+    margin: 0;
+    transition: inset .3s .3s ease-out;
+    font-weight: normal;
+    text-transform: uppercase;
+    font-size: 18px;
+    /* padding-top: 150px; */
+    height: 50px;
+}
+.servicos .card b {
+    
+    /* padding-top: 150px; */
+    height: 50px;
+}
+
 
 .servicos .card p {
     position: absolute;
@@ -522,11 +733,56 @@ section {
     transition: opacity .3s ease-out;
     inset: auto auto 80px 30px;
     font-size: 12px;
-}
+     /* padding-bottom: 350px;  */
+    /* margin-bottom: 500px; */
+}   
 
 .servicos .card:hover h2 {
     inset: auto auto 220px 30px;
     transition: inset .3s ease-out;
+    height: 50px;
+    /* padding-bottom: 150px; */
+}
+
+.servicos .card:hover p {
+    opacity: 1;
+    transition: opacity .5s .1s ease-in;
+    padding-bottom: 100px;
+}
+
+
+.servicos .card:hover img {
+    transition: opacity .3s ease-in;
+    opacity: 1;
+}
+.servicos .card {
+    width: 300px;
+    height: 450px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    color: #fff;
+    box-shadow: 0 10px 30px 5px rgba(0, 0, 0, 0.2);
+    margin-left: 20px;
+    display: flex; /* Adicionado */
+    flex-direction: column; /* Adicionado */
+    justify-content: center; /* Adicionado */
+    align-items: center; /* Adicionado */
+}
+.servicos .card h2 b:hover{
+    opacity: 0;
+}
+.servicos .card p {
+    position: absolute;
+    opacity: 0;
+    max-width: 80%;
+    transition: opacity .3s ease-out;
+    bottom: 20px; /* Ajustado para ficar 20px do fundo */
+    left: 50%; /* Alinha ao centro horizontalmente */
+    transform: translateX(-50%); /* Centraliza horizontalmente */
+    font-size: 12px;
+    text-align: center; /* Centraliza o texto */
 }
 
 .servicos .card:hover p {
@@ -534,10 +790,6 @@ section {
     transition: opacity .5s .1s ease-in;
 }
 
-.servicos .card:hover img {
-    transition: opacity .3s ease-in;
-    opacity: 1;
-}
 
 footer {
     background-color: #292930;
@@ -545,6 +797,7 @@ footer {
     padding: 50px 20px;
     position: relative;
     overflow: hidden;
+    margin-top: 150px;
 }
 
 .footer-container {
@@ -663,5 +916,467 @@ footer {
     }
     100% {
         transform: scale(1.2);
+    }
+}
+
+
+/* Estilos gerais para telas menores */
+@media (max-width: 1200px) {
+    .header .flex .navbar a {
+        font-size: 1.6rem;
+    }
+
+    .logo img {
+        width: 50%;
+    }
+
+    .home .flex .conteudo {
+        flex: 1 1 30rem;
+    }
+
+    .home .flex .conteudo span {
+        font-size: 80px;
+    }
+
+    .home .flex .conteudo p {
+        width: 90%;
+        font-size: 18px;
+    }
+
+    .valores .box-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .sobre .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sobre .container .sobre-texto {
+        width: 80%;
+    }
+
+    .sobre .container .sobre-img img {
+        width: 100%;
+        height: auto;
+    }
+
+    .servicos .container {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .card {
+        width: 90%;
+        height: auto;
+        margin: 10px 0;
+    }
+}
+
+/* Estilos para telas ainda menores */
+@media (max-width: 768px) {
+    .header .flex .navbar a {
+        font-size: 1.4rem;
+        margin-left: 0.5rem;
+    }
+
+    .home .flex .conteudo span {
+        font-size: 60px;
+    }
+
+    .valores .box-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-coluna {
+        flex: 1 1 100%;
+    }
+
+    .social-icons a img {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Estilos para dispositivos móveis */
+@media (max-width: 480px) {
+    .header .flex .navbar a {
+        font-size: 1.2rem;
+    }
+
+    .home .flex .conteudo {
+        margin-top: 60px;
+    }
+
+    .home .flex .conteudo span {
+        font-size: 40px;
+    }
+
+    .home .flex .conteudo p {
+        font-size: 16px;
+    }
+
+    .valores .box-container {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        width: 100%;
+        height: auto;
+    }
+
+    .titulo_equipe {
+        font-size: 28px;
+    }
+
+    .texto_equipe {
+        font-size: 18px;
+    }
+
+    .cardarticle {
+        width: 100%;
+    }
+
+    .footer-bottom {
+        font-size: 0.8rem;
+    }
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap; /* Faz com que os cards "quebrem" a linha em telas menores */
+    justify-content: space-between;
+  }
+  
+  .conteudo.card {
+    flex: 1 1 300px; /* O card ocupará ao menos 300px, mas pode crescer */
+    margin: 10px;
+    padding: 16px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+  .container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Cards ocupam no mínimo 300px e se ajustam */
+    gap: 20px;
+  }
+  
+  .conteudo.card {
+    padding: 16px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+  }
+    
+  /* Estilos básicos de responsividade */
+html {
+    font-size: 62.5%;
+}
+
+@media (max-width: 1200px) {
+    .home .flex .conteudo span {
+        font-size: 90px;
+    }
+
+    .valores .box-container {
+        grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    }
+
+    .sobre .container {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Responsividade para tablets */
+@media (max-width: 992px) {
+    .home .flex {
+        flex-direction: column;
+    }
+
+    .valores .box-container {
+        grid-template-columns: 1fr;
+    }
+
+    .containerequipe {
+        transform: scale(0.9);
+    }
+
+    .titulo_equipe {
+        font-size: 3rem;
+    }
+
+    .texto_equipe {
+        font-size: 2rem;
+    }
+
+    .cardarticle {
+        width: 200px;
+        height: 280px;
+    }
+}
+
+/* Responsividade para smartphones */
+@media (max-width: 768px) {
+    .home {
+        height: 400px;
+        background-size: cover;
+    }
+
+    .home .flex .conteudo span {
+        font-size: 60px;
+    }
+
+    .home .flex .conteudo p {
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .fundoequipe {
+        height: auto; /* Permite que a altura se ajuste automaticamente */
+        padding-bottom: 2rem;
+    }
+
+    .cardarticle {
+        width: 180px;
+        height: 250px;
+    }
+
+    .titulo_equipe {
+        font-size: 2.5rem;
+    }
+
+    .texto_equipe {
+        font-size: 1.8rem;
+    }
+
+    .close-button {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Ajuste para telas muito pequenas, como smartphones pequenos */
+@media (max-width: 576px) {
+    .fundoequipe {
+        padding: 1rem;
+    }
+
+    .containercard {
+        flex-direction: column;
+        padding-block: 1rem;
+    }
+
+    .titulo_equipe {
+        font-size: 2rem;
+    }
+
+    .texto_equipe {
+        font-size: 1.5rem;
+    }
+
+    .cardarticle {
+        width: 150px;
+        height: 220px;
+    }
+
+    .carddados h2 {
+        font-size: 1.2rem;
+    }
+
+    .carddescricao1 {
+        font-size: 0.9rem;
+    }
+
+    .close-button {
+        width: 25px;
+        height: 25px;
+    }
+}
+/* Estilos para telas maiores - desktop */
+.container {
+    display: flex;
+    justify-content: space-between; /* Distribui os cards uniformemente */
+    flex-wrap: wrap; /* Permite que os cards quebrem em outra linha, se necessário */
+}
+
+.card {
+    flex: 1 1 30%; /* Card ocupará 30% do container, ajustável */
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+/* Responsividade - Ajustes para telas menores */
+@media (max-width: 1024px) {
+    .card {
+        flex: 1 1 45%; /* Aumenta o tamanho dos cards em telas médias, como tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Coloca os cards em uma coluna em telas menores */
+        align-items: center; /* Centraliza os cards */
+    }
+
+    .card {
+        flex: 1 1 100%; /* Cada card ocupa 100% da largura do container */
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        flex: 1 1 100%; /* Cards continuam ocupando 100% em telas muito pequenas */
+        margin-bottom: 15px;
+    }
+}
+.card {
+    min-height: 200px; /* Ajuste a altura mínima conforme necessário */
+     /* Adicione uma cor de fundo temporária para visualizar os cards */
+}
+img {
+    max-width: 100%; /* Garante que as imagens dentro dos cards sejam redimensionadas */
+    height: auto; /* Mantém a proporção das imagens */
+    display: block; /* Garante que as imagens não deixem espaços estranhos */
+}
+
+.conteudo-card {
+    display: block;
+    visibility: visible; /* Garanta que o conteúdo esteja visível */
+    opacity: 1; /* Evite que o conteúdo esteja escondido por opacidade */
+}
+.servicos .card h2 {
+    position: absolute;
+    top: 20px; /* Ajuste para o topo */
+    left: 30px;
+    margin: 0;
+    font-size: 18px;
+    z-index: 2;
+    text-transform: uppercase;
+    transition: top .3s ease-out; /* Transição suave */
+}
+
+.servicos .card b {
+    font-weight: bold;
+    color: #FFDC60; /* Cor de destaque */
+    display: inline-block; /* Distância do título para o conteúdo abaixo */
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap; /* Garante que os itens não saiam da linha */
+    justify-content: center; /* Centraliza os cards */
+}
+
+.servicos .card p {
+    margin: 0; /* Remove qualquer margem extra */
+    padding: 10px; /* Adiciona um espaçamento confortável ao redor do texto */
+    color: white; /* Certifique-se que o texto seja legível */
+    font-size: 1rem; /* Ajuste o tamanho da fonte conforme necessário */
+    line-height: 1.5; /* Melhorar a legibilidade */
+    position: relative; /* Para controlar o posicionamento */
+    top: 100%; /* Centralizar verticalmente */
+}
+.servicos .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+/* Certifique-se de que o botão tenha um espaçamento adequado */
+.servicos .btn {
+    display: inline-block;
+    margin-top: 10px; /* Cria espaço entre o botão e o conteúdo acima dele */
+    padding: 5px 20px; /* Ajusta o tamanho do botão */
+    font-size: 1rem;
+    background-color: #f1c40f; /* Cor do botão */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Ajuste do container em dispositivos menores */
+@media (max-width: 768px) {
+    .servicos .card {
+        flex-direction: column; /* Certifique-se de que o layout seja vertical */
+        padding: 10px;
+    }
+    
+    /* Garantir que o botão não seja comprimido */
+    .servicos .btn {
+        width: 100%; /* O botão se estende para toda a largura em telas menores */
+        text-align: center;
+        margin: 10px 0; /* Margem superior e inferior para evitar sobreposição */
+    }
+}
+
+
+
+
+
+
+
+/* Definir cor da header e navbar */
+.header {
+    background-color: #292930;
+}
+
+.header .flex .navbar a {
+    color: white;
+}
+
+.navbar {
+    background-color: #292930;
+    color: white;
+}
+
+/* Remover espaços em branco entre as seções */
+section {
+    padding: 2.5rem 0;
+    margin: 0 auto;
+}
+
+/* Manter espaçamento adequado no botão "Saiba mais" */
+.btn {
+    display: inline-block;
+    padding: 1.5rem 3rem;
+    margin-left: 15px;
+}
+
+/* Ajustar p da classe conteudo-card para responsividade */
+.servicos .card p {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    /* margin-top: 30px; */
+}
+.servicos .card p:hover {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    /* padding-bottom: 80px; */
+}
+
+@media (max-width: 1200px) {
+    .servicos .card p {
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+}
+
+@media (max-width: 768px) {
+    .servicos .card p {
+        font-size: 0.9rem;
+        line-height: 1.3;
+    }
+}
+
+@media (max-width: 480px) {
+    .servicos .card p {
+        font-size: 0.8rem;
+        line-height: 1.2;
     }
 }
