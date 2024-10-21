@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASHBOARD | RunGuard</title>
+    <link rel="stylesheet" href="css/dashstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<body onload="percentualCPU(), percentualRAM()">
+    <nav>
+        <ul>
+            <li>
+                <a href="#" class="logo">
+                    <img src="imagens/logo.png" alt="Logo RunGuard">
+                    <span class="nav-item">RUNGUARD</span>
+                </a>
+            </li>
+            <li><a href="#">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-item">Home</span>
+                </a></li>
+            <li><a href="#">
+                    <i class="fas fa-user"></i>
+                    <span class="nav-item">Perfil</span>
+                </a></li>
+            <li><a href="#">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-item">Dashboard 1</span>
+                </a></li>
+            <li><a href="#">
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="nav-item">Dashboard 2</span>
+                </a></li>
+            <li><a href="#">
+                    <i class="fas fa-chart-pie"></i>
+                    <span class="nav-item">Dashboard 3</span>
+                </a></li>
+            <li><a href="#">
+                    <i class="fas fa-chart-column"></i>
+                    <span class="nav-item">Dashboard 4</span>
+                </a></li>
+            <li><a href="#" class="sair">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-item">Sair</span>
+                </a></li>
+        </ul>
+    </nav>
+    <div class="medias">
+        <div class="media1">
+            <p>Percentual médio atual de RAM:</p><span id="percentual_RAM">Nada capturado</span>
+        </div>
+        <div class="media2 media">
+            <p>Percentual médio atual de Disco:</p><span id="percentual_CPU">Nada capturado</span>
+        </div>
+        <div class="media3 media">
+            <p>Percentual médio atual de CPU:</p><span>5%</span>
+        </div>
+    </div>
+    <div class="graficos">
+        <div class="grafico1 grafE"></div>
+        <div class="grafico2 grafD"></div>
+        <div class="grafico3 grafE"></div>
+        <div class="grafico4 grafD"></div>
+    </div>
+
+    <script>
+
+        // Percentual Médio Uso RAM
+        function percentualRAM() {
+            fetch(`/dashboard/percentualRAM/`, { cache: 'no-store' })
+                .then(response => response.json())
+                .then(data => {
+                    var percentualMedioRAM = data.map(item => item.percentual_medio_ram);
+                    console.log(data);
+                    document.getElementById('percentual_RAM').innerHTML = percentualMedioRAM;
+                })
+                .catch(error => console.error('Falha na captura de rodada', error));
+        }
+
+        // Percentual Médio Uso CPU
+        function percentualCPU() {
+            fetch(`/dashboard/percentualCPU/`, { cache: 'no-store' })
+                .then(response => response.json())
+                .then(data => {
+                    var percentualMedioCPU = data.map(item => item.percentual_medio_cpu);
+                    console.log(data);
+                    document.getElementById('percentual_CPU').innerHTML = percentualMedioCPU;
+                })
+                .catch(error => console.error('Falha na captura de rodada', error));
+        }
+
+
+        // Gráfico 1: Uso de RAM - Diário
+        var seriesGrafico1 = {
+            monthDataSeries1: {
+                prices: [30, 40, 35, 50, 49, 60, 70, 91],
+                dates: ['2024-09-01', '2024-09-02', '2024-09-03', '2024-09-04', '2024-09-05', '2024-09-06', '2024-09-07', '2024-09-08']
+            }
+        };
+
+        var optionsGrafico1 = {
+            series: [{
+                name: "Memória RAM",
+                data: seriesGrafico1.monthDataSeries1.prices
+            }],
+            chart: {
+                type: 'area',
+                height: 300,
+                width: 500,
+                zoom: {
+                    enabled: false
+                },
+                background: '#292930'
+            },
+            colors: ['#ffdc60'],
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight',
+                colors: ['#ffdc60']
+            },
+            fill: {
+                opacity: 0.3,
+                colors: ['#ffdc60']
+            },
+            title: {
+                text: 'Uso de RAM - Diário',
+                align: 'left',
+                style: {
+                    color: 'white'
+                }
+            },
+            subtitle: {
+                text: 'Todos os equipamentos',
+                align: 'left',
+                style: {
+                    color: 'white'
+                }
+            },
+            labels: seriesGrafico1.monthDataSeries1.dates,
+            xaxis: {
+                type: 'datetime',
+                labels: {
+                    style: {
+                        colors: Array(8).fill('white'),
+                        fontWeight: 400,
+                        fontSize: '12px'
+                    }
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+                axisTicks: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+            },
+            yaxis: {
+                opposite: true,
+                labels: {
+                    style: {
+                        colors: Array(6).fill('white'),
+                        fontWeight: 400,
+                        fontSize: '12px'
+                    }
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+                axisTicks: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+            },
+            legend: {
+                horizontalAlign: 'left',
+                labels: {
+                    colors: ['white'],
+                    fontSize: '12px'
+                }
+            },
+            tooltip: {
+                theme: 'dark'
+            }
+        };
+
+        var chartGrafico1 = new ApexCharts(document.querySelector(".grafico1"), optionsGrafico1);
+        chartGrafico1.render();
+
+        // Gráfico 2: Uso de Disco - Diário
+        var seriesGrafico2 = {
+            monthDataSeries1: {
+                prices: [80, 90, 60, 85, 43, 20, 75, 98],
+                dates: ['2024-09-01', '2024-09-02', '2024-09-03', '2024-09-04', '2024-09-05', '2024-09-06', '2024-09-07', '2024-09-08']
+            }
+        };
+
+        var optionsGrafico2 = {
+            series: [{
+                name: "Disco Rígido",
+                data: seriesGrafico2.monthDataSeries1.prices
+            }],
+            chart: {
+                type: 'area',
+                height: 300,
+                width: 500,
+                zoom: {
+                    enabled: false
+                },
+                background: '#292930'
+            },
+            colors: ['#ffdc60'],
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight',
+                colors: ['#ffdc60']
+            },
+            fill: {
+                opacity: 0.3,
+                colors: ['#ffdc60']
+            },
+            title: {
+                text: 'Uso do Disco - Diário',
+                align: 'left',
+                style: {
+                    color: 'white'
+                }
+            },
+            subtitle: {
+                text: 'Todos os equipamentos',
+                align: 'left',
+                style: {
+                    color: 'white'
+                }
+            },
+            labels: seriesGrafico2.monthDataSeries1.dates,
+            xaxis: {
+                type: 'datetime',
+                labels: {
+                    style: {
+                        colors: Array(8).fill('white'),
+                        fontWeight: 400,
+                        fontSize: '12px'
+                    }
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+                axisTicks: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+            },
+            yaxis: {
+                opposite: true,
+                labels: {
+                    style: {
+                        colors: Array(6).fill('white'),
+                        fontWeight: 400,
+                        fontSize: '12px'
+                    }
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+                axisTicks: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+            },
+            legend: {
+                horizontalAlign: 'left',
+                labels: {
+                    colors: ['white'],
+                    fontSize: '12px'
+                }
+            },
+            tooltip: {
+                theme: 'dark'
+            }
+        };
+
+        var chartGrafico2 = new ApexCharts(document.querySelector(".grafico2"), optionsGrafico2);
+        chartGrafico2.render();
+
+        // Gráfico 3: Uso de CPU - Diário
+        var seriesGrafico3 = {
+            monthDataSeries1: {
+                prices: [1, 5, 14, 3, 5, 60, 90, 1],
+                dates: ['2024-09-01', '2024-09-02', '2024-09-03', '2024-09-04', '2024-09-05', '2024-09-06', '2024-09-07', '2024-09-08']
+            }
+        };
+
+        var optionsGrafico3 = {
+            series: [{
+                name: "CPU",
+                data: seriesGrafico3.monthDataSeries1.prices
+            }],
+            chart: {
+                type: 'area',
+                height: 300,
+                width: 500,
+                zoom: {
+                    enabled: false
+                },
+                background: '#292930'
+            },
+            colors: ['#ffdc60'],
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight',
+                colors: ['#ffdc60']
+            },
+            fill: {
+                opacity: 0.3,
+                colors: ['#ffdc60']
+            },
+            title: {
+                text: 'Uso de CPU - Diário',
+                align: 'left',
+                style: {
+                    color: 'white'
+                }
+            },
+            subtitle: {
+                text: 'Todos os equipamentos',
+                align: 'left',
+                style: {
+                    color: 'white'
+                }
+            },
+            labels: seriesGrafico3.monthDataSeries1.dates,
+            xaxis: {
+                type: 'datetime',
+                labels: {
+                    style: {
+                        colors: Array(8).fill('white'),
+                        fontWeight: 400,
+                        fontSize: '12px'
+                    }
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+                axisTicks: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+            },
+            yaxis: {
+                opposite: true,
+                labels: {
+                    style: {
+                        colors: Array(6).fill('white'),
+                        fontWeight: 400,
+                        fontSize: '12px'
+                    }
+                },
+                axisBorder: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+                axisTicks: {
+                    show: true,
+                    color: '#FFFFFF',
+                },
+            },
+            legend: {
+                horizontalAlign: 'left',
+                offsetY: 10,
+                labels: {
+                    colors: ['white'],
+                    fontSize: '12px'
+                }
+            },
+            tooltip: {
+                theme: 'dark'
+            }
+        };
+
+        var chartGrafico3 = new ApexCharts(document.querySelector(".grafico3"), optionsGrafico3);
+        chartGrafico3.render();
+
+        // Gráfico 4: Dados do Equipamento - RadialBar
+        var optionsGrafico4 = {
+            series: [44, 55, 67],
+            chart: {
+                height: 300,
+                type: 'radialBar',
+                background: '#292930'
+            },
+            title: {
+                text: 'Dados do equipamento 1',
+                align: 'left',
+                style: {
+                    color: 'white'
+                }
+            },
+            subtitle: {
+                text: 'Memória RAM, Disco Rígido e CPU',
+                align: 'left',
+                style: {
+                    color: 'white'
+                }
+            },
+            plotOptions: {
+                radialBar: {
+                    dataLabels: {
+                        name: {
+                            fontSize: '22px',
+                            color: 'white'
+                        },
+                        value: {
+                            fontSize: '16px',
+                            color: 'white'
+                        },
+                        total: {
+                            show: true,
+                            label: 'Total',
+                            color: 'white',
+                            formatter: function (w) {
+                                return 249
+                            }
+                        }
+                    }
+                }
+            },
+            labels: ['Memória RAM', 'Disco Rígido', 'CPU'],
+            colors: ['#ffdc60', '#0066cc', '#ffa500'],
+            legend: {
+                position: 'bottom',
+                labels: {
+                    colors: ['#FFFFFF'],
+                    fontSize: '12px'
+                }
+            },
+            tooltip: {
+                theme: 'dark'
+            }
+        };
+
+        var chartGrafico4 = new ApexCharts(document.querySelector(".grafico4"), optionsGrafico4);
+        chartGrafico4.render();
+    </script>
+</body>
+
+</html>
