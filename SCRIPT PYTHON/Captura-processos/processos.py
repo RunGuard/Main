@@ -70,34 +70,25 @@ with open('tasks3.csv', 'w', newline='', encoding='utf-8') as csvfile:
                 if cpu_usage > 0.0 or mem_usage > 0.0:
                     csv_writer.writerow([columns[10], columns[1], columns[2], columns[3]])  # Nome, PID, CPU, MEM
 
-    #DEPOIS DO IMPORT
-	processo_desejado = ["RiotClientServices.exe","chrome.exe"]
+processo_desejado = ["RiotClientServices.exe","chrome.exe"]
 
+processo_encontrado = {processo: False for processo in processo_desejado}
 
-
-	#DEPOIS DO LINES
-    processo_encontrado = {processo: False for processo in processo_desejado}
-
-
-
-	for line in lines:
+for line in lines:
             # Dividir a linha em colunas e tratar os espaços em branco
             columns = line.split(maxsplit=4)  # Dividir em no máximo 5 partes: Nome, PID, Sessão, # Sessão, Uso de Memória
 
             if len(columns) == 5:
-                csv_writer.writerow(columns)
 
                 # Verificar se o nome do processo corresponde ao processo desejado
                 for processo in processo_desejado:
                     if processo.lower() in columns[0].lower():
                         processo_encontrado[processo] = True
-#LOGO APÓS
-    for processo, processo_encontrado in processo_encontrado.items():
+
+for processo, processo_encontrado in processo_encontrado.items():
             if processo_encontrado:
                 print(f"O processo '{processo}' está em execução.")
             else:
                 print(f"O processo '{processo}' não foi encontrado.")
 
-
 print("Arquivo CSV com processos relevantes gerado com sucesso!")
-
