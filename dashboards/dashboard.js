@@ -30,7 +30,7 @@ router.get("/percentualRAM", function(req, res) {
     dashboardController.percentualRAM(req,res)
 });
 
-router.get("percentualCPU/", function(req, res) {
+router.get("/percentualCPU", function(req, res) {
     dashboardController.percentualCPU(req,res)
 });
 

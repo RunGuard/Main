@@ -16,12 +16,12 @@ function listarDetalhes(id) {
 function atualizarGrafico1() {
     var instrucaoSql = `SELECT 
       equipamento.nomeEquipamento, 
-      dado.cpuPercent, 
-      dado.memoriaPercent, 
-      DATE_FORMAT(dado.dtHora, '%H:%i') as horario
-    FROM dado
-    JOIN equipamento ON dado.fkEquipamento = equipamento.idEquipamento
-    ORDER BY dado.dtHora ASC;`;
+      dados.cpuPercent, 
+      dados.memoriaPercent, 
+      DATE_FORMAT(dados.dtHora, '%H:%i') as horario
+    FROM dados
+    JOIN equipamento ON dados.fkEquipamento = equipamento.idEquipamento
+    ORDER BY dados.dtHora ASC;`;
 
     return database.executar(instrucaoSql);
 }
@@ -59,9 +59,9 @@ function percentualRAM() {
 
     var instrucaoSql = `
     SELECT 
-    AVG(dado.memoriaPercent) AS percentual_medio_ram
+    AVG(dados.memoriaPercent) AS percentual_medio_ram
     FROM 
-    dado;
+    dados;
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
@@ -70,10 +70,12 @@ function percentualRAM() {
 
 function percentualCPU() {
     var instrucaoSql = `
-    SELECT AVG(dado.cpuPercent) AS percentual_medio_cpu
+    SELECT AVG(dados.cpuPercent) AS percentual_medio_cpu
     FROM
-    dado
+    dados
     `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
 }
 
 module.exports = {
