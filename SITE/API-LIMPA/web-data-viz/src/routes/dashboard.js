@@ -11,10 +11,21 @@ router.get(`/listarDetalhes/:idEquipamentoBuscado`, function(req,res) {
     dashboardController.listarDetalhes(req,res)
 });
   
-router.get("/atualizarGrafico1", function(req, res) {
+// gráficos dashboard 1
+router.get("/atualizarGrafico1/:idEquipamentoBuscado", function(req, res) {
     dashboardController.atualizarGrafico1(req,res)
 });
 
+// gráficos dashboard 2
+router.get("/atualizarGrafico2", function(req, res) {
+    dashboardController.atualizarGrafico2(req,res)
+});
+
+router.get("/atualizarGrafico3", function(req, res) {
+    dashboardController.atualizarGrafico3(req,res)
+});
+
+// médias dashboard 2
 router.get("/percentualRAM", function(req, res) {
     dashboardController.percentualRAM(req,res)
 });

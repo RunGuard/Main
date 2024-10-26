@@ -15,9 +15,28 @@ function listarDetalhes(req, res) {
 }
 
 function atualizarGrafico1(req,res) {
-  dashboardModel.atualizarGrafico1().then((resultado) => {
+  var idEquipamentoBuscado = req.params.idEquipamentoBuscado
+
+  dashboardModel.atualizarGrafico1(idEquipamentoBuscado).then((resultado) => {
     res.status(200).json(resultado);
   });
+}
+
+function atualizarGrafico2(req,res) {
+  dashboardModel.atualizarGrafico2().then((resultado) => {
+    res.status(200).json(resultado);
+  });
+}
+
+function atualizarGrafico3(req, res) {
+  dashboardModel.atualizarGrafico3()
+      .then((resultado) => {
+          res.status(200).json(resultado);
+      })
+      .catch((erro) => {
+          console.error("Erro ao atualizar gráfico 3:", erro);
+          res.status(500).json({ erro: "Erro ao buscar dados do gráfico." });
+      });
 }
 
 function percentualRAM(req,res){
@@ -52,6 +71,8 @@ module.exports = {
   listar,
   listarDetalhes,
   atualizarGrafico1,
+  atualizarGrafico2,
+  atualizarGrafico3,
   percentualRAM,
   percentualCPU
 };

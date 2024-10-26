@@ -7,12 +7,13 @@ function listar() {
 }
 
 function listarDetalhes(id) {
-    var instrucaoSql = `SELECT * FROM equipamento JOIN dados ON fkEquipamento = idEquipamento WHERE idEquipamento = ${id} LIMIT 1`;
+    var instrucaoSql = `SELECT * FROM equipamento JOIN dados ON fkEquipamento = idEquipamento WHERE idEquipamento = ${id} ORDER BY idDado DESC LIMIT 1`;
 
     return database.executar(instrucaoSql);
 }
 
-function atualizarGrafico1() {
+// gráficos dashboard 1
+function atualizarGrafico1(id) {
     var instrucaoSql = `SELECT 
       equipamento.nomeEquipamento, 
       dados.cpuPercent, 
@@ -20,24 +21,38 @@ function atualizarGrafico1() {
       DATE_FORMAT(dados.dtHora, '%H:%i') as horario
     FROM dados
     JOIN equipamento ON dados.fkEquipamento = equipamento.idEquipamento
-    ORDER BY dados.dtHora ASC;`;
+    WHERE idEquipamento = ${id}
+    ORDER BY dados.dtHora ASC`;
 
     return database.executar(instrucaoSql);
 }
 
+// gráficos dashboard 2
 function atualizarGrafico2() {
     var instrucaoSql = `SELECT 
-      equipamento.nomeEquipamento, 
-      dados.cpuPercent, 
-      dados.memoriaPercent, 
-      DATE_FORMAT(dados.dtHora, '%H:%i') as horario
-    FROM dados
-    JOIN equipamento ON dados.fkEquipamento = equipamento.idEquipamento
-    ORDER BY dados.dtHora ASC;`;
+    DATE_FORMAT(dtHora, '%Y-%m-%d %H:00:00') AS data,
+    ROUND(AVG(memoriaUsada), 2) AS media_memoria_percent 
+FROM dados
+GROUP BY data 
+ORDER BY data ASC;`;
 
     return database.executar(instrucaoSql);
 }
 
+// gráficos dashboard 3
+function atualizarGrafico3() {
+    const instrucaoSql = `
+        SELECT 
+    DATE_FORMAT(dtHora, '%Y-%m-%d %H:00:00') AS data,
+    ROUND(AVG(cpuPercent), 2) AS media_cpu_percent
+FROM dados
+GROUP BY data
+ORDER BY data ASC;
+    `;
+    return database.executar(instrucaoSql);
+}
+
+// médias dashboard 2
 function percentualRAM() {
 
     var instrucaoSql = `
@@ -65,6 +80,8 @@ module.exports = {
     listar,
     listarDetalhes,
     atualizarGrafico1,
+    atualizarGrafico2,
+    atualizarGrafico3,
     percentualRAM,
     percentualCPU
 };
