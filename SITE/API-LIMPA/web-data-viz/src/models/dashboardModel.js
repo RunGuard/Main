@@ -12,6 +12,12 @@ function listarDetalhes(id) {
     return database.executar(instrucaoSql);
 }
 
+function maiorValor() {
+    var instrucaoSql = `SELECT max(cpuPercent) AS maximo, nomeEquipamento, DATE_FORMAT(dados.dtHora, '%H:%i') AS horario, DATE_FORMAT(dados.dtHora, '%d/%m') AS dia FROM dados JOIN equipamento ON idEquipamento = fkEquipamento GROUP BY nomeEquipamento, dtHora LIMIT 1;`
+
+    return database.executar(instrucaoSql);
+}
+
 // gráficos dashboard 1
 function atualizarGrafico1(id) {
     var instrucaoSql = `SELECT 
@@ -79,6 +85,7 @@ function percentualCPU() {
 module.exports = {
     listar,
     listarDetalhes,
+    maiorValor,
     atualizarGrafico1,
     atualizarGrafico2,
     atualizarGrafico3,

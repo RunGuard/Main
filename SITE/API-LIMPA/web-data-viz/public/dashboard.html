@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 
-<body onload="percentualCPU(), percentualRAM(), atualizarGrafico2(), atualizarGrafico3()">
+<body onload="percentualCPU(), percentualRAM(), atualizarGrafico2(), atualizarGrafico3(), maiorValor()">
     <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
 
     <div id="janelaChat" class="janela-chat">
@@ -81,7 +81,7 @@
             <p>Percentual médio atual de RAM:</p><span id="percentual_RAM">Nada capturado</span>
         </div>
         <div class="ultima-medida media">
-            <p>Última medida capturada:</p><span id="pultmedida">Nada capturado</span>
+            <p>Maior percentual  de CPU capturada:</p><span id="ultmedida">Nada capturado</span>
         </div>
         <div class="media3 media">
             <p>Percentual médio atual de CPU:</p><span id="percentual_CPU">Nada capturado</span>
@@ -95,6 +95,15 @@
 
     <script>
 
+        function maiorValor() {
+            fetch(`/dashboard/maiorValor` , { cache : 'no-store' })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    document.getElementById("ultmedida").innerHTML = data[0].maximo + "%";
+                    document.getElementById("ultmedida").innerHTML += `<br><span class="info-medida">Servidor: ${data[0].nomeEquipamento} | Dia: ${data[0].dia} | Hora: ${data[0].horario} </span>`;
+                })
+        }
         // Percentual Médio Uso RAM
         function percentualRAM() {
             fetch(`/dashboard/percentualRAM/`, { cache: 'no-store' })
@@ -103,6 +112,7 @@
                     var percentualMedioRAM = data.map(item => item.percentual_medio_ram);
                     console.log(data);
                     document.getElementById('percentual_RAM').innerHTML = percentualMedioRAM + "%";
+                    sessionStorage.RAM_MEDIA = percentualMedioRAM;
                 })
                 .catch(error => console.error('Falha na captura de rodada', error));
         }
@@ -115,6 +125,7 @@
                     var percentualMedioCPU = data.map(item => item.percentual_medio_cpu);
                     console.log(data);
                     document.getElementById('percentual_CPU').innerHTML = percentualMedioCPU + "%";
+                    sessionStorage.CPU_MEDIA = percentualMedioCPU;
                 })
                 .catch(error => console.error('Falha na captura de rodada', error));
         }
@@ -288,15 +299,17 @@
 
 
         // Gráfico 4: Dados do Equipamento - RadialBar
+        var ram = Number(sessionStorage.RAM_MEDIA);
+        var cpu = Number(sessionStorage.CPU_MEDIA);
         var optionsGrafico4 = {
-            series: [44, 55, 67],
+            series: [ram, 60],
             chart: {
                 height: 300,
                 type: 'radialBar',
                 background: '#292930'
             },
             title: {
-                text: 'Dados do equipamento 1',
+                text: 'Dados dos servidores',
                 align: 'left',
                 style: {
                     color: 'white'
@@ -325,14 +338,14 @@
                             label: 'Total',
                             color: 'white',
                             formatter: function (w) {
-                                return 249
+                                return cpu + ram;
                             }
                         }
                     }
                 }
             },
             labels: ['Memória RAM', 'CPU'],
-            colors: ['#ffdc60', '#0066cc', '#ffa500'],
+            colors: ['#ffdc60', '#0066cc'],
             legend: {
                 position: 'bottom',
                 labels: {

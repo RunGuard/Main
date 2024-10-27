@@ -10,6 +10,10 @@ router.get("/listar", function (req, res) {
 router.get(`/listarDetalhes/:idEquipamentoBuscado`, function(req,res) {
     dashboardController.listarDetalhes(req,res)
 });
+
+router.get("/maiorValor", function(req,res) {
+    dashboardController.maiorValor(req,res)
+})
   
 // gráficos dashboard 1
 router.get("/atualizarGrafico1/:idEquipamentoBuscado", function(req, res) {

@@ -22,6 +22,12 @@ function atualizarGrafico1(req,res) {
   });
 }
 
+function maiorValor(req,res) {
+  dashboardModel.maiorValor().then((resultado) => {
+    res.status(200).json(resultado);
+  })
+}
+
 function atualizarGrafico2(req,res) {
   dashboardModel.atualizarGrafico2().then((resultado) => {
     res.status(200).json(resultado);
@@ -70,6 +76,7 @@ function percentualCPU(req, res) {
 module.exports = {
   listar,
   listarDetalhes,
+  maiorValor,
   atualizarGrafico1,
   atualizarGrafico2,
   atualizarGrafico3,

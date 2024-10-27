@@ -164,4 +164,10 @@ nav:hover {
 .media:hover {
     background-color: #262836;
     transform: scale(1.1); 
-}   
+}
+
+.medias .info-medida {
+    font-size: 0.8em;
+    color: #fff;
+    font-weight: 300;
+}
