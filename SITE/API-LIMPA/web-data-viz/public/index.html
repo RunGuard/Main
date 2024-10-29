@@ -6,9 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | RunGuard</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 
 <body>
+    <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
+
+    <div id="janelaChat" class="janela-chat">
+        <div class="cabecalho-chat">
+            <div style="display: flex; align-items: center;">
+                <img style="width: 100%;" src="imagens/robo-branco.png" alt="Perfil do assistente">
+                <span style="font-size: 2em;">Guardinha</span>
+            </div>
+            <!-- add imagem de um X -->
+            <button style="background: none; border: none; color: white; cursor: pointer; font-size: 2.5em;" onclick="fecharChat()">᰽</button> 
+        </div>
+        <div id="corpoChat" class="corpo-chat">
+            <div class="mensagem assistente">
+                Olá! <br> 
+                Me chamo Guardinha e sou a assistente virtual da RunGuard. <br>
+                <b>Como posso ajudar?</b>
+            </div>
+            <div class="hora-mensagem assistente" id="horaDeAbertura"></div> <!-- add pelo id a hora -->
+        </div>
+        <div class="rodape-chat">
+            <input type="text" id="entradaUsuario" placeholder="Escreva sua mensagem..." />
+            <button onclick="gerarResposta()">⟹</button>
+        </div>
+    </div>
+
     <header class="header">
         <section class="flex">
 
@@ -121,17 +147,17 @@
         <div class="titulo">
             <span>Sobre Nós</span>
 
-            <h3><b >Conheça nossa história</b></h3>
+            <h3><b style="color: black;text-shadow: none;" >Conheça nossa história</b></h3>
         </div>
         <div class="container">
             <div class="sobre-texto">
-                <p>Nossa empresa tem como principal <b>objetivo</b> garantir o <b>funcionamento contínuo e eficiente de servidores</b>
-                    que suportam <b>grandes aplicativos de corrida</b>, como <b>Uber e 99.</b> Utilizamos soluções avançadas
-                    para <b>monitorar o desempenho dos serviços</b>, assegurando que os sistemas operem com máxima eficiência e
-                    <b>sem interrupções.</b> Além disso, fazemos o <b>monitoramento do hardware dos servidores em tempo real,</b>
-                    <b>identificando falhas e sobrecargas</b> de maneira <b>preventiva</b>. Nosso foco é <b>ajudar</b> as <b>empresas a manterem</b>
-                    suas <b>operações estáveis e seguras,</b> oferecendo <b>tecnologia robusta</b> para <b>otimizar sua infraestrutura</b> e
-                    <b>evitar problemas críticos.</b></p>
+                <p>Nossa empresa tem como principal <b style="color: black;text-shadow: none;">objetivo</b> garantir o funcionamento <b style="color: black;text-shadow: none;">contínuo</b> e <b style="color: black;text-shadow: none;">eficiente </b>de servidores
+                    que suportam <b style="color: black;text-shadow: none;">grandes aplicativos de corrida</b>, como <b style="color: black;text-shadow: none;">Uber e 99.</b> Utilizamos soluções avançadas
+                    para monitorar o<b style="color: black;text-shadow: none;"> desempenho </b>dos serviços, assegurando que os sistemas operem com máxima eficiência e
+                    <b style="color: black;text-shadow: none;">sem interrupções.</b> Além disso, fazemos o <b style="color: black;text-shadow: none;">monitoramento do hardware dos servidores em tempo real,</b>
+                    identificando <b style="color: black;text-shadow: none;"> falhas e sobrecargas</b> de maneira <b style="color: black;text-shadow: none;">preventiva</b>. Nosso foco é <b style="color: black;text-shadow: none;">ajudar</b> as empresas a manterem
+                    suas operações <b style="color: black;text-shadow: none;">estáveis e seguras,</b> oferecendo <b style="color: black;text-shadow: none;">tecnologia robusta</b> para <b style="color: black;text-shadow: none;">otimizar sua infraestrutura</b> e
+                    evitar problemas <b style="color: black;text-shadow: none;">    críticos.</b></p>
                 <a class="btn" onclick="abrir()">Conheça nossa equipe</a>
             </div>
             <div class="sobre-img">
@@ -142,15 +168,15 @@
         <section id="divEquipe" class="tres">
             <div class="fundoequipe">
                 <div class="containerequipe">
-                <a style="padding-bottom: 2%;padding-right: 5%;" class="btn close-button" onclick="fechar()"><span class="close-button">Fechar</span></a>
+                <a style="padding-bottom: 2%;padding-right: 5%;" class="btn close-button titulo" onclick="fechar()"><h3 style="padding-left: 42px;">X</h3></a>
                 <div class="titulo_equipe">
                   <h1><b>Conheça a equipe RunGuard</b></h1>
                   <div class="texto_equipe">
-                    Nossa equipe é composta por <b>seis</b> sócios <b>dedicados</b> que combinam conhecimento profundo e tecnologia de ponta
-                    para oferecer uma <b> experiência incomparável.</b> Focamos em <b>você</b> e nas suas necessidades, garantindo
-                    <b>disponibilidade contínua e eficiência operacional</b> através de soluções personalizadas e centradas no cliente.
-                    Com a Runguard, você não apenas <b>gerencia seu Servidor</b>; você os <b>potencializa</b>. Descubra como nossa <b>segurança das suas operações.</b>
-                    pode <b>elevar a performance</b> e a <b>segurança das suas operações.</b>
+                    Nossa equipe é composta por seis sócios <b>DEDICADOS</b> que combinam conhecimento profundo e tecnologia de ponta
+                    para oferecer uma <b> EXPERIÊNCIA INCOMPARÁVEL.</b> Focamos em <b>VOCÊ</b> e nas suas necessidades, garantindo
+                    <b>DISPONIBILIDADE </b>contínua e <b>EFICIÊNCIA OPERACIONAL</b> através de soluções personalizadas e centradas no cliente.
+                    Com a Runguard, você não apenas <b>GERENCIA </b>seu servidor; você os <b>POTENCIALIZA</b>. Descubra como nossa <b>SEGURANÇA DAS SUAS OPERAÇÕES.</b>
+                    pode <b>ELEVAR </b>a <b>PERFORMANCE </b>e a <b>SEGURANÇA </b>das suas operações.
                   </div>
               </div>
               </article>
@@ -239,7 +265,7 @@
     <section class="servicos" id="servicos">
         <div class="titulo">
             <span>Serviços</span>
-            <h3>O que te oferecemos?</h3>
+            <h3 style="color: black;text-shadow: none;">O que te oferecemos?</h3>
         </div>
         <div class="container">
             <div class="card">
@@ -248,13 +274,14 @@
                     <h2>
 
                         <b>Confiabilidade</b>
+                        <p>
+                            Oferecemos uma <b>infraestrutura estável</b>, com <b>alta disponibilidade e redundância</b>, para garantir que
+                            seus serviços e <b>sistemas permaneçam operacionais</b>, mesmo em <b>momentos críticos</b>, oferecendo suporte
+                            e <b>assistência contínuos</b>.
+    
+                        </p>
                     </h2>
-                    <p>
-                        Oferecemos uma <b>infraestrutura estável</b>, com <b>alta disponibilidade e redundância</b>, para garantir que
-                        seus serviços e <b>sistemas permaneçam operacionais</b>, mesmo em <b>momentos críticos</b>, oferecendo suporte
-                        e <b>assistência contínuos</b>.
-
-                    </p>
+                    
                 </div>
             </div>
 
@@ -264,12 +291,13 @@
                     <h2>
 
                         <b>Monitoramento</b>
+                        <p>
+                            Realizamos o <b>monitoramento completo</b> do hardware dos seus servidores e <b>sistemas 24/7</b>,
+                            <b>identificando possíveis falhas</b> e <b>quedas de desempenho em tempo real</b>, permitindo intervenções
+                           <b> rápidas e eficazes</b> para <b>minimizar qualquer impacto.</b>
+                        </p>
                     </h2>
-                    <p>
-                        Realizamos o <b>monitoramento completo</b> do hardware dos seus servidores e <b>sistemas 24/7</b>,
-                        <b>identificando possíveis falhas</b> e <b>quedas de desempenho em tempo real</b>, permitindo intervenções
-                       <b> rápidas e eficazes</b> para <b>minimizar qualquer impacto.</b>
-                    </p>
+                    
                 </div>
             </div>
 
@@ -279,12 +307,13 @@
                     <h2>
 
                         <b>Segurança</b>
+                        <p>
+                            Garantimos uma <b>infraestrutura robusta e segura</b>, com <b>proteção contra ameaças cibernéticas</b> e
+                            <b>criptografia</b>, assegurando que seus dados e <b>operações estejam sempre resguardados contra riscos</b>.
+    
+                        </p>
                     </h2>
-                    <p>
-                        Garantimos uma <b>infraestrutura robusta e segura</b>, com <b>proteção contra ameaças cibernéticas</b> e
-                        <b>criptografia</b>, assegurando que seus dados e <b>operações estejam sempre resguardados contra riscos</b>.
-
-                    </p>
+                    
                 </div>
             </div>
         </div>
@@ -341,5 +370,76 @@
     }
     function fechar() {
         divEquipe.style.display = "none";
+    }
+
+    var conversa = []
+
+    function abrirChat() {
+        document.getElementById("janelaChat").style.display = "flex";
+    }
+
+    function fecharChat() {
+        document.getElementById("janelaChat").style.display = "none";
+    }
+
+    function obterHoraAtual() {
+        const options = {
+            timeZone: 'America/Sao_Paulo',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+        const agora = new Date();
+        return agora.toLocaleTimeString('pt-BR', options);
+    }
+        
+    async function gerarResposta() {
+      const pergunta = document.getElementById('entradaUsuario').value;
+
+      var entrada = document.getElementById("entradaUsuario");
+      var mensagem = entrada.value.trim();
+
+      const response = await fetch('/perguntar', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ pergunta })
+        });
+
+      const data = await response.json();
+
+      conversa.push(mensagem)
+      conversa.push(data.resultado)
+
+        if (mensagem !== "") {
+            var mensagemUsuario = document.createElement("div");
+            mensagemUsuario.classList.add("mensagem", "usuario");
+            mensagemUsuario.innerText = mensagem;
+            document.getElementById("corpoChat").appendChild(mensagemUsuario);
+
+            var horaUsuario = document.createElement("div");
+            horaUsuario.classList.add("hora-mensagem");
+            horaUsuario.innerText = obterHoraAtual();
+            document.getElementById("corpoChat").appendChild(horaUsuario);
+
+            entrada.value = "";
+
+            setTimeout(function() {
+                var mensagemAssistente = document.createElement("div");
+                mensagemAssistente.classList.add("mensagem", "assistente");
+                mensagemAssistente.innerText = data.resultado;
+                document.getElementById("corpoChat").appendChild(mensagemAssistente);
+
+                var horaAssistente = document.createElement("div");
+                horaAssistente.classList.add("hora-mensagem", "assistente");
+                horaAssistente.innerText = obterHoraAtual();
+                document.getElementById("corpoChat").appendChild(horaAssistente);
+
+                document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+            }, 1000);
+
+            document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+        }
     }
 </script>

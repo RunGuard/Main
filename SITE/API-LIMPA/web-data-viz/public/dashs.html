@@ -2,166 +2,565 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https:fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/style_dash.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <title>DASHBOARD | Runguard</title>
 </head>
 <body onload="listarMaquina()">
 
-    <div class="header">
-        <span><span style="color: #f3b12c;">Olá</span>, <b id="usuario_nome">Usuário</b>! <br> Logado como: <br> <b id="usuario_cargo" style="color: #f3b12c;">Cargo</b></span>
-        <a href="index.html"><img class="logo" src="imagens/logo.png" alt=""></a>
-        <a href="dashs.html" class="dash-icon"><img src="imagens/painel-icon.png" alt=""></a>
-        <a href="index.html"><img src="imagens/casa-icon.png" alt=""></a>
-        <a href="loginAtual.html"><img src="imagens/saida-icon.png" alt=""></a>
+    <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
+
+    <div id="janelaChat" class="janela-chat">
+        <div class="cabecalho-chat">
+            <div style="display: flex; align-items: center;">
+                <img style="width: 100%;" src="imagens/robo-branco.png" alt="Perfil do assistente">
+                <span style="font-size: 1.5em;">Guardinha</span>
+            </div>
+            <!-- add imagem de um X -->
+            <button style="background: none; border: none; color: white; cursor: pointer; font-size: 2em;" onclick="fecharChat()">᰽</button> 
+        </div>
+        <div id="corpoChat" class="corpo-chat">
+            <div class="mensagem assistente">
+                Olá! <br> 
+                Me chamo Guardinha e sou a assistente virtual da RunGuard. <br>
+                <b>Como posso ajudar?</b>
+            </div>
+            <div class="hora-mensagem assistente" id="horaDeAbertura"></div> <!-- add pelo id a hora -->
+        </div>
+        <div class="rodape-chat">
+            <input type="text" id="entradaUsuario" placeholder="Escreva sua mensagem..." />
+            <button onclick="gerarResposta()">⟹</button>
+        </div>
     </div>
 
-    <div class="content">
-        <div class="titulo">
-            <h1>RunGuard</h1>
-        </div>
+    <div class="fantasma">
+        teste
+    </div>
 
+    <nav>
+        <ul>
+            <li>
+                <a href="index.html" class="logo">
+                    <img src="imagens/logo.png" alt="">
+                    <span class="nav-item">RUNGUARD</span>
+                </a>
+            </li>
+            <li><a href="index.html">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-item">Home</span>
+                </a></li>
+            <li><a href="#">
+                    <i class="fas fa-user"></i>
+                    <span class="nav-item">Perfil</span>
+                </a></li>
+            <li><a href="dashs.html">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-item">Dashboard 1</span>
+                </a></li>
+            <li><a href="dashboard.html">
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="nav-item">Dashboard 2</span>
+                </a></li>
+            <li><a href="#">
+                    <i class="fas fa-chart-pie"></i>
+                    <span class="nav-item">Dashboard 3</span>
+                </a></li>
+            <li><a href="#">
+                    <i class="fas fa-chart-column"></i>
+                    <span class="nav-item">Dashboard 4</span>
+                </a></li>
+            <li> <a href="insights-run-guard.pdf" download>
+                    <i class="fas fa-user"></i> 
+                    <span class="nav-item">Baixe seus relatórios!</span>
+            </a></li>
+            <li><a href="#" class="sair">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-item">Sair</span>
+                </a></li>
+        </ul>
+    </nav>
+    <div class="content">
         <div class="container-select">
-            <select onchange="buscar()" id="select_equipamento">
-                <option selected disabled>Selecione a máquina desejada</option>
+            <select onchange="buscar(), buscarDadosGrafico()" id="select_equipamento">
+                <option selected disabled>Selecione o servidor a monitorar</option>
             </select>
         </div>
-
         <div class="container-maquina">
             <img src="imagens/computador-icon.png" alt="">
-            <!-- cortar a parte de baixo da imagem  -->
             <div class="container-info">
                 <div class="info">
-                    <b>Equipamento</b>
-                    <span id="nome_maquina">Selecione um equipamento</span>
+                    <b>Servidor</b>
+                    <span id="nome_maquina">Selecione um servidor</span>
                 </div>
                 <div class="info">
-                    <b>Porcentagem de cpu</b>
-                    <span id="cpu_maquina">Selecione um equipamento</span>
+                    <b>Porcentagem de CPU</b>
+                    <span id="cpu_maquina">Selecione um servidor</span>
                 </div>
                 <div class="info">
-                    <b>Porcentagem de ram</b>
-                    <span id="ram_maquina">Selecione um equipamento</span>
+                    <b>Porcentagem de RAM</b>
+                    <span id="ram_maquina">Selecione um servidor</span>
                 </div>
             </div>
         </div>
-
+        <div class="titulo-geral">
+            <span>Visão geral</span>
+        </div>
         <div class="visao-geral">
-            <div class="titulo-geral">
-                <span>Visão geral</span>
+            <div id="grafico1" class="grafico">
+                <h3 style="color: #fff; text-align: center;">Selecione um servidor para visualizar os gráficos</h3>
             </div>
+            <div class="grafico2"></div>
         </div>
     </div>
-
     <div class="alerta">
         <div class="titulo-alerta">
             <span>Alertas</span>
         </div>
         <div id="lista_alerta" class="lista-alerta">
-            
         </div>
     </div>
-    
-</body>
-</html>
+    <script>
+        let listaMaquinasCadastradas = [];
 
-<script>
-listaMaquinasCadastradas = [];
-document.getElementById("usuario_nome").innerHTML = sessionStorage.NOME_USUARIO
-document.getElementById("usuario_cargo").innerHTML = sessionStorage.CARGO_USUARIO
-
-    function listarMaquina() {
-		fetch("/dashboard/listar", {
-			method: "GET",
-		})
-			.then(function (resposta) {
-				resposta.json().then((maquinas) => {
-                    console.log(maquinas)
-                    for (equipamento in maquinas) {
-                        if(listaMaquinasCadastradas.indexOf(maquinas[equipamento].nomeEquipamento) < 0){
-                            listaMaquinasCadastradas.push(maquinas[equipamento].nomeEquipamento)
-                            select_equipamento.innerHTML += `<option value='${maquinas[equipamento].idEquipamento}'>${maquinas[equipamento].nomeEquipamento}</option>`
-                        
-                            if(maquinas[equipamento].cpuPercent > 80 || maquinas[equipamento].memoriaPercent > 80) {
-                                lista_alerta.innerHTML += `
-                                <div class="maquina-alerta">
-                                <img src="imagens/computador-icon.png" alt="">
-                                <div class="info">
-                                    <b>Equipamento</b>
-                                <span id="nome_maquina_alerta">${maquinas[equipamento].nomeEquipamento}</span>
-                                <button onclick="exibir(${maquinas[equipamento].idEquipamento})">Saiba mais</button>
-                                </div>
-                                </div>
-                                <div id="${maquinas[equipamento].idEquipamento}" class="mensagem-erro">
-                                    <div id="mensagem_erro_${maquinas[equipamento].idEquipamento}">
+        function configurarMensagem(div, mensagem) {
+            const local_mensagem = document.getElementById(div);
+            local_mensagem.innerHTML += mensagem;
+        }
+        // document.getElementById("usuario_nome").innerHTML = sessionStorage.NOME_USUARIO
+        // document.getElementById("usuario_cargo").innerHTML = sessionStorage.CARGO_USUARIO
+        function listarMaquina() {
+            fetch("/dashboard/listar", {
+                method: "GET",
+            })
+                .then(function (resposta) {
+                    if (!resposta.ok) {
+                        throw new Error('Erro na requisição');
+                    }
+                    return resposta.json();
+                })
+                .then((maquinas) => {
+                    for (let equipamento of maquinas) {
+                        console.log(equipamento.nomeEquipamento)
+                        console.log(equipamento.cpuPercent);
+                        if (!listaMaquinasCadastradas.includes(equipamento.nomeEquipamento)) {
+                            listaMaquinasCadastradas.push(equipamento.nomeEquipamento);
+                            document.getElementById("select_equipamento").innerHTML += `<option value='${equipamento.idEquipamento}'>${equipamento.nomeEquipamento}</option>`;
+                            if (equipamento.cpuPercent >= 80 || equipamento.memoriaPercent >= 80) {
+                                document.getElementById("lista_alerta").innerHTML += `
+                                    <div class="maquina-alerta">
+                                        <img src="imagens/computador-icon.png" alt="">
+                                        <div class="info">
+                                            <b>Servidor</b>
+                                            <span id="nome_maquina_alerta">${equipamento.nomeEquipamento}</span>
+                                            <button onclick="exibir(${equipamento.idEquipamento})">Saiba mais ⤓</button>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div id="${equipamento.idEquipamento}" class="mensagem-erro" >
+                                        <div id="mensagem_erro_${equipamento.idEquipamento}" class="mensagem">
+                                        </div>
+                                    </div>
                                 `;
-                                if(maquinas[equipamento].cpuPercent >= 80) {
-                                    idDiv = `mensagem_erro_${maquinas[equipamento].idEquipamento}`
-                                    
-                                    mensagem = `<button onclick="fechar(${maquinas[equipamento].idEquipamento})">᰽</button>
-                                    <span>Porcentagem atual de CPU está acima do recomendado</span>`
-
-                                    configurarMensagem(idDiv, mensagem)
+                                if (equipamento.cpuPercent >= 80) {
+                                    const idDiv = `mensagem_erro_${equipamento.idEquipamento}`;
+                                    const mensagem = `<span>Porcentagem atual de CPU está acima do recomendado</span>
+                                        <button onclick="fechar(${equipamento.idEquipamento})">Fechar</button>`;
+                                    configurarMensagem(idDiv, mensagem);
                                 }
-                                if(maquinas[equipamento].memoriaPercent >= 80) {
-                                    idDiv = `mensagem_erro_${maquinas[equipamento].idEquipamento}`
-                                    
-                                    mensagem = `<button onclick="fechar(${maquinas[equipamento].idEquipamento})">᰽</button>
-                                    <span>Porcentagem atual de RAM está acima do recomendado</span>`
-
-                                    configurarMensagem(idDiv, mensagem)
+                                if (equipamento.memoriaPercent >= 80) {
+                                    const idDiv = `mensagem_erro_${equipamento.idEquipamento}`;
+                                    const mensagem = `<span>Porcentagem atual de RAM está acima do recomendado</span>
+                                        <button onclick="fechar(${equipamento.idEquipamento})">Fechar</button>`;
+                                    configurarMensagem(idDiv, mensagem);
                                 }
                             }
-                    }
                         }
-
-				});
-			})
-			.catch(function (resposta) {
-				console.log(`#ERRO: ${resposta}`);
-			});
-	}
-
-    function configurarMensagem(div, mensagem) {
-        local_mensagem = document.getElementById(div)
-        local_mensagem.innerHTML += `${mensagem}`
-    }
-
-    function exibir(id) {
-        mensagem_erro = document.getElementById(id)
-        mensagem_erro.style.display = "block";
-    }
-
-    function fechar(id) {
-        mensagem_erro = document.getElementById(id)
-        mensagem_erro.style.display = "none";
-    }
-
-    function buscar() {
-        var idEquipamentoBuscado = select_equipamento.value;
-
-        fetch(`/dashboard/listarDetalhes/${idEquipamentoBuscado}`, {
-			method: "GET",
-		})
-			.then(function (resposta) {
-				resposta.json().then((maquinas) => {
-                    console.log(maquinas)
-                    if(maquinas.length < 1) {
-                        nome_maquina.innerHTML = "Sem dados";
-                        cpu_maquina.innerHTML = "Equipamento sem dados";
-                        ram_maquina.innerHTML = "Equipamento sem dados";
-                    } else {
-                        nome_maquina.innerHTML = `${maquinas[0].nomeEquipamento}`;
-                        cpu_maquina.innerHTML = `${maquinas[0].cpuPercent}%`;
-                        ram_maquina.innerHTML = `${maquinas[0].memoriaPercent}%`;
                     }
-				});
-			})
-			.catch(function (resposta) {
-				console.log(`#ERRO: ${resposta}`);
-			});
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+        }
+        function exibir(id) {
+            const mensagem_erro = document.getElementById(id);
+            mensagem_erro.style.display = "flex";
+        }
+        function fechar(id) {
+            const mensagem_erro = document.getElementById(id);
+            mensagem_erro.style.display = "none";
+        }
+        function buscar() {
+            const idEquipamentoBuscado = document.getElementById("select_equipamento").value;
+            fetch(`/dashboard/listarDetalhes/${idEquipamentoBuscado}`, {
+                method: "GET",
+            })
+                .then(function (resposta) {
+                    if (!resposta.ok) {
+                        throw new Error('Erro na requisição');
+                    }
+                    return resposta.json();
+                })
+                .then((maquinas) => {
+                    console.log(maquinas);
+                    if (maquinas.length < 1) {
+                        document.getElementById("nome_maquina").innerHTML = "Sem dados";
+                        document.getElementById("cpu_maquina").innerHTML = "Equipamento sem dados";
+                        document.getElementById("ram_maquina").innerHTML = "Equipamento sem dados";
+                    } else {
+                        document.getElementById("nome_maquina").innerHTML = `${maquinas[0].nomeEquipamento}`;
+                        document.getElementById("cpu_maquina").innerHTML = `${maquinas[0].cpuPercent}%`;
+                        document.getElementById("ram_maquina").innerHTML = `${maquinas[0].memoriaPercent}%`;
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+        }
+        // Gráfico Linha (.grafico)
+        function buscarDadosGrafico() {
+            const idEquipamentoBuscado = document.getElementById("select_equipamento").value;
+            if(idEquipamentoBuscado == 0) {
+            } else {
+            
+            fetch(`/dashboard/atualizarGrafico1/${idEquipamentoBuscado}`, { cache: 'no-store' })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro na requisição');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    const categorias = data.map(item => item.horario);
+                    const cpuData = data.map(item => item.cpuPercent);
+                    const ramData = data.map(item => item.memoriaPercent);
+                    var options = {
+                        series: [
+                            {
+                                name: " Porcentagem CPU",
+                                data: cpuData
+                            },
+                            {
+                                name: "Porcentagem RAM",
+                                data: ramData
+                            }
+                        ],
+                        chart: {
+                            height: 350,
+                            type: 'line',
+                            dropShadow: {
+                                enabled: true,
+                                color: '#000',
+                                top: 18,
+                                left: 7,
+                                blur: 10,
+                                opacity: 0.2
+                            },
+                            zoom: {
+                                enabled: false
+                            },
+                            toolbar: {
+                                show: false
+                            }
+                        },
+                        colors: ['#61540c', '#0066cc'],
+                        dataLabels: {
+                            enabled: true,
+                        },
+                        stroke: {
+                            curve: 'smooth',
+                            width: 2
+                        },
+                        title: {
+                            text: 'Porcentagens Capturadas a cada 5 Minutos',
+                            align: 'left',
+                            style: {
+                                color: '#FFFFFF'
+                            }
+                        },
+                        grid: {
+                            borderColor: '#e7e7e7',
+                        },
+                        markers: {
+                            size: 4
+                        },
+                        xaxis: {
+                            categories: categorias,
+                            labels: {
+                                style: {
+                                    colors: Array(categorias.length).fill('#FFFFFF'),
+                                    fontWeight: 400
+                                }
+                            }
+                        },
+                        yaxis: {
+                            min: 0,
+                            max: 100,
+                            labels: {
+                                style: {
+                                    colors: Array(6).fill('#FFFFFF'),
+                                    fontWeight: 400
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'top',
+                            horizontalAlign: 'right',
+                            floating: true,
+                            offsetY: -15,
+                            offsetX: -5,
+                            labels: {
+                                colors: ['#FFFFFF', '#FFFFFF']
+                            }
+                        },
+                        tooltip: {
+                            theme: 'dark'
+                        }
+                    };
+                    document.getElementById("grafico1").innerHTML = "";
+                    var chart = new ApexCharts(document.querySelector("#grafico1"), options);
+                    chart.render();
+                    
+                })
+                .catch(error => console.error('Falha na captura de dados do gráfico', error));
+        }
+        setInterval(function () {
+            buscarDadosGrafico();
+        }, 300000);
     }
-</script>
+        // gráfico 2
+        var options = {
+            series: [
+                {
+                    name: 'Capturado',
+                    data: [
+                        {
+                            x: '2011',
+                            y: 1292,
+                            goals: [
+                                {
+                                    name: 'Previsto',
+                                    value: 1400,
+                                    strokeHeight: 5,
+                                    strokeColor: '#0066cc'
+                                }
+                            ]
+                        },
+                        {
+                            x: '2012',
+                            y: 4432,
+                            goals: [
+                                {
+                                    name: 'Previsto',
+                                    value: 5400,
+                                    strokeHeight: 5,
+                                    strokeColor: '#0066cc'
+                                }
+                            ]
+                        },
+                        {
+                            x: '2013',
+                            y: 5423,
+                            goals: [
+                                {
+                                    name: 'Previsto',
+                                    value: 5200,
+                                    strokeHeight: 5,
+                                    strokeColor: '#0066cc'
+                                }
+                            ]
+                        },
+                        {
+                            x: '2014',
+                            y: 6653,
+                            goals: [
+                                {
+                                    name: 'Previsto',
+                                    value: 6500,
+                                    strokeHeight: 5,
+                                    strokeColor: '#0066cc'
+                                }
+                            ]
+                        },
+                        {
+                            x: '2015',
+                            y: 8133,
+                            goals: [
+                                {
+                                    name: 'Previsto',
+                                    value: 6600,
+                                    strokeHeight: 5,
+                                    strokeColor: '#0066cc'
+                                }
+                            ]
+                        },
+                        {
+                            x: '2016',
+                            y: 7132,
+                            goals: [
+                                {
+                                    name: 'Previsto',
+                                    value: 7500,
+                                    strokeHeight: 5,
+                                    strokeColor: '#0066cc'
+                                }
+                            ]
+                        },
+                        {
+                            x: '2017',
+                            y: 7332,
+                            goals: [
+                                {
+                                    name: 'Previsto',
+                                    value: 8700,
+                                    strokeHeight: 5,
+                                    strokeColor: '#0066cc'
+                                }
+                            ]
+                        },
+                        {
+                            x: '2018',
+                            y: 6553,
+                            goals: [
+                                {
+                                    name: 'Previsto',
+                                    value: 7300,
+                                    strokeHeight: 5,
+                                    strokeColor: '#0066cc'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            chart: {
+                height: 350,
+                type: 'bar'
+            },
+            title: {
+                text: 'Comparação CPU - Dados Previstos',
+                style: {
+                    color: 'white',
+                }
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '60%'
+                }
+            },
+            colors: ['#ffdc60'],
+            dataLabels: {
+                enabled: false
+            },
+            legend: {
+                show: true,
+                showForSingleSeries: true,
+                customLegendItems: ['Capturados', 'Previsto'],
+                markers: {
+                    fillColors: ['#ffdc60', '#0066cc']
+                },
+                labels: {
+                    colors: Array(2).fill('white'),
+                    fontSize: '12px',
+                }
+            },
+            labels: {
+                colors: ['white'],
+                fontSize: '12px',
+            },
+            xaxis: {
+                labels: {
+                    style: {
+                        colors: Array(8).fill('white'),
+                        fontSize: '12px'
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: ['white'],
+                        fontSize: '12px'
+                    }
+                }
+            }
+        };
+        var chart = new ApexCharts(document.querySelector(".grafico2"), options);
+        chart.render();
+
+        var conversa = []
+
+    function abrirChat() {
+        document.getElementById("janelaChat").style.display = "flex";
+    }
+
+    function fecharChat() {
+        document.getElementById("janelaChat").style.display = "none";
+    }
+
+    function obterHoraAtual() {
+        const options = {
+            timeZone: 'America/Sao_Paulo',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+        const agora = new Date();
+        return agora.toLocaleTimeString('pt-BR', options);
+    }
+        
+    async function gerarResposta() {
+      const pergunta = document.getElementById('entradaUsuario').value;
+
+      var entrada = document.getElementById("entradaUsuario");
+      var mensagem = entrada.value.trim();
+
+      const response = await fetch('/perguntar', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ pergunta })
+        });
+
+      const data = await response.json();
+
+      conversa.push(mensagem)
+      conversa.push(data.resultado)
+
+        if (mensagem !== "") {
+            var mensagemUsuario = document.createElement("div");
+            mensagemUsuario.classList.add("mensagem", "usuario");
+            mensagemUsuario.innerText = mensagem;
+            document.getElementById("corpoChat").appendChild(mensagemUsuario);
+
+            var horaUsuario = document.createElement("div");
+            horaUsuario.classList.add("hora-mensagem");
+            horaUsuario.innerText = obterHoraAtual();
+            document.getElementById("corpoChat").appendChild(horaUsuario);
+
+            entrada.value = "";
+
+            setTimeout(function() {
+                var mensagemAssistente = document.createElement("div");
+                mensagemAssistente.classList.add("mensagem", "assistente");
+                mensagemAssistente.innerText = data.resultado;
+                document.getElementById("corpoChat").appendChild(mensagemAssistente);
+
+                var horaAssistente = document.createElement("div");
+                horaAssistente.classList.add("hora-mensagem", "assistente");
+                horaAssistente.innerText = obterHoraAtual();
+                document.getElementById("corpoChat").appendChild(horaAssistente);
+
+                document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+            }, 1000);
+
+            document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+        }
+    }
+    </script>
+</body>
+</html>
