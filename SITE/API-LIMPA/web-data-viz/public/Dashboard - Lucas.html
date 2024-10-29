@@ -50,11 +50,7 @@
                     <i class="fas fa-home"></i>
                     <span class="nav-item">Home</span>
                 </a></li>
-            <li><a href="#">
-                    <i class="fas fa-user"></i>
-                    <span class="nav-item">Perfil</span>
-                </a></li>
-                <li><a href="Dashboard - Ale.html">
+            <li><a href="Dashboard - Ale.html">
                     <i class="fas fa-chart-line"></i>
                     <span class="nav-item">Dashboard 1</span>
                 </a></li>
@@ -71,15 +67,15 @@
                     <span class="nav-item">Dashboard 4</span>
                 </a></li>
             <li><a href="Dashboard - Ilys.html">
-                    <i class="fas fa-chart-line"></i>
+                    <i class="fas fa-chart-simple"></i>
                     <span class="nav-item">Dashboard 5</span>
                 </a></li>
             <li><a href="Dashboard - Lucas.html">
-                    <i class="fas fa-chart-pie"></i>
+                    <i class="fas fa-chart-area"></i>
                     <span class="nav-item">Dashboard 6</span>
                 </a></li>
             <li> <a href="insights-run-guard.pdf" download>
-                    <i class="fas fa-user"></i> 
+                    <i class="fas fa-file-pdf"></i> 
                     <span class="nav-item">Baixe seus relatórios!</span>
             </a></li>
             <li><a href="#" class="sair">
@@ -90,3 +86,73 @@
     </nav>
 </html>
 </body>
+<script>
+    function abrirChat() {
+        document.getElementById("janelaChat").style.display = "flex";
+    }
+
+    function fecharChat() {
+        document.getElementById("janelaChat").style.display = "none";
+    }
+
+    function obterHoraAtual() {
+        const options = {
+            timeZone: 'America/Sao_Paulo',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+        const agora = new Date();
+        return agora.toLocaleTimeString('pt-BR', options);
+    }
+        
+    async function gerarResposta() {
+      const pergunta = document.getElementById('entradaUsuario').value;
+
+      var entrada = document.getElementById("entradaUsuario");
+      var mensagem = entrada.value.trim();
+
+      const response = await fetch('/perguntar', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ pergunta })
+        });
+
+      const data = await response.json();
+
+      conversa.push(mensagem)
+      conversa.push(data.resultado)
+
+        if (mensagem !== "") {
+            var mensagemUsuario = document.createElement("div");
+            mensagemUsuario.classList.add("mensagem", "usuario");
+            mensagemUsuario.innerText = mensagem;
+            document.getElementById("corpoChat").appendChild(mensagemUsuario);
+
+            var horaUsuario = document.createElement("div");
+            horaUsuario.classList.add("hora-mensagem");
+            horaUsuario.innerText = obterHoraAtual();
+            document.getElementById("corpoChat").appendChild(horaUsuario);
+
+            entrada.value = "";
+
+            setTimeout(function() {
+                var mensagemAssistente = document.createElement("div");
+                mensagemAssistente.classList.add("mensagem", "assistente");
+                mensagemAssistente.innerText = data.resultado;
+                document.getElementById("corpoChat").appendChild(mensagemAssistente);
+
+                var horaAssistente = document.createElement("div");
+                horaAssistente.classList.add("hora-mensagem", "assistente");
+                horaAssistente.innerText = obterHoraAtual();
+                document.getElementById("corpoChat").appendChild(horaAssistente);
+
+                document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+            }, 1000);
+
+            document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+        }
+    }
+</script>

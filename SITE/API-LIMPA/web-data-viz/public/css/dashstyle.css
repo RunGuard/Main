@@ -10,8 +10,16 @@
     font-family: "Poppins", sans-serif;
 }
 
+.fantasma {
+    width: 90px;
+    height: 110vh;
+}
+
 body {
     background-color: #292930eb;
+    display: flex;
+    flex-direction: row;
+    overflow-y: hidden;
 }
 
 nav {
@@ -82,7 +90,7 @@ nav:hover {
 
 .sair {
     position: absolute;
-    bottom: 0;
+    bottom: 100;
 }
 
 .graficos {
@@ -130,28 +138,22 @@ nav:hover {
 .medias {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: flex-start;
-    padding: 5px;
-}
-
-.media1 {
-    background-color: #292930;
-    border-radius: 10px;
-    margin-left: 350px;
-    color: white;
-    padding: 10px;
+    justify-content: space-evenly;
+    width: 100%;
+    gap: 2%;
 }
 
 .media {
     background-color: #292930;
-    border-radius: 10px;
+    width: 17vw;
+    border-radius: 3px;
+    height: 18vh;
     color: white;
-    padding: 10px;
-}
+    padding: 7px;
+    border: 2px solid #ffff;
+}   
 
-.medias span {
+.media span {
     color: #ffdc60;
     font-weight: 700;
 }
