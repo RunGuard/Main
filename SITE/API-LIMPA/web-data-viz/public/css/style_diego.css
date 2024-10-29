@@ -1,0 +1,91 @@
+.d-flex {
+    display: flex;
+}
+
+.fd-row {
+    flex-direction: row;
+}
+
+.fd-column {
+    flex-direction: column;
+}
+
+.jc-space-around {
+    justify-content: space-around;
+}
+
+.jc-space-between {
+    justify-content: space-between  ;
+}
+
+.pad {
+    padding: 1.5%;
+}
+
+.font-media {
+    font-size: 1.3em;
+}
+
+.content {
+    width: 100%;
+    height: 100vh;
+}
+
+.content2 {
+    width: 100%;
+    gap: 1%;
+}
+
+.media span {
+    font-weight: 400;
+}
+
+.media p {
+    text-align: center;
+    font-weight: 400;
+}
+
+.mais-alerta-filtro .media {
+    width: 18vw;
+}
+
+.alerta-info {
+    margin: 5%;
+    font-size: 2em !important;
+}
+
+.ranking {
+    background-color: #292930;
+    width: 30vw;
+    border-radius: 3px;
+    height: 45vh;
+    color: white;
+    padding: 7px;
+    border: 2px solid #ffff;
+    justify-content: center;
+    align-items: center;
+}
+
+.ranking table{
+    text-align: center;
+    width: 100%;
+    height: 92%;
+    border-collapse: collapse;
+    padding: 0;
+}
+
+.filtro {
+    text-align: center;
+    color: #ffff;
+    align-items: center;
+}
+
+.filtro input {
+    width: 75%;
+}
+
+td, th {
+    border: 1px solid rgb(190,190,190);
+    margin: 0;
+    padding: 1px;
+}

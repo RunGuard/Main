@@ -7,6 +7,7 @@
     <title>DASHBOARD-Diego | RunGuard</title>
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/dashstyle.css">
+    <link rel="stylesheet" href="css/style_diego.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
@@ -50,10 +51,6 @@
                     <i class="fas fa-home"></i>
                     <span class="nav-item">Home</span>
                 </a></li>
-            <li><a href="#">
-                    <i class="fas fa-user"></i>
-                    <span class="nav-item">Perfil</span>
-                </a></li>
             <li><a href="Dashboard - Ale.html">
                     <i class="fas fa-chart-line"></i>
                     <span class="nav-item">Dashboard 1</span>
@@ -71,15 +68,15 @@
                     <span class="nav-item">Dashboard 4</span>
                 </a></li>
             <li><a href="Dashboard - Ilys.html">
-                    <i class="fas fa-chart-line"></i>
+                    <i class="fas fa-chart-simple"></i>
                     <span class="nav-item">Dashboard 5</span>
                 </a></li>
             <li><a href="Dashboard - Lucas.html">
-                    <i class="fas fa-chart-pie"></i>
+                    <i class="fas fa-chart-area"></i>
                     <span class="nav-item">Dashboard 6</span>
                 </a></li>
             <li> <a href="insights-run-guard.pdf" download>
-                    <i class="fas fa-user"></i> 
+                    <i class="fas fa-file-pdf"></i> 
                     <span class="nav-item">Baixe seus relatórios!</span>
             </a></li>
             <li><a href="#" class="sair">
@@ -88,9 +85,141 @@
                 </a></li>
         </ul>
     </nav>
+    <div class="fantasma">a</div>
 
-    <div class="content">
-        
+    <div class="content d-flex fd-column jc-space-between">
+        <div class="medias pad font-media">
+            <div class="media1 media">
+                <p><span>Quantidade </span>total de alertas no<span> último ano</span></p>
+                <p class="alerta-info">100</p>
+            </div>
+            <div class="ultima-medida media">
+                <p><span>Quantidade </span>de alertas no<span> período selecionado</span></p>
+                <p class="alerta-info">24</p>
+            </div>
+            <div class="media3 media">
+                <p><span>Quantidade </span>de alertas nas<span> últimas 24h</span></p>
+                <p class="alerta-info">4</p>
+            </div>
+        </div>
+        <div class="d-flex fd-row content2 jc-space-around">
+            <div class="filtro d-flex fd-column jc-space-around">
+                <h2>Selecione o intervalo de meses para filtrar</h2>
+                <input id="range" type="range" list="tickmarks" max="12" min="1">
+                <dataList id="tickmarks">
+                    <option value="1">Jan</option>
+                    <option value="2">Fev</option>
+                    <option value="3">Mar</option>
+                    <option value="4">Abr</option>
+                    <option value="5">Mai</option>
+                    <option value="6">Jun</option>
+                    <option value="7">Jul</option>
+                    <option value="8">Ago</option>
+                    <option value="9">Set</option>
+                    <option value="10">Out</option>
+                    <option value="11">Nov</option>
+                    <option value="12">Dez</option>
+                </dataList>
+            </div>
+            <div class="media">
+                <p class="font-media"><span>Servidor</span> com mais alerta no <span>período selecionado</span></p>
+                <p class="alerta-info">S1  <span style="color: #fff; font-size: 0.6em;">/ 20</span><span style="font-size: 0.6em;"> alertas</span></p>
+            </div>    
+        </div>
+
+        <div class="d-flex fd-row jc-space-around pad">
+            <div class="grafico"> 
+                <div class="media">x</div>
+            </div>
+            <div class="ranking">
+                <table class="font-media">
+                    <caption>Ranking de servidores com mais alertas</caption>
+                    <tr style="color: #ffdc60;">
+                        <th>Ranking</th><th>Servidor</th><th>Total alertas</th>
+                    </tr>
+                    <tr>
+                        <td>1°</td><td>S1</td><td>30</td>
+                    </tr>
+                    <tr>
+                        <td>2°</td><td>S2</td><td>14</td>
+                    </tr>
+                    <tr>
+                        <td>3°</td><td>S3</td><td>6</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </html>
 </body>
+
+<script>
+    function abrirChat() {
+        document.getElementById("janelaChat").style.display = "flex";
+    }
+
+    function fecharChat() {
+        document.getElementById("janelaChat").style.display = "none";
+    }
+
+    function obterHoraAtual() {
+        const options = {
+            timeZone: 'America/Sao_Paulo',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+        const agora = new Date();
+        return agora.toLocaleTimeString('pt-BR', options);
+    }
+        
+    async function gerarResposta() {
+      const pergunta = document.getElementById('entradaUsuario').value;
+
+      var entrada = document.getElementById("entradaUsuario");
+      var mensagem = entrada.value.trim();
+
+      const response = await fetch('/perguntar', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ pergunta })
+        });
+
+      const data = await response.json();
+
+      conversa.push(mensagem)
+      conversa.push(data.resultado)
+
+        if (mensagem !== "") {
+            var mensagemUsuario = document.createElement("div");
+            mensagemUsuario.classList.add("mensagem", "usuario");
+            mensagemUsuario.innerText = mensagem;
+            document.getElementById("corpoChat").appendChild(mensagemUsuario);
+
+            var horaUsuario = document.createElement("div");
+            horaUsuario.classList.add("hora-mensagem");
+            horaUsuario.innerText = obterHoraAtual();
+            document.getElementById("corpoChat").appendChild(horaUsuario);
+
+            entrada.value = "";
+
+            setTimeout(function() {
+                var mensagemAssistente = document.createElement("div");
+                mensagemAssistente.classList.add("mensagem", "assistente");
+                mensagemAssistente.innerText = data.resultado;
+                document.getElementById("corpoChat").appendChild(mensagemAssistente);
+
+                var horaAssistente = document.createElement("div");
+                horaAssistente.classList.add("hora-mensagem", "assistente");
+                horaAssistente.innerText = obterHoraAtual();
+                document.getElementById("corpoChat").appendChild(horaAssistente);
+
+                document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+            }, 1000);
+
+            document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+        }
+    }
+</script>
