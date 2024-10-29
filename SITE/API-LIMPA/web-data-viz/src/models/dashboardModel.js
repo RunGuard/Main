@@ -37,7 +37,7 @@ function atualizarGrafico1(id) {
 function atualizarGrafico2() {
     var instrucaoSql = `SELECT 
     DATE_FORMAT(dtHora, '%Y-%m-%d %H:00:00') AS data,
-    ROUND(AVG(memoriaUsada), 2) AS media_memoria_percent 
+    ROUND(AVG(memoriaPercent), 2) AS media_memoria_percent 
 FROM dados
 GROUP BY data 
 ORDER BY data ASC;`;
