@@ -2,11 +2,11 @@
     display: flex;
 }
 
-.fd-row {
+.row {
     flex-direction: row;
 }
 
-.fd-column {
+.column {
     flex-direction: column;
 }
 
@@ -16,6 +16,10 @@
 
 .jc-space-between {
     justify-content: space-between  ;
+}
+
+.ai-center {
+    align-items: center;
 }
 
 .pad {
@@ -89,3 +93,94 @@ td, th {
     margin: 0;
     padding: 1px;
 }
+
+h2 {
+    margin-bottom: 10%;
+    width: 60%;
+    justify-self: center;
+    text-align: center;
+    color: #fff;
+}
+
+.range-container {
+    position: relative;
+    width: 300px;
+}
+
+.range-background {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 5px;
+}
+
+.range-fill {
+    position: absolute;
+    top: 10px;
+    height: 8px;
+    background: #fac73a;
+    z-index: 1;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+    position: absolute;
+    pointer-events: none; 
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid #1a1a1a;
+    background: #fac73a;
+    cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+    z-index: 2;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+    z-index: 2;
+}
+
+.range-labels {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 30px;
+    width: 100%;
+    font-size: 14px;
+    color: #fff;
+}
+
+.output {
+    position: absolute;
+    color: #fff;
+    top: 30px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.tickmarks {
+    display: flex;
+    justify-content: space-around;
+    gap: 7px;
+    position: absolute;
+    top: 18px; 
+    width: 100%;
+    font-size: 10px;
+    color: #fff;
+  }
