@@ -88,22 +88,8 @@
     <div class="fantasma">a</div>
 
     <div class="content d-flex column jc-space-between">
-        <div class="medias pad font-media">
-            <div class="media1 media">
-                <p><span>Quantidade </span>total de alertas no<span> último ano</span></p>
-                <p class="alerta-info">100</p>
-            </div>
-            <div class="ultima-medida media">
-                <p><span>Quantidade </span>de alertas no<span> período selecionado</span></p>
-                <p class="alerta-info">24</p>
-            </div>
-            <div class="media3 media">
-                <p><span>Quantidade </span>de alertas nas<span> últimas 24h</span></p>
-                <p class="alerta-info">4</p>
-            </div>
-        </div>
-        <div class="d-flex row content2 jc-space-around">
-            <div class="d-flex column ai-center">
+        <div class="d-flex row content2 jc-space-between">
+            <div class="d-flex column ai-center padding filtro">
                 <h2>Selecione o intervalo entre os meses para monitorar</h2>
                 <div class="range-container">
                     <div class="output">
@@ -137,18 +123,38 @@
                     </div>
                 </div>
             </div>
-            <div class="media">
-                <p class="font-media"><span>Servidor</span> com mais alerta no <span>período selecionado</span></p>
+            <div class="previsto ai-center d-flex column jc-space-around">
+                <p><span>Próxima</span> quantidade de alertas prevista:</p>
+                <h1 id="previsao"> </h1>
+            </div>
+        </div>
+
+        <div class="medias pad font-media">
+            <div class="ultima-medida media">
+                <p><span>Quantidade </span>de alertas no<span> período selecionado</span></p>
+                <hr>
+                <p class="alerta-info">24</p>
+            </div>
+            <div class="d-flex column ai-center media">
+                <p><span>Quantidade </span>total de alertas no<span> último ano</span></p>
+                <hr>
+                <p class="alerta-info">100</p>
+            </div>
+            <div class="media as-center">
+                <p><span>Servidor</span> com mais alerta no <span>período selecionado</span></p>
+                <hr>
                 <p class="alerta-info">S1 <span style="color: #fff; font-size: 0.6em;">/ 20</span><span
                         style="font-size: 0.6em;"> alertas</span></p>
             </div>
         </div>
-
-        <div class="d-flex row jc-space-around pad">
-            <div class="grafico">
+        
+        
+        
+        <div class="d-flex row jc-space-between pad">
+            <div class="grafico as-center">
                 <div id="chart"></div>
             </div>
-            <div class="ranking">
+            <div class="ranking as-center">
                 <table class="font-media">
                     <caption>Ranking de servidores com mais alertas</caption>
                     <tr style="color: #ffdc60;">
@@ -206,9 +212,70 @@
     }
     updateRange();
 
-    function atualizarGrafico() {
-        var data = [42, 24, 16, 21, 34, 54, 67, 42, 25, 5, 11, 30]
+    function multiplicar(x, y) {
+    var ret = [];
+    for ( var i = 0 ; i < x.length ; i++ )
+        ret.push(x[i] * y[i]);
+    return ret;
+    }
+
+    function quadrado(x) {
+    var ret = [];
+    for ( var i = 0 ; i < x.length ; i++ )
+        ret.push(x[i] * x[i]);
+    return ret;
+    }
+
+    function somar(x) {
+    var ret = 0;
+    for ( var i = 0 ; i < x.length ; i++ )
+        ret += x[i];
+    return ret;
+    }
+
+    function media(x) { 
+        return somar(x) / x.length; 
+    }
+
+    function calcularR2(x, y) {
+        const n = x.length;
+        const mediaX = media(x);
+        const mediaY = media(y);
+
+        let numerador = somar(multiplicar(
+            x.map(xi => xi - mediaX),
+            y.map(yi => yi - mediaY)
+        ));
+
+        let somaQuadradoX = somar(quadrado(x.map(xi => xi - mediaX)));
+        let somaQuadradoY = somar(quadrado(y.map(yi => yi - mediaY)));
+        const denominador = Math.sqrt(somaQuadradoX * somaQuadradoY);
+
+        const r = numerador / denominador;
+
+        const r2 = Math.pow(r,2)
+        return r2;
+    }
+
+    async function atualizarGrafico() {
+
+        fetch("/dashboard-Diego/atualizarGrafico", { 
+            cache: 'no-store',
+            method: "GET",
+         })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro na requisição');
+            }
+            return response.json();
+        })
+        .then(dado => {
+            console.log(dado)
+        })
+        
+        var data = [22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44]
         var categoria = []
+        var categoriaNum = []
         const minRange = document.getElementById('rangeMin');
         const maxRange = document.getElementById('rangeMax');
         const minValue = parseInt(minRange.value);
@@ -216,7 +283,23 @@
 
         for (var i = minValue - 1; i < maxValue; i++) {
             categoria.push(meses[i])
+            categoriaNum.push(i+1)
         }
+
+        console.log(categoria)
+        console.log(categoriaNum)
+
+        var x = categoriaNum;
+        var y = data;
+
+        var m = (somar(multiplicar(x, y)) - (somar(x) * somar(y)) / x.length) / 
+        (somar(quadrado(x)) - (somar(x) * somar(x)) / x.length);
+        var b = media(y) - m * media(x);
+
+        var r2 = (calcularR2(x, y) * 100).toFixed()
+
+        document.getElementById("previsao").innerHTML = `${(m*13 + b).toFixed()}<span id="rquadrado"></span>`
+        document.getElementById("rquadrado").innerHTML = `  Precisão: ${r2}%`
 
         document.getElementById("chart").innerHTML = ""
         var options = {

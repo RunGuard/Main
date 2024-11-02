@@ -33,6 +33,7 @@ nav {
     overflow: hidden;
     transition: width 0.2s linear;
     box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+    z-index: 999;
 }
 
 .logo {
@@ -146,7 +147,7 @@ nav:hover {
 .media {
     background-color: #292930;
     width: 17vw;
-    border-radius: 3px;
+    border-radius: 0 13px 0 13px;
     height: 18vh;
     color: white;
     padding: 7px;
