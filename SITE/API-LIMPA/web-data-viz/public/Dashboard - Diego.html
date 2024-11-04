@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 
-<body>
+<body onload="atualizarGrafico()">
     <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
 
     <div id="janelaChat" class="janela-chat">
@@ -76,9 +76,9 @@
                     <span class="nav-item">Dashboard 6</span>
                 </a></li>
             <li> <a href="insights-run-guard.pdf" download>
-                    <i class="fas fa-file-pdf"></i> 
+                    <i class="fas fa-file-pdf"></i>
                     <span class="nav-item">Baixe seus relatórios!</span>
-            </a></li>
+                </a></li>
             <li><a href="#" class="sair">
                     <i class="fas fa-sign-out-alt"></i>
                     <span class="nav-item">Sair</span>
@@ -87,73 +87,303 @@
     </nav>
     <div class="fantasma">a</div>
 
-    <div class="content d-flex fd-column jc-space-between">
-        <div class="medias pad font-media">
-            <div class="media1 media">
-                <p><span>Quantidade </span>total de alertas no<span> último ano</span></p>
-                <p class="alerta-info">100</p>
+    <div class="content d-flex column jc-space-between">
+        <div class="d-flex row content2 jc-space-between">
+            <div class="d-flex column ai-center padding filtro">
+                <h2>Selecione o intervalo entre os meses para monitorar</h2>
+                <div class="range-container">
+                    <div class="output">
+                        <span id="minValue">1</span>
+                        <span id="maxValue">12</span>
+                    </div>
+
+                    <div class="range-background"></div>
+                    <div class="range-fill" id="rangeFill"></div>
+
+                    <!-- Range esquerdo -->
+                    <input type="range" min="1" max="12" value="1" id="rangeMin"
+                        oninput="updateRange(), atualizarGrafico()">
+                    <!-- Range direito -->
+                    <input type="range" min="1" max="12" value="12" id="rangeMax"
+                        oninput="updateRange(), atualizarGrafico()">
+
+                    <div class="tickmarks">
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                    </div>
+                </div>
             </div>
-            <div class="ultima-medida media">
-                <p><span>Quantidade </span>de alertas no<span> período selecionado</span></p>
-                <p class="alerta-info">24</p>
+            <div class="previsto ai-center d-flex column jc-space-around">
+                <p><span>Próxima</span> quantidade de alertas prevista:</p>
+                <h1 id="previsao"> </h1>
             </div>
-            <div class="media3 media">
-                <p><span>Quantidade </span>de alertas nas<span> últimas 24h</span></p>
-                <p class="alerta-info">4</p>
-            </div>
-        </div>
-        <div class="d-flex fd-row content2 jc-space-around">
-            <div class="filtro d-flex fd-column jc-space-around">
-                <h2>Selecione o intervalo de meses para filtrar</h2>
-                <input id="range" type="range" list="tickmarks" max="12" min="1">
-                <dataList id="tickmarks">
-                    <option value="1">Jan</option>
-                    <option value="2">Fev</option>
-                    <option value="3">Mar</option>
-                    <option value="4">Abr</option>
-                    <option value="5">Mai</option>
-                    <option value="6">Jun</option>
-                    <option value="7">Jul</option>
-                    <option value="8">Ago</option>
-                    <option value="9">Set</option>
-                    <option value="10">Out</option>
-                    <option value="11">Nov</option>
-                    <option value="12">Dez</option>
-                </dataList>
-            </div>
-            <div class="media">
-                <p class="font-media"><span>Servidor</span> com mais alerta no <span>período selecionado</span></p>
-                <p class="alerta-info">S1  <span style="color: #fff; font-size: 0.6em;">/ 20</span><span style="font-size: 0.6em;"> alertas</span></p>
-            </div>    
         </div>
 
-        <div class="d-flex fd-row jc-space-around pad">
-            <div class="grafico"> 
-                <div class="media">x</div>
+        <div class="medias pad font-media">
+            <div class="ultima-medida media">
+                <p><span>Quantidade </span>de alertas no<span> período selecionado</span></p>
+                <hr>
+                <p class="alerta-info">24</p>
             </div>
-            <div class="ranking">
+            <div class="d-flex column ai-center media">
+                <p><span>Quantidade </span>total de alertas no<span> último ano</span></p>
+                <hr>
+                <p class="alerta-info">100</p>
+            </div>
+            <div class="media as-center">
+                <p><span>Servidor</span> com mais alerta no <span>período selecionado</span></p>
+                <hr>
+                <p class="alerta-info">S1 <span style="color: #fff; font-size: 0.6em;">/ 20</span><span
+                        style="font-size: 0.6em;"> alertas</span></p>
+            </div>
+        </div>
+        
+        
+        
+        <div class="d-flex row jc-space-between pad">
+            <div class="grafico as-center">
+                <div id="chart"></div>
+            </div>
+            <div class="ranking as-center">
                 <table class="font-media">
                     <caption>Ranking de servidores com mais alertas</caption>
                     <tr style="color: #ffdc60;">
-                        <th>Ranking</th><th>Servidor</th><th>Total alertas</th>
+                        <th>Ranking</th>
+                        <th>Servidor</th>
+                        <th>Total alertas</th>
                     </tr>
                     <tr>
-                        <td>1°</td><td>S1</td><td>30</td>
+                        <td>1°</td>
+                        <td>S1</td>
+                        <td>30</td>
                     </tr>
                     <tr>
-                        <td>2°</td><td>S2</td><td>14</td>
+                        <td>2°</td>
+                        <td>S2</td>
+                        <td>14</td>
                     </tr>
                     <tr>
-                        <td>3°</td><td>S3</td><td>6</td>
+                        <td>3°</td>
+                        <td>S3</td>
+                        <td>6</td>
                     </tr>
                 </table>
             </div>
         </div>
     </div>
+
 </html>
 </body>
 
 <script>
+    meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+
+    function updateRange() {
+        const minRange = document.getElementById('rangeMin');
+        const maxRange = document.getElementById('rangeMax');
+        const minValue = parseInt(minRange.value);
+        const maxValue = parseInt(maxRange.value);
+        const rangeFill = document.getElementById('rangeFill');
+
+        if (minValue >= maxValue) {
+            minRange.value = maxValue - 1;
+        }
+        if (maxValue <= minValue) {
+            maxRange.value = minValue + 1;
+        }
+
+        document.getElementById('minValue').textContent = meses[minValue - 1];
+        document.getElementById('maxValue').textContent = meses[maxValue - 1];
+
+        const minPercent = (minRange.value / minRange.max) * 100;
+        const maxPercent = (maxRange.value / maxRange.max) * 100;
+        rangeFill.style.left = minPercent - 3.5 + '%';
+        rangeFill.style.width = (maxPercent - minPercent) + '%';
+    }
+    updateRange();
+
+    function multiplicar(x, y) {
+    var ret = [];
+    for ( var i = 0 ; i < x.length ; i++ )
+        ret.push(x[i] * y[i]);
+    return ret;
+    }
+
+    function quadrado(x) {
+    var ret = [];
+    for ( var i = 0 ; i < x.length ; i++ )
+        ret.push(x[i] * x[i]);
+    return ret;
+    }
+
+    function somar(x) {
+    var ret = 0;
+    for ( var i = 0 ; i < x.length ; i++ )
+        ret += x[i];
+    return ret;
+    }
+
+    function media(x) { 
+        return somar(x) / x.length; 
+    }
+
+    function calcularR2(x, y) {
+        const n = x.length;
+        const mediaX = media(x);
+        const mediaY = media(y);
+
+        let numerador = somar(multiplicar(
+            x.map(xi => xi - mediaX),
+            y.map(yi => yi - mediaY)
+        ));
+
+        let somaQuadradoX = somar(quadrado(x.map(xi => xi - mediaX)));
+        let somaQuadradoY = somar(quadrado(y.map(yi => yi - mediaY)));
+        const denominador = Math.sqrt(somaQuadradoX * somaQuadradoY);
+
+        const r = numerador / denominador;
+
+        const r2 = Math.pow(r,2)
+        return r2;
+    }
+
+    async function atualizarGrafico() {
+
+        fetch("/dashboard-Diego/atualizarGrafico", { 
+            cache: 'no-store',
+            method: "GET",
+         })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro na requisição');
+            }
+            return response.json();
+        })
+        .then(dado => {
+            console.log(dado)
+        })
+        
+        var data = [22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44]
+        var categoria = []
+        var categoriaNum = []
+        const minRange = document.getElementById('rangeMin');
+        const maxRange = document.getElementById('rangeMax');
+        const minValue = parseInt(minRange.value);
+        const maxValue = parseInt(maxRange.value);
+
+        for (var i = minValue - 1; i < maxValue; i++) {
+            categoria.push(meses[i])
+            categoriaNum.push(i+1)
+        }
+
+        console.log(categoria)
+        console.log(categoriaNum)
+
+        var x = categoriaNum;
+        var y = data;
+
+        var m = (somar(multiplicar(x, y)) - (somar(x) * somar(y)) / x.length) / 
+        (somar(quadrado(x)) - (somar(x) * somar(x)) / x.length);
+        var b = media(y) - m * media(x);
+
+        var r2 = (calcularR2(x, y) * 100).toFixed()
+
+        document.getElementById("previsao").innerHTML = `${(m*13 + b).toFixed()}<span id="rquadrado"></span>`
+        document.getElementById("rquadrado").innerHTML = `  Precisão: ${r2}%`
+
+        document.getElementById("chart").innerHTML = ""
+        var options = {
+            series: [{
+                name: 'Alertas',
+                data: data
+            }],
+            chart: {
+                type: 'bar',
+                height: 400,
+                width: 600,
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                    endingShape: 'rounded'
+                },
+            },
+            colors: ['#ffdc60'],
+            title: {
+                text: 'Quantidade de alertas no período selecionado',
+                align: 'center',
+                style: {
+                    color: 'white'
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                style: {
+                    color: '#000'
+                }
+            },
+            stroke: {
+                show: false,
+                width: 2,
+                colors: ['transparent']
+            },
+            xaxis: {
+                categories: categoria,
+                labels: {
+                    style: {
+                        colors: Array(categoria.length).fill('white'),
+                        weight: 400
+                    }
+                },
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: Array(categoria.length).fill('#696969')
+                    },
+                },
+                min: 0,
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val + " alertas"
+                    },
+                    title: {
+                        formatter: function (seriesName) {
+                            return seriesName + ':';
+                        },
+                        style: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                style: {
+                    fontSize: '14px',
+                    fontFamily: 'Arial, sans-serif',
+                    color: '#fff'
+                },
+                theme: 'dark'
+            }
+        };
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
+    }
+
     function abrirChat() {
         document.getElementById("janelaChat").style.display = "flex";
     }
@@ -172,25 +402,25 @@
         const agora = new Date();
         return agora.toLocaleTimeString('pt-BR', options);
     }
-        
+
     async function gerarResposta() {
-      const pergunta = document.getElementById('entradaUsuario').value;
+        const pergunta = document.getElementById('entradaUsuario').value;
 
-      var entrada = document.getElementById("entradaUsuario");
-      var mensagem = entrada.value.trim();
+        var entrada = document.getElementById("entradaUsuario");
+        var mensagem = entrada.value.trim();
 
-      const response = await fetch('/perguntar', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ pergunta })
+        const response = await fetch('/perguntar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ pergunta })
         });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      conversa.push(mensagem)
-      conversa.push(data.resultado)
+        conversa.push(mensagem)
+        conversa.push(data.resultado)
 
         if (mensagem !== "") {
             var mensagemUsuario = document.createElement("div");
@@ -205,7 +435,7 @@
 
             entrada.value = "";
 
-            setTimeout(function() {
+            setTimeout(function () {
                 var mensagemAssistente = document.createElement("div");
                 mensagemAssistente.classList.add("mensagem", "assistente");
                 mensagemAssistente.innerText = data.resultado;
