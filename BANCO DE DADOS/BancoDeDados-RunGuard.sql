@@ -41,6 +41,24 @@ fkEquipamento int,
     constraint fkEquipamentoDados foreign key (fkEquipamento) references equipamento (idEquipamento)
 );
 
+CREATE TABLE alerta (
+idAlerta int primary key auto_increment,
+resumo varchar(256),
+descricao varchar(256),
+dtHora datetime default current_timestamp
+);
+
+CREATE TABLE informacaoAlerta (
+idInformacao int auto_increment,
+fkDado int,
+fkAlerta int,
+componenteAlerta varchar(45),
+statusAlerta varchar(45),
+    constraint fkDado foreign key (fkDado) references dado (idDado),
+    constraint fkAlerta foreign key (fkAlerta) references alerta (idAlerta),
+    constraint primaryKey primary key (idInformacao, fkDado, fkAlerta)
+);
+
 INSERT INTO empresa VALUES
 (default, 'Uber'),
 (default, '99 Táxi');
@@ -53,14 +71,14 @@ INSERT INTO equipamento VALUES
 
 CREATE VIEW Monitoramento AS
 SELECT 
-    d.idDados AS ID,
+    d.idDado AS ID,
     CONCAT(d.cpuPercent, "%") AS "Porcentagem CPU",
     CONCAT(d.memoriaPercent, "%") AS "Porcentagem Memoria",
     CONCAT(d.memoriaUsada, "GB") AS "Memoria usada",
     d.dtHora AS "Data",
     e.nomeEquipamento AS Equipamento
 FROM 
-    dados AS d
+    dado AS d
 JOIN 
     equipamento AS e ON d.fkEquipamento = e.idEquipamento;
 
