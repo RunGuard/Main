@@ -99,6 +99,65 @@
           <div id="grafico3"></div>
         </div>
       </div>
+      <div class="titulo">
+        <h1>KPI's para fácil entendimento dos gráficos</h1>
+    </div>
+
+    <div class="alinharcards">
+      <div class="alinhamento2">
+       
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-left: 230px;">
+            <!-- Card para Desvio Padrão de CPU -->
+            <div class="card">
+                <div class="card-title">Desvio Padrão CPU</div>
+                <div class="card-value">15%</div>
+            </div>
+        
+            <!-- Card para Desvio Padrão de Memória RAM -->
+            <div class="card">
+                <div class="card-title">Desvio Padrão Memória RAM</div>
+                <div class="card-value">10%</div>
+            </div>
+        
+            <!-- Card para Taxa de Uso de I/O de Disco -->
+            <div class="card">
+                <div class="card-title">Taxa de I/O Disco</div>
+                <div class="card-value">75%</div>
+            </div>
+        
+            <!-- Card para Downtime -->
+            <div class="card">
+                <div class="card-title">Downtime</div>
+                <div class="card-value">120 min</div>
+            </div>
+        </div>
+
+        <div class="alinhamento3">
+            <div class="kpi-cards-container">
+                <!-- Índice de Estabilidade do Servidor (ISS) -->
+                <div class="kpi-card">
+                    <h2>Índice de Estabilidade do Servidor</h2>
+                    <p class="kpi-value">95%</p>
+                    <p class="kpi-description">Mede a estabilidade geral do servidor com base no desvio padrão de CPU e Memória RAM.</p>
+                </div>
+            
+                <!-- Índice de Eficiência de I/O e CPU (IEIC) -->
+                <div class="kpi-card">
+                    <h2>Índice de Eficiência de I/O e CPU</h2>
+                    <p class="kpi-value">85%</p>
+                    <p class="kpi-description">Relaciona a eficiência do uso de I/O com a estabilidade da CPU.</p>
+                </div>
+            
+                <!-- Taxa de Recuperação Pós-Downtime (TRPD) -->
+                <div class="kpi-card">
+                    <h2>Taxa de Recuperação Pós-Downtime</h2>
+                    <p class="kpi-value">78%</p>
+                    <p class="kpi-description">Avalia a capacidade do servidor de estabilizar CPU e Memória RAM após downtime.</p>
+                </div>
+            </div>            
+        </div>
+    </div>
+      </div>
     </div>
 </html>
 </body>
@@ -159,9 +218,6 @@ var options = {
       }
     }
   },
-  tooltip: {
-    theme: 'dark' // Tema do tooltip
-  }
 };
 
 var chart = new ApexCharts(document.querySelector("#grafico1"), options);
