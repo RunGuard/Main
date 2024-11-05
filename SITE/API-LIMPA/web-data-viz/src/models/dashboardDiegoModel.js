@@ -22,7 +22,16 @@ function coletarDados(mes1, mes2) {
     return database.executar(instrucaoSql)
 }
 
+function graficoDetails(mes) {
+    var instrucaoSql = `SELECT count(ia.idInformacao) AS qtdAlerta, DAY(a.dtHora) AS dia FROM informacaoAlerta AS ia JOIN alerta AS a ON fkAlerta = idAlerta 
+    WHERE MONTH(a.dtHora) = ${mes}
+    GROUP BY dia;`
+
+    return database.executar(instrucaoSql)
+}
+
 module.exports = {
     atualizarGrafico,
     coletarDados,
+    graficoDetails,
 }

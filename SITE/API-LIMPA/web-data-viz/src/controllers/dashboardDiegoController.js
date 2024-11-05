@@ -20,7 +20,17 @@ function coletarDados(req, res) {
     })
 }
 
+function graficoDetails(req, res) {
+    var mes = req.params.mes
+
+    dashboardDiegoModel.graficoDetails(mes)
+    .then(function (resultado) {
+        res.status(200).json(resultado)
+    })
+}
+
 module.exports = {
     atualizarGrafico,
     coletarDados,
+    graficoDetails,
 }

@@ -11,4 +11,8 @@ router.get(`/coletarDados/:minValue/:maxValue`, function(req,res) {
     dashboardDiegoController.coletarDados(req,res);
 });
 
+router.get(`/graficoDetails/:mes`, function(req,res) {
+    dashboardDiegoController.graficoDetails(req,res);
+});
+
 module.exports = router;
