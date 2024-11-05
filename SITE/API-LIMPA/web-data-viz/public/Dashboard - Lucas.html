@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DASHBOARD-Lucas | RunGuard</title>
     <link rel="stylesheet" href="css/chat.css">
-    <link rel="stylesheet" href="css/dashstyle.css">
+    <link rel="stylesheet" href="css/styleroque.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
@@ -84,9 +84,263 @@
                 </a></li>
         </ul>
     </nav>
+    <div class="fundo">
+        <div class="titulo">
+            <h1>Monitoramento de Desvio e Demanda</h1>
+        </div>
+        <div class="alinhamento">
+        <div class="fundografico">
+            <div id="grafico1"></div>
+        </div>
+        <div class="fundografico">
+          <div id="grafico2"></div>
+        </div>
+        <div class="fundografico">
+          <div id="grafico3"></div>
+        </div>
+      </div>
+    </div>
 </html>
 </body>
 <script>
+
+var options = {
+  series: [{
+    name: 'Desvio Padrão de CPU',
+    data: [10, 12, 14, 15, 11, 13], 
+  }, {
+    name: 'Desvio Padrão de Memória RAM',
+    data: [5, 6, 7, 8, 6, 5], 
+  }],
+  chart: {
+    height: 350,
+    type: 'radar',
+    dropShadow: {
+      enabled: true,
+      blur: 1,
+      left: 1,
+      top: 1
+    }
+  },
+  title: {
+    text: 'Desvio Padrão de CPU e Memória RAM',
+    style: {
+      color: '#fff' 
+    }
+  },
+  stroke: {
+    width: 2
+  },
+  fill: {
+    opacity: 0.1
+  },
+  markers: {
+    size: 0
+  },
+  yaxis: {
+    title: {
+      text: 'Desvio Padrão',
+      style: {
+        color: '#fff' 
+      }
+    },
+    labels: {
+      style: {
+        colors: ['#fff'] 
+      }
+    },
+    stepSize: 2
+  },
+  xaxis: {
+    categories: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'], 
+    labels: {
+      style: {
+        colors: ['#fff'] 
+      }
+    }
+  },
+  tooltip: {
+    theme: 'dark' // Tema do tooltip
+  }
+};
+
+var chart = new ApexCharts(document.querySelector("#grafico1"), options);
+chart.render();
+
+
+
+var options = {
+    series: [{
+        name: 'Uso I/O Disco 1',
+        data: [30, 45, 50, 60, 55, 70, 85]
+    }, {
+        name: 'Uso I/O Disco 2',
+        data: [25, 35, 45, 50, 65, 75, 80] 
+    }],
+    chart: {
+        height: 350,
+        type: 'area',
+        dropShadow: {
+            enabled: true,
+            top: 10,
+            left: 5,
+            blur: 3,
+            color: '#000',
+            opacity: 0.2
+        },
+        zoom: {
+            enabled: false
+        }
+    },
+    colors: ['#ffbb33', '#ffbb33'], 
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        curve: 'smooth'
+    },
+    title: {
+        text: 'Monitoramento da Taxa de Uso de I/O de Disco',
+        align: 'left',
+        style: {
+            fontSize: '18px',
+            color: '#FFFFFF' 
+        }
+    },
+    xaxis: {
+        type: 'datetime',
+        categories: [
+            "2024-10-01T00:00:00.000Z", 
+            "2024-10-01T01:30:00.000Z", 
+            "2024-10-01T02:30:00.000Z", 
+            "2024-10-01T03:30:00.000Z", 
+            "2024-10-01T04:30:00.000Z", 
+            "2024-10-01T05:30:00.000Z", 
+            "2024-10-01T06:30:00.000Z"
+        ],
+        labels: {
+            format: 'HH:mm',
+            style: {
+                colors: '#FFFFFF' 
+            }
+        },
+        title: {
+            text: 'Horário',
+            style: {
+                color: '#FFFFFF'
+            }
+        }
+    },
+    yaxis: {
+        min: 0,
+        max: 100,
+        title: {
+            text: 'Taxa de Uso (%)',
+            style: {
+                color: '#FFFFFF'
+            }
+        },
+        labels: {
+            style: {
+                colors: '#FFFFFF' 
+            }
+        }
+    },
+    tooltip: {
+        x: {
+            format: 'dd/MM/yy HH:mm'
+        }
+    },
+    grid: {
+        borderColor: '#555',
+        row: {
+            colors: ['transparent', 'rgba(255, 255, 255, 0.1)'], 
+            opacity: 0.5
+        }
+    },
+    legend: {
+        position: 'top',
+        horizontalAlign: 'right',
+        labels: {
+            colors: '#FFFFFF' 
+        }
+    }
+};
+
+var chart = new ApexCharts(document.querySelector("#grafico2"), options);
+chart.render();
+
+var options = {
+    series: [{
+        data: [120, 90, 150, 60, 30, 75, 110, 95, 40, 25, 80, 20]
+    }],
+    chart: {
+        type: 'bar',
+        height: 350,
+        colors: ['#ffbb33']
+    },
+    title: {
+        text: 'Monitoramento de Downtime',
+        align: 'left',
+        style: {
+            color: '#FFFFFF', 
+            fontSize: '20px'  
+        }
+    },
+    plotOptions: {
+        bar: {
+            borderRadius: 4,
+            borderRadiusApplication: 'end',
+            horizontal: true,
+        }
+    },
+    dataLabels: {
+        enabled: true, 
+        style: {
+            colors: ['#FFFFFF'] 
+        }
+    },
+    xaxis: {
+        categories: [
+            'Janeiro', 
+            'Fevereiro', 
+            'Março', 
+            'Abril', 
+            'Maio', 
+            'Junho', 
+            'Julho', 
+            'Agosto', 
+            'Setembro', 
+            'Outubro', 
+            'Novembro', 
+            'Dezembro'
+        ],
+        labels: {
+            style: {
+                color: '#FFFFFF' 
+            }
+        }
+    },
+    yaxis: {
+        labels: {
+            style: {
+                color: '#FFFFFF'
+            }
+        }
+    },
+    tooltip: {
+        y: {
+            formatter: function (val) {
+                return val + " minutos"; 
+            }
+        }
+    }
+};
+
+var chart = new ApexCharts(document.querySelector("#grafico3"), options);
+chart.render();
+
+
     function abrirChat() {
         document.getElementById("janelaChat").style.display = "flex";
     }
