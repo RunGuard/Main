@@ -42,6 +42,10 @@
     font-size: 1.1em;
 }
 
+.gap {
+    gap: 10px;
+}
+
 .content {
     width: 100%;
     height: 100vh;
@@ -214,7 +218,8 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .separador {
-    height: 95%;
+    height: 86%;
+    width: 1px;
     border: 1px solid #ddd;
 }
 
@@ -325,6 +330,10 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .visao-detalhada {
+    margin: 2%;
+    border: 1px dashed #fff;
+    box-shadow: #1a1a1a 5px 5px 10px;
+    text-align: center;
     cursor: pointer;
     color: #ececec;
 }
@@ -334,12 +343,13 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .visao-detalhada span {
+    align-self: start;
     display: inline-block;
     transition: transform 0.5s ease;
 }
 
 .visao-detalhada:hover span {
-    transform: translateX(120px);
+    transform: translateX(110px);
 }
 
 .modal h1 {

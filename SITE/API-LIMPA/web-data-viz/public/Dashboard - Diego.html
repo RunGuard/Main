@@ -89,7 +89,7 @@
     </nav>
     <div class="fantasma">a</div>
 
-    <div class="content d-flex row jc-space-evenly">
+    <div class="content d-flex row jc-center gap">
         <div class="d-flex column ai-center jc-space-evenly">
 
             <h1>Filtre seus alertas</h1>
@@ -147,12 +147,15 @@
 
         </div>
 
-        <hr class="separador as-center">
+        <div class="d-flex ai-center column gap">
+            <a class="visao-detalhada d-flex column font-media" onclick="abrirModal()">Alertas a cada mês: <br><span>Visão Detalhada ⟶</span></a>
+            <hr class="separador as-center">
+        </div>
+
 
         <div class="padding d-flex column ai-center jc-space-around">
 
             <h1>Visão geral</h1>
-            <a class="visao-detalhada" onclick="abrirModal()">Alertas a cada mês: <br><span>Visão Detalhada ⟶</span></a>
 
             <div class="d-flex row content2 jc-space-evenly">
                 <div class="previsto ai-center padding d-flex column jc-space-around">
