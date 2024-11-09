@@ -166,10 +166,12 @@
 var options = {
   series: [{
     name: 'Desvio Padrão de CPU',
-    data: [10, 12, 14, 15, 11, 13], 
+    data: [10, 12, 14, 15, 11, 13],
+    color: '#FFD700'  
   }, {
     name: 'Desvio Padrão de Memória RAM',
-    data: [5, 6, 7, 8, 6, 5], 
+    data: [5, 6, 7, 8, 6, 5],
+    color: '#FFEA00'  
   }],
   chart: {
     height: 350,
@@ -178,46 +180,55 @@ var options = {
       enabled: true,
       blur: 1,
       left: 1,
-      top: 1
+      top: 1,
+      color: '#FFD700'  
     }
   },
   title: {
     text: 'Desvio Padrão de CPU e Memória RAM',
     style: {
-      color: '#fff' 
+      color: '#FFFFFF' 
     }
   },
   stroke: {
-    width: 2
+    width: 2,
+    colors: ['#FFD700', '#FFEA00']  
   },
   fill: {
-    opacity: 0.1
+    opacity: 0.2,
+    colors: ['#FFFF66', '#FFDD44']  
   },
   markers: {
-    size: 0
+    size: 3,
+    colors: ['#FFD700', '#FFEA00'],  
   },
   yaxis: {
     title: {
       text: 'Desvio Padrão',
       style: {
-        color: '#fff' 
+        color: '#FFD700' 
       }
     },
     labels: {
       style: {
-        colors: ['#fff'] 
+        colors: ['#FFD700']  
       }
     },
     stepSize: 2
   },
   xaxis: {
-    categories: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'], 
+    categories: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
     labels: {
       style: {
-        colors: ['#fff'] 
+        colors: ['#FFFFFF']  // Rótulos do eixo X em amarelo
       }
     }
   },
+  legend: {
+    labels: {
+      colors: '#FFFFFF' 
+    }
+  }
 };
 
 var chart = new ApexCharts(document.querySelector("#grafico1"), options);
@@ -333,8 +344,11 @@ var options = {
     chart: {
         type: 'bar',
         height: 350,
-        colors: ['#ffbb33']
+        toolbar: {
+            show: false
+        },
     },
+    colors: ['#FFD700'],
     title: {
         text: 'Monitoramento de Downtime',
         align: 'left',
@@ -380,7 +394,7 @@ var options = {
     yaxis: {
         labels: {
             style: {
-                color: '#FFFFFF'
+                color: '#FFFFFF' 
             }
         }
     },
@@ -389,6 +403,11 @@ var options = {
             formatter: function (val) {
                 return val + " minutos"; 
             }
+        }
+    },
+    legend: {
+        labels: {
+            colors: '#FFFFFF' 
         }
     }
 };

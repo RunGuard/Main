@@ -94,48 +94,6 @@ nav:hover {
     bottom: 100;
 }
 
-.graficos {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-.grafE {
-    margin-top: 5px;
-    margin-left: 350px;
-    background-color: #292930;
-    width: 550px;
-    height: 350px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-}
-
-.grafD {
-    margin-top: 5px;
-    margin-left: 20px;
-    background-color: #292930;
-    width: 550px;
-    height: 350px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-}
-
-.grafC {
-    margin-top: 5px;
-    margin-left: 650px;
-    background-color: #292930;
-    width: 550px;
-    height: 350px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-}
-
 .medias {
     display: flex;
     flex-direction: row;
