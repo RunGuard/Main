@@ -203,7 +203,7 @@ nav:hover {
     margin-bottom: 10px;
 }
 
-.card-value {
+#card-value {
     font-size: 24px;
     font-weight: bold;
     color: white;
@@ -231,7 +231,7 @@ nav:hover {
     margin-bottom: 10px;
 }
 
-.kpi-value {
+#kpi-value {
     font-size: 36px;
     font-weight: bold;
     color: yellow;

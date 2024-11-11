@@ -110,25 +110,25 @@
             <!-- Card para Desvio Padrão de CPU -->
             <div class="card">
                 <div class="card-title">Desvio Padrão CPU</div>
-                <div class="card-value">15%</div>
+                <div id="card-value">15%</div>
             </div>
         
             <!-- Card para Desvio Padrão de Memória RAM -->
             <div class="card">
                 <div class="card-title">Desvio Padrão Memória RAM</div>
-                <div class="card-value">10%</div>
+                <div id="card-value">10%</div>
             </div>
         
             <!-- Card para Taxa de Uso de I/O de Disco -->
             <div class="card">
                 <div class="card-title">Taxa de I/O Disco</div>
-                <div class="card-value">75%</div>
+                <div id="card-value">75%</div>
             </div>
         
             <!-- Card para Downtime -->
             <div class="card">
                 <div class="card-title">Downtime</div>
-                <div class="card-value">120 min</div>
+                <div id="card-value">120 min</div>
             </div>
         </div>
 
@@ -137,21 +137,21 @@
                 <!-- Índice de Estabilidade do Servidor (ISS) -->
                 <div class="kpi-card">
                     <h2>Índice de Estabilidade do Servidor</h2>
-                    <p class="kpi-value">95%</p>
+                    <p id="kpi-value">95%</p>
                     <p class="kpi-description">Mede a estabilidade geral do servidor com base no desvio padrão de CPU e Memória RAM.</p>
                 </div>
             
                 <!-- Índice de Eficiência de I/O e CPU (IEIC) -->
                 <div class="kpi-card">
                     <h2>Índice de Eficiência de I/O e CPU</h2>
-                    <p class="kpi-value">85%</p>
+                    <p id="kpi-value">85%</p>
                     <p class="kpi-description">Relaciona a eficiência do uso de I/O com a estabilidade da CPU.</p>
                 </div>
             
                 <!-- Taxa de Recuperação Pós-Downtime (TRPD) -->
                 <div class="kpi-card">
                     <h2>Taxa de Recuperação Pós-Downtime</h2>
-                    <p class="kpi-value">78%</p>
+                    <p id="kpi-value">78%</p>
                     <p class="kpi-description">Avalia a capacidade do servidor de estabilizar CPU e Memória RAM após downtime.</p>
                 </div>
             </div>            
@@ -162,258 +162,347 @@
 </html>
 </body>
 <script>
+var fkEquipamento = 1;
 
-var options = {
-  series: [{
-    name: 'Desvio Padrão de CPU',
-    data: [10, 12, 14, 15, 11, 13],
-    color: '#FFD700'  
-  }, {
-    name: 'Desvio Padrão de Memória RAM',
-    data: [5, 6, 7, 8, 6, 5],
-    color: '#FFEA00'  
-  }],
-  chart: {
-    height: 350,
-    type: 'radar',
-    dropShadow: {
-      enabled: true,
-      blur: 1,
-      left: 1,
-      top: 1,
-      color: '#FFD700'  
-    }
-  },
-  title: {
-    text: 'Desvio Padrão de CPU e Memória RAM',
-    style: {
-      color: '#FFFFFF' 
-    }
-  },
-  stroke: {
-    width: 2,
-    colors: ['#FFD700', '#FFEA00']  
-  },
-  fill: {
-    opacity: 0.2,
-    colors: ['#FFFF66', '#FFDD44']  
-  },
-  markers: {
-    size: 3,
-    colors: ['#FFD700', '#FFEA00'],  
-  },
-  yaxis: {
-    title: {
-      text: 'Desvio Padrão',
-      style: {
-        color: '#FFD700' 
-      }
-    },
-    labels: {
-      style: {
-        colors: ['#FFD700']  
-      }
-    },
-    stepSize: 2
-  },
-  xaxis: {
-    categories: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
-    labels: {
-      style: {
-        colors: ['#FFFFFF']  // Rótulos do eixo X em amarelo
-      }
-    }
-  },
-  legend: {
-    labels: {
-      colors: '#FFFFFF' 
-    }
-  }
-};
+function buscarDadosGrafico(fkEquipamento) {
+    fetch(`/rotaRoque/ultimaMedida/${fkEquipamento}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (Array.isArray(data)) {
 
-var chart = new ApexCharts(document.querySelector("#grafico1"), options);
-chart.render();
+                atualizarGrafico1(data);
+                atualizarGrafico2(data);
+                atualizarGrafico3(data);
+            } else {
+                console.error('Formato de dados inesperado:', data);
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao buscar dados: ", error);
+        });
+}
 
+function atualizarGrafico1(data) {
+    // Extrair os momentos (convertendo para formato de data/hora)
+    const momentos = data.map(item => {
+        const dtHora = new Date(item.momento); // Converte o campo momento para um objeto Date
+        return dtHora.toISOString(); // Converte para o formato ISO 8601 (para usar em gráfico de datetime)
+    });
 
+    // Extrair os dados do gráfico (desvio padrão de CPU e Memória)
+    const desvioPadraoCpu = data.map(item => item.desvio_padrao_cpu);
+    const desvioPadraoMemoria = data.map(item => item.desvio_padrao_memoria);
 
-var options = {
-    series: [{
-        name: 'Uso I/O Disco 1',
-        data: [30, 45, 50, 60, 55, 70, 85]
-    }, {
-        name: 'Uso I/O Disco 2',
-        data: [25, 35, 45, 50, 65, 75, 80] 
-    }],
-    chart: {
-        height: 350,
-        type: 'area',
-        dropShadow: {
-            enabled: true,
-            top: 10,
-            left: 5,
-            blur: 3,
-            color: '#000',
-            opacity: 0.2
+    // Configurações do gráfico de linha
+    var options = {
+        series: [
+            {
+                name: 'Desvio Padrão de CPU',
+                data: desvioPadraoCpu
+            },
+            {
+                name: 'Desvio Padrão de Memória RAM',
+                data: desvioPadraoMemoria
+            }
+        ],
+        chart: {
+            height: 350,
+            type: 'line', 
+            dropShadow: {
+                enabled: true,
+                color: '#000',
+                top: 18,
+                left: 7,
+                blur: 10,
+                opacity: 0.2
+            },
+            zoom: {
+                enabled: false  
+            },
+            toolbar: {
+                show: false  
+            },
+            background: '#292930', 
         },
-        zoom: {
+        colors: ['#FFD700', '#FFEA00'], 
+        dataLabels: {
+            enabled: true  
+        },
+        stroke: {
+            curve: 'smooth' 
+        },
+        title: {
+            text: `Desvio Padrão de CPU e Memória RAM - Última Medida: ${momentos[momentos.length - 1].toLocaleTimeString}`,
+            align: 'left',
+            style: {
+                color: '#FFFFFF',  
+                fontSize: '16px'
+            }
+        },
+        grid: {
+            borderColor: '#444',  
+            row: {
+                colors: ['#555', 'transparent'],  
+                opacity: 0.5
+            }
+        },
+        markers: {
+            size: 5, 
+            colors: ['#FFD700', '#FFEA00'],
+            strokeColor: '#fff',
+            strokeWidth: 2
+        },
+        xaxis: {
+            type: 'datetime',  
+            categories: momentos,  
+            title: {
+                text: 'Hora',
+                style: {
+                    color: '#FFFFFF'  
+                }
+            },
+            labels: {
+                style: {
+                    colors: ['#FFFFFF']  
+                }
+            }
+        },
+        yaxis: {
+            title: {
+                text: 'Desvio Padrão',
+                style: {
+                    color: '#FFD700'  
+                }
+            },
+            labels: {
+                style: {
+                    colors: ['#FFD700']  
+                }
+            },
+            min: 0,
+            max: 50 
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            floating: true,
+            offsetY: -25,
+            offsetX: -5,
+            labels: {
+                colors: '#FFFFFF'  
+            }
+        },
+        tooltip: {
+            x: {
+                format: 'dd/MM/yy HH:mm' 
+            },
+            style: {
+                fontSize: '12px',
+                color: '#FFFFFF' 
+            }
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#grafico1"), options);
+    chart.render();
+}
+
+
+
+
+function atualizarGrafico2(data) {
+    const usoIoTotal = data.map(item => item.uso_io_total);
+    
+    var options = {
+        series: [{
+            name: 'Uso I/O Disco 1',
+            data: usoIoTotal,
+        }, {
+            name: 'Uso I/O Disco 2',
+            data: usoIoTotal,  
+        }],
+        chart: {
+            height: 350,
+            type: 'area',
+            dropShadow: {
+                enabled: true,
+                top: 10,
+                left: 5,
+                blur: 3,
+                color: '#000',
+                opacity: 0.2
+            },
+            zoom: {
+                enabled: false
+            }
+        },
+        colors: ['#ffbb33', '#ffbb33'],
+        dataLabels: {
             enabled: false
-        }
-    },
-    colors: ['#ffbb33', '#ffbb33'], 
-    dataLabels: {
-        enabled: false
-    },
-    stroke: {
-        curve: 'smooth'
-    },
-    title: {
-        text: 'Monitoramento da Taxa de Uso de I/O de Disco',
-        align: 'left',
-        style: {
-            fontSize: '18px',
-            color: '#FFFFFF' 
-        }
-    },
-    xaxis: {
-        type: 'datetime',
-        categories: [
-            "2024-10-01T00:00:00.000Z", 
-            "2024-10-01T01:30:00.000Z", 
-            "2024-10-01T02:30:00.000Z", 
-            "2024-10-01T03:30:00.000Z", 
-            "2024-10-01T04:30:00.000Z", 
-            "2024-10-01T05:30:00.000Z", 
-            "2024-10-01T06:30:00.000Z"
-        ],
-        labels: {
-            format: 'HH:mm',
-            style: {
-                colors: '#FFFFFF' 
-            }
+        },
+        stroke: {
+            curve: 'smooth'
         },
         title: {
-            text: 'Horário',
+            text: 'Monitoramento da Taxa de Uso de I/O de Disco',
+            align: 'left',
             style: {
-                color: '#FFFFFF'
-            }
-        }
-    },
-    yaxis: {
-        min: 0,
-        max: 100,
-        title: {
-            text: 'Taxa de Uso (%)',
-            style: {
+                fontSize: '18px',
                 color: '#FFFFFF'
             }
         },
-        labels: {
-            style: {
-                colors: '#FFFFFF' 
+        xaxis: {
+            type: 'datetime',
+            categories: [
+                "2024-10-01T00:00:00.000Z",
+                "2024-10-01T01:30:00.000Z",
+                "2024-10-01T02:30:00.000Z",
+                "2024-10-01T03:30:00.000Z",
+                "2024-10-01T04:30:00.000Z",
+                "2024-10-01T05:30:00.000Z",
+                "2024-10-01T06:30:00.000Z"
+            ],
+            labels: {
+                format: 'HH:mm',
+                style: {
+                    colors: '#FFFFFF'
+                }
+            },
+            title: {
+                text: 'Horário',
+                style: {
+                    color: '#FFFFFF'
+                }
             }
-        }
-    },
-    tooltip: {
-        x: {
-            format: 'dd/MM/yy HH:mm'
-        }
-    },
-    grid: {
-        borderColor: '#555',
-        row: {
-            colors: ['transparent', 'rgba(255, 255, 255, 0.1)'], 
-            opacity: 0.5
-        }
-    },
-    legend: {
-        position: 'top',
-        horizontalAlign: 'right',
-        labels: {
-            colors: '#FFFFFF' 
-        }
-    }
-};
-
-var chart = new ApexCharts(document.querySelector("#grafico2"), options);
-chart.render();
-
-var options = {
-    series: [{
-        data: [120, 90, 150, 60, 30, 75, 110, 95, 40, 25, 80, 20]
-    }],
-    chart: {
-        type: 'bar',
-        height: 350,
-        toolbar: {
-            show: false
         },
-    },
-    colors: ['#FFD700'],
-    title: {
-        text: 'Monitoramento de Downtime',
-        align: 'left',
-        style: {
-            color: '#FFFFFF', 
-            fontSize: '20px'  
-        }
-    },
-    plotOptions: {
-        bar: {
-            borderRadius: 4,
-            borderRadiusApplication: 'end',
-            horizontal: true,
-        }
-    },
-    dataLabels: {
-        enabled: true, 
-        style: {
-            colors: ['#FFFFFF'] 
-        }
-    },
-    xaxis: {
-        categories: [
-            'Janeiro', 
-            'Fevereiro', 
-            'Março', 
-            'Abril', 
-            'Maio', 
-            'Junho', 
-            'Julho', 
-            'Agosto', 
-            'Setembro', 
-            'Outubro', 
-            'Novembro', 
-            'Dezembro'
-        ],
-        labels: {
-            style: {
-                color: '#FFFFFF' 
+        yaxis: {
+            min: 0,
+            max: 100,
+            title: {
+                text: 'Taxa de Uso (%)',
+                style: {
+                    color: '#FFFFFF'
+                }
+            },
+            labels: {
+                style: {
+                    colors: '#FFFFFF'
+                }
+            }
+        },
+        tooltip: {
+            x: {
+                format: 'dd/MM/yy HH:mm'
+            }
+        },
+        grid: {
+            borderColor: '#555',
+            row: {
+                colors: ['transparent', 'rgba(255, 255, 255, 0.1)'],
+                opacity: 0.5
+            }
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'right',
+            labels: {
+                colors: '#FFFFFF'
             }
         }
-    },
-    yaxis: {
-        labels: {
-            style: {
-                color: '#FFFFFF' 
-            }
-        }
-    },
-    tooltip: {
-        y: {
-            formatter: function (val) {
-                return val + " minutos"; 
-            }
-        }
-    },
-    legend: {
-        labels: {
-            colors: '#FFFFFF' 
-        }
-    }
-};
+    };
 
-var chart = new ApexCharts(document.querySelector("#grafico3"), options);
-chart.render();
+    var chart = new ApexCharts(document.querySelector("#grafico2"), options);
+    chart.render();
+}
+
+function atualizarGrafico3(data) {
+    const downtime = data.map(item => item.tempo_downtime);
+    
+    var options = {
+        series: [{
+            data: downtime
+        }],
+        chart: {
+            type: 'bar',
+            height: 350,
+            toolbar: {
+                show: false
+            },
+        },
+        colors: ['#FFD700'],
+        title: {
+            text: 'Monitoramento de Downtime',
+            align: 'left',
+            style: {
+                color: '#FFFFFF',
+                fontSize: '20px'
+            }
+        },
+        plotOptions: {
+            bar: {
+                borderRadius: 4,
+                borderRadiusApplication: 'end',
+                horizontal: true,
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            style: {
+                colors: ['#FFFFFF']
+            }
+        },
+        xaxis: {
+            categories: [
+                'Janeiro',
+                'Fevereiro',
+                'Março',
+                'Abril',
+                'Maio',
+                'Junho',
+                'Julho',
+                'Agosto',
+                'Setembro',
+                'Outubro',
+                'Novembro',
+                'Dezembro'
+            ],
+            labels: {
+                style: {
+                    color: '#fff'
+                }
+            }
+        },
+        yaxis: {
+            labels: {
+                style: {
+                    color: '#FFFFFF'
+                }
+            }
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return val + " minutos";
+                }
+            }
+        },
+        legend: {
+            labels: {
+                colors: '#FFFFFF'
+            }
+        }
+    };
+
+    var chart = new ApexCharts(document.querySelector("#grafico3"), options);
+    chart.render();
+}
+
+buscarDadosGrafico(fkEquipamento);
 
 
     function abrirChat() {
