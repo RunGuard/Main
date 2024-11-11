@@ -110,25 +110,25 @@
             <!-- Card para Desvio Padrão de CPU -->
             <div class="card">
                 <div class="card-title">Desvio Padrão CPU</div>
-                <div id="card-value">15%</div>
+                <div id="desviopadraocpu"></div>
             </div>
         
             <!-- Card para Desvio Padrão de Memória RAM -->
             <div class="card">
                 <div class="card-title">Desvio Padrão Memória RAM</div>
-                <div id="card-value">10%</div>
+                <div id="desviopadraoram"></div>
             </div>
         
             <!-- Card para Taxa de Uso de I/O de Disco -->
             <div class="card">
                 <div class="card-title">Taxa de I/O Disco</div>
-                <div id="card-value">75%</div>
+                <div id="iodisco">75%</div>
             </div>
         
             <!-- Card para Downtime -->
             <div class="card">
                 <div class="card-title">Downtime</div>
-                <div id="card-value">120 min</div>
+                <div id="downtimetempo">120 min</div>
             </div>
         </div>
 
@@ -164,6 +164,7 @@
 <script>
 var fkEquipamento = 1;
 
+
 function buscarDadosGrafico(fkEquipamento) {
     fetch(`/rotaRoque/ultimaMedida/${fkEquipamento}`)
         .then(response => {
@@ -187,18 +188,24 @@ function buscarDadosGrafico(fkEquipamento) {
         });
 }
 
-function atualizarGrafico1(data) {
-    // Extrair os momentos (convertendo para formato de data/hora)
-    const momentos = data.map(item => {
-        const dtHora = new Date(item.momento); // Converte o campo momento para um objeto Date
-        return dtHora.toISOString(); // Converte para o formato ISO 8601 (para usar em gráfico de datetime)
-    });
 
-    // Extrair os dados do gráfico (desvio padrão de CPU e Memória)
+function atualizarGrafico1(data) {
+
+    const momentos = data.map(item => {
+    const dtHora = new Date(item.momento); 
+    dtHora.setHours(dtHora.getHours() - 3); 
+    return dtHora.toISOString();
+});
+
+
     const desvioPadraoCpu = data.map(item => item.desvio_padrao_cpu);
     const desvioPadraoMemoria = data.map(item => item.desvio_padrao_memoria);
 
-    // Configurações do gráfico de linha
+    document.getElementById("desviopadraocpu").innerHTML = desvioPadraoCpu[desvioPadraoCpu.length - 1] + "%";
+    document.getElementById("desviopadraoram").innerHTML = desvioPadraoMemoria[desvioPadraoMemoria.length - 1] + "%";
+
+
+
     var options = {
         series: [
             {
@@ -237,7 +244,7 @@ function atualizarGrafico1(data) {
             curve: 'smooth' 
         },
         title: {
-            text: `Desvio Padrão de CPU e Memória RAM - Última Medida: ${momentos[momentos.length - 1].toLocaleTimeString}`,
+            text: `Desvio Padrão de CPU e Memória RAM - Última Medida: ${momentos[momentos.length - 1]}`,
             align: 'left',
             style: {
                 color: '#FFFFFF',  
@@ -285,7 +292,7 @@ function atualizarGrafico1(data) {
                 }
             },
             min: 0,
-            max: 50 
+            max: 20 
         },
         legend: {
             position: 'top',

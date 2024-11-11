@@ -203,7 +203,13 @@ nav:hover {
     margin-bottom: 10px;
 }
 
-#card-value {
+#desviopadraocpu {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#desviopadraoram {
     font-size: 24px;
     font-weight: bold;
     color: white;

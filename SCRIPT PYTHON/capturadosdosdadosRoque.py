@@ -8,8 +8,8 @@ from datetime import datetime, timedelta
 def conectar_banco():
     return mysql.connector.connect(
         host="localhost",        
-        user="root",       
-        password="43589543Lu", 
+        user="aluno",       
+        password="sptech", 
         database="runguard"  
     )
 
@@ -128,7 +128,7 @@ def main():
         )
         
         # Atualiza a cada minuto
-        time.sleep(120)
+        time.sleep(10)
 
 # Executa a função principal
 if __name__ == "__main__":
