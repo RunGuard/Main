@@ -4,39 +4,33 @@ import numpy as np
 import mysql.connector
 from datetime import datetime, timedelta
 
-# Configuração da conexão com o banco de dados
 def conectar_banco():
     return mysql.connector.connect(
         host="localhost",        
-        user="aluno",       
-        password="sptech", 
+        user="root",       
+        password="43589543Lu", 
         database="runguard"  
     )
 
-# Variáveis globais para monitoramento de uptime e downtime
 inicio_uptime = datetime.now()
 duracao_downtime = timedelta(0)  
 ultima_verificacao_downtime = inicio_uptime
 
-# Listas para armazenar o histórico de CPU e Memória para calcular o desvio padrão
 historico_uso_cpu = []
 historico_uso_memoria = []
 
-# Função para capturar o uso de CPU e calcular o desvio padrão
 def capturar_uso_cpu():
     uso_cpu = psutil.cpu_percent(interval=1)
     historico_uso_cpu.append(uso_cpu)
     desvio_padrao_cpu = np.std(historico_uso_cpu) if len(historico_uso_cpu) > 1 else 0
     return uso_cpu, desvio_padrao_cpu
 
-# Função para capturar o uso de Memória RAM e calcular o desvio padrão
 def capturar_uso_memoria():
     uso_memoria = psutil.virtual_memory().percent
     historico_uso_memoria.append(uso_memoria)
     desvio_padrao_memoria = np.std(historico_uso_memoria) if len(historico_uso_memoria) > 1 else 0
     return uso_memoria, desvio_padrao_memoria
 
-# Função para capturar a taxa de I/O de Disco
 def capturar_uso_io():
     io_disco = psutil.disk_io_counters()
     uso_io = {
@@ -46,7 +40,6 @@ def capturar_uso_io():
     }
     return uso_io
 
-# Função para monitorar o Downtime do servidor
 def verificar_downtime():
     global inicio_uptime, duracao_downtime, ultima_verificacao_downtime
     hora_atual = datetime.now()
@@ -59,7 +52,6 @@ def verificar_downtime():
     ultima_verificacao_downtime = hora_atual
     return duracao_downtime.total_seconds() / 60 
 
-# Funções para calcular os KPIs
 def calcular_indice_estabilidade(desvio_padrao_cpu, desvio_padrao_memoria):
     indice_estabilidade = max(0, 100 - (desvio_padrao_cpu + desvio_padrao_memoria))
     return indice_estabilidade
@@ -72,7 +64,6 @@ def calcular_taxa_recuperacao(downtime):
     taxa_recuperacao = max(0, 100 - downtime)
     return taxa_recuperacao
 
-# Função para inserir dados no banco
 def inserir_dados(uso_cpu, desvio_padrao_cpu, uso_memoria, desvio_padrao_memoria, uso_io, downtime, indice_estabilidade, eficiencia_io, taxa_recuperacao, fkEquipamento):
     conexao = conectar_banco()
     cursor = conexao.cursor()
@@ -97,9 +88,8 @@ def inserir_dados(uso_cpu, desvio_padrao_cpu, uso_memoria, desvio_padrao_memoria
     cursor.close()
     conexao.close()
 
-# Função principal para captura e exibição dos dados
 def main():
-    fkEquipamento = 1  # Id do equipamento que você está monitorando (ajuste conforme necessário)
+    fkEquipamento = 1 
     while True:
         uso_cpu, desvio_padrao_cpu = capturar_uso_cpu()
         uso_memoria, desvio_padrao_memoria = capturar_uso_memoria()
@@ -110,7 +100,6 @@ def main():
         eficiencia_io = calcular_eficiencia_io(uso_io, uso_cpu)
         taxa_recuperacao = calcular_taxa_recuperacao(downtime)
 
-        # Exibição das métricas e KPIs formatados
         print(f"Uso de CPU: {uso_cpu:.2f}% | Desvio Padrão de CPU: {desvio_padrao_cpu:.2f}%")
         print(f"Uso de Memória RAM: {uso_memoria:.2f}% | Desvio Padrão de Memória RAM: {desvio_padrao_memoria:.2f}%")
         print(f"I/O do Disco - Bytes Lidos: {uso_io['bytes_lidos']} MB | Bytes Escritos: {uso_io['bytes_escritos']} MB")
@@ -121,14 +110,14 @@ def main():
         print(f"Taxa de Recuperação Pós-Downtime: {taxa_recuperacao:.2f}%")
         print("-" * 50)
 
-        # Inserir dados no banco de dados
+
         inserir_dados(
             uso_cpu, desvio_padrao_cpu, uso_memoria, desvio_padrao_memoria, uso_io,
             downtime, indice_estabilidade, eficiencia_io, taxa_recuperacao, fkEquipamento
         )
         
-        # Atualiza a cada minuto
-        time.sleep(10)
+
+        time.sleep(120)
 
 # Executa a função principal
 if __name__ == "__main__":

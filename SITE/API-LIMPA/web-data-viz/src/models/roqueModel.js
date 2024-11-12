@@ -16,8 +16,7 @@ async function buscarMedidaModel(fkEquipamento) {
     taxa_recuperacao
     FROM dado
     WHERE fkEquipamento = ${fkEquipamento}
-    ORDER BY dtHora;
-
+    ORDER BY dtHora DESC LIMIT 5;
     `;
 
     try {

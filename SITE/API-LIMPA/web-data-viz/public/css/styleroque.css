@@ -215,6 +215,18 @@ nav:hover {
     color: white;
 }
 
+#iodisco {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#downtimetempo{
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
 .kpi-cards-container {
     display: flex;
     gap: 20px;

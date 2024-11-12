@@ -137,7 +137,7 @@
                 <!-- Índice de Estabilidade do Servidor (ISS) -->
                 <div class="kpi-card">
                     <h2>Índice de Estabilidade do Servidor</h2>
-                    <p id="kpi-value">95%</p>
+                    <p id="estabilidade">95%</p>
                     <p class="kpi-description">Mede a estabilidade geral do servidor com base no desvio padrão de CPU e Memória RAM.</p>
                 </div>
             
@@ -175,7 +175,6 @@ function buscarDadosGrafico(fkEquipamento) {
         })
         .then(data => {
             if (Array.isArray(data)) {
-
                 atualizarGrafico1(data);
                 atualizarGrafico2(data);
                 atualizarGrafico3(data);
@@ -188,23 +187,21 @@ function buscarDadosGrafico(fkEquipamento) {
         });
 }
 
-
 function atualizarGrafico1(data) {
 
     const momentos = data.map(item => {
     const dtHora = new Date(item.momento); 
     dtHora.setHours(dtHora.getHours() - 3); 
     return dtHora.toISOString();
-});
-
+    });
 
     const desvioPadraoCpu = data.map(item => item.desvio_padrao_cpu);
     const desvioPadraoMemoria = data.map(item => item.desvio_padrao_memoria);
 
+    const indiceEstabilidade = data.map(item => item.indiceEstabilidade);
+
     document.getElementById("desviopadraocpu").innerHTML = desvioPadraoCpu[desvioPadraoCpu.length - 1] + "%";
     document.getElementById("desviopadraoram").innerHTML = desvioPadraoMemoria[desvioPadraoMemoria.length - 1] + "%";
-
-
 
     var options = {
         series: [
@@ -324,6 +321,8 @@ function atualizarGrafico1(data) {
 
 function atualizarGrafico2(data) {
     const usoIoTotal = data.map(item => item.uso_io_total);
+
+    document.getElementById("iodisco").innerHTML = usoIoTotal[usoIoTotal.length - 1] + " Bytes";
     
     var options = {
         series: [{
@@ -429,6 +428,9 @@ function atualizarGrafico2(data) {
 
 function atualizarGrafico3(data) {
     const downtime = data.map(item => item.tempo_downtime);
+
+    document.getElementById("downtimetempo").innerHTML = downtime[downtime.length - 1] + " Min";
+
     
     var options = {
         series: [{
