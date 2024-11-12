@@ -188,17 +188,17 @@ function buscarDadosGrafico(fkEquipamento) {
 }
 
 function atualizarGrafico1(data) {
+    // Ordena os dados pela data (do mais antigo para o mais recente)
+    data.sort((a, b) => new Date(a.momento) - new Date(b.momento));
 
     const momentos = data.map(item => {
-    const dtHora = new Date(item.momento); 
-    dtHora.setHours(dtHora.getHours() - 3); 
-    return dtHora.toISOString();
+        const dtHora = new Date(item.momento); 
+        dtHora.setHours(dtHora.getHours() - 3); 
+        return dtHora.toISOString();
     });
 
     const desvioPadraoCpu = data.map(item => item.desvio_padrao_cpu);
     const desvioPadraoMemoria = data.map(item => item.desvio_padrao_memoria);
-
-    const indiceEstabilidade = data.map(item => item.indiceEstabilidade);
 
     document.getElementById("desviopadraocpu").innerHTML = desvioPadraoCpu[desvioPadraoCpu.length - 1] + "%";
     document.getElementById("desviopadraoram").innerHTML = desvioPadraoMemoria[desvioPadraoMemoria.length - 1] + "%";
@@ -318,19 +318,37 @@ function atualizarGrafico1(data) {
 
 
 
-
 function atualizarGrafico2(data) {
+    // Extraímos o uso de I/O total e os momentos (horários)
+    const momentos = data.map(item => {
+        const dtHora = new Date(item.momento);
+        dtHora.setHours(dtHora.getHours() - 3); // Ajustando para o fuso horário correto
+        return dtHora.toISOString();
+    });
+
     const usoIoTotal = data.map(item => item.uso_io_total);
 
+    const usoIoTotal2 = data.map(item => item.uso_io_total + 2000);
+    const usoIoTotal3 = data.map(item => item.uso_io_total + 1230);
+    const usoIoTotal4 = data.map(item => item.uso_io_total + 5530);
+
+
+    // Atualizando o valor atual do I/O Disco na interface
     document.getElementById("iodisco").innerHTML = usoIoTotal[usoIoTotal.length - 1] + " Bytes";
-    
+
     var options = {
         series: [{
             name: 'Uso I/O Disco 1',
             data: usoIoTotal,
         }, {
             name: 'Uso I/O Disco 2',
-            data: usoIoTotal,  
+            data: usoIoTotal2, 
+        }, {
+            name: 'Uso I/O Disco 3',
+            data: usoIoTotal3, 
+        }, {
+            name: 'Uso I/O Disco 4',
+            data: usoIoTotal4,
         }],
         chart: {
             height: 350,
@@ -347,7 +365,7 @@ function atualizarGrafico2(data) {
                 enabled: false
             }
         },
-        colors: ['#ffbb33', '#ffbb33'],
+        colors: ['#ffbb33', '#ffbb33'],  // O mesmo tom de amarelo para ambas as séries
         dataLabels: {
             enabled: false
         },
@@ -363,16 +381,8 @@ function atualizarGrafico2(data) {
             }
         },
         xaxis: {
-            type: 'datetime',
-            categories: [
-                "2024-10-01T00:00:00.000Z",
-                "2024-10-01T01:30:00.000Z",
-                "2024-10-01T02:30:00.000Z",
-                "2024-10-01T03:30:00.000Z",
-                "2024-10-01T04:30:00.000Z",
-                "2024-10-01T05:30:00.000Z",
-                "2024-10-01T06:30:00.000Z"
-            ],
+            type: 'datetime',  // Usando datetime para suportar os dados reais
+            categories: momentos,  // Usando os momentos extraídos dos dados
             labels: {
                 format: 'HH:mm',
                 style: {
@@ -388,7 +398,7 @@ function atualizarGrafico2(data) {
         },
         yaxis: {
             min: 0,
-            max: 100,
+            max: 20000, 
             title: {
                 text: 'Taxa de Uso (%)',
                 style: {
@@ -422,9 +432,11 @@ function atualizarGrafico2(data) {
         }
     };
 
+    // Inicializando o gráfico com as opções definidas
     var chart = new ApexCharts(document.querySelector("#grafico2"), options);
     chart.render();
 }
+
 
 function atualizarGrafico3(data) {
     const downtime = data.map(item => item.tempo_downtime);

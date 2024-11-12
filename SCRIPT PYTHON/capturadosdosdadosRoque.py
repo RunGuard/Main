@@ -7,9 +7,9 @@ from datetime import datetime, timedelta
 def conectar_banco():
     return mysql.connector.connect(
         host="localhost",        
-        user="root",       
-        password="43589543Lu", 
-        database="runguard"  
+        user="aluno",       
+        password="sptech", 
+        database="runguard"
     )
 
 inicio_uptime = datetime.now()
@@ -117,7 +117,7 @@ def main():
         )
         
 
-        time.sleep(120)
+        time.sleep(10)
 
 # Executa a função principal
 if __name__ == "__main__":
