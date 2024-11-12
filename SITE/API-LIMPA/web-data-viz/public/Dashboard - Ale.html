@@ -15,7 +15,7 @@
 
 <body>
     <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
-    
+
     <div id="janelaChat" class="janela-chat">
         <div class="cabecalho-chat">
             <div style="display: flex; align-items: center;">
@@ -75,24 +75,41 @@
                     <i class="fas fa-sign-out-alt"></i>
                     <span class="nav-item">Sair</span></a></li>
         </ul>
-        
+
     </nav>
+    <div>a </div>
+    <div></div>
     <div id="chart-bytes" style="max-width: 800px; margin: 0 auto;"></div>
     <div id="chart-packets" style="max-width: 800px; margin: 0 auto;"></div>
 
     <!-- Gráficos de Monitoramento -->
-    
-    
 
-<div>
-    <div id="chart-cpu" style="max-width: 800px; margin: 0 auto;"></div>
-    <div id="chart-pie" style="max-width: 800px; margin: 0 auto;"></div>
-    <div id="chart-network" style="max-width: 800px; margin: 0 auto;"></div>
-</div>
 
-<div>
-    <div class="alert"> <div class="alert-content"> <h2>Aviso de Perda de Pacotes e Bytes</h2> <p><strong>Perda na Última Hora:</strong></p> <p>Perda de Pacotes: <span class="highlight">150 pacotes</span></p> <p>Perda de Bytes: <span class="highlight">2000 bytes</span></p> </div> </div> <div class="alert"> <div class="alert-content"> <h2>Aviso de Eventos de Perda</h2> <p><strong>Eventos na Última Hora:</strong></p> <p>Perda de Pacotes: <span class="highlight">3 vezes</span></p> <p>Perda de Bytes: <span class="highlight">2 vezes</span></p> </div> </div>
-</div>
+
+    <div>
+        <div id="chart-cpu" style="max-width: 800px; margin: 0 auto;"></div>
+        <div id="chart-pie" style="max-width: 800px; margin: 0 auto;"></div>
+        <div id="chart-network" style="max-width: 800px; margin: 0 auto;"></div>
+    </div>
+
+    <div>
+        <div class="alert">
+            <div class="alert-content">
+                <h2>Aviso de Perda de Pacotes e Bytes</h2>
+                <p><strong>Perda na Última Hora:</strong></p>
+                <p>Perda de Pacotes: <span class="highlight">150 pacotes</span></p>
+                <p>Perda de Bytes: <span class="highlight">2000 bytes</span></p>
+            </div>
+        </div>
+        <div class="alert">
+            <div class="alert-content">
+                <h2>Aviso de Eventos de Perda</h2>
+                <p><strong>Eventos na Última Hora:</strong></p>
+                <p>Perda de Pacotes: <span class="highlight">3 vezes</span></p>
+                <p>Perda de Bytes: <span class="highlight">2 vezes</span></p>
+            </div>
+        </div>
+    </div>
     <script>
         function abrirChat() {
             document.getElementById("janelaChat").style.display = "flex";
@@ -164,7 +181,7 @@
         }
 
         // Gráfico de Bytes Enviados e Recebidos
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function (){
             var optionsBytes = {
                 chart: {
                     type: 'line',
@@ -183,57 +200,31 @@
                     categories: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00']
                 },
                 title: {
-                    text: 'Monitoramento de Bytes'
+                    text: 'Monitoramento de Bytes',
+                    style: {
+                        color: 'white'
+                    }
                 },
                 legend: {
-                    position: 'top'
+                    position: 'top',
+                    style: {
+                        color: 'white'
+                    }
                 }
-            }
+            }}
 
-            var chartBytes = new ApexCharts(document.querySelector("#chart-bytes"), optionsBytes);
-            chartBytes.render();
-        });
+            
 
-        // Gráfico de Pacotes Enviados e Recebidos
-        document.addEventListener('DOMContentLoaded', function () {
-            var optionsPackets = {
-                chart: {
-                    type: 'line',
-                    height: 350
-                },
-                series: [{
-                    name: 'Pacotes Enviados',
-                    data: [120, 130, 140, 160, 170, 180, 200],
-                    color: '#FFC300' // Amarelo
-                }, {
-                    name: 'Pacotes Recebidos',
-                    data: [110, 125, 135, 150, 160, 170, 190],
-                    color: '#3498DB' // Azul
-                }],
-                xaxis: {
-                    categories: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00']
-                },
-                title: {
-                    text: 'Monitoramento de Pacotes'
-                },
-                legend: {
-                    position: 'top'
-                }
-            }
-
-            var chartPackets = new ApexCharts(document.querySelector("#chart-packets"), optionsPackets);
-            chartPackets.render();
-        });
-
-
+            document.addEventListener('DOMContentLoaded', function () {
         var options = {
             series: [75],
             chart: {
                 height: 350,
                 type: 'radialBar',
                 toolbar: {
-                    show: true
-                }
+                    show: true,
+                },
+                background: '##292930eb' // Definindo o fundo do gráfico
             },
             plotOptions: {
                 radialBar: {
@@ -242,11 +233,7 @@
                     hollow: {
                         margin: 0,
                         size: '70%',
-                        background: '#fff',
-                        image: undefined,
-                        imageOffsetX: 0,
-                        imageOffsetY: 0,
-                        position: 'front',
+                        background: '#FFF',
                         dropShadow: {
                             enabled: true,
                             top: 3,
@@ -258,7 +245,7 @@
                     track: {
                         background: '#fff',
                         strokeWidth: '67%',
-                        margin: 0, // margin is in pixels
+                        margin: 0,
                         dropShadow: {
                             enabled: true,
                             top: -3,
@@ -267,7 +254,6 @@
                             opacity: 0.35
                         }
                     },
-
                     dataLabels: {
                         show: true,
                         name: {
@@ -280,7 +266,6 @@
                             formatter: function (val) {
                                 return parseInt(val);
                             },
-                                
                             fontSize: '36px',
                             show: true,
                         }
@@ -306,6 +291,8 @@
             labels: ['Porcentagem da CPU'],
         };
 
+
+
         var chart = new ApexCharts(document.querySelector("#chart-cpu"), options);
         chart.render();
 
@@ -319,7 +306,10 @@
                 series: [70, 30],
                 labels: ['CPU Usada', 'CPU Livre'],
                 title: {
-                    text: 'Utilização da CPU'
+                    text: 'Utilização da CPU',
+                    style: {
+                        color: 'white'
+                    }
                 },
                 legend: {
                     position: 'top'
@@ -329,9 +319,9 @@
 
             var chartPie = new ApexCharts(document.querySelector("#chart-pie"), optionsPie);
             chartPie.render();
-            
+
         });
-        
+
 
 
 
