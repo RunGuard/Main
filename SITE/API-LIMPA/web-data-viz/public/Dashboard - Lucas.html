@@ -137,14 +137,14 @@
                 <!-- Índice de Estabilidade do Servidor (ISS) -->
                 <div class="kpi-card">
                     <h2>Índice de Estabilidade do Servidor</h2>
-                    <p id="estabilidade">95%</p>
+                    <p id="estabilidade"></p>
                     <p class="kpi-description">Mede a estabilidade geral do servidor com base no desvio padrão de CPU e Memória RAM.</p>
                 </div>
             
                 <!-- Índice de Eficiência de I/O e CPU (IEIC) -->
                 <div class="kpi-card">
                     <h2>Índice de Eficiência de I/O e CPU</h2>
-                    <p id="kpi-value">85%</p>
+                    <p id="eficiencia"></p>
                     <p class="kpi-description">Relaciona a eficiência do uso de I/O com a estabilidade da CPU.</p>
                 </div>
             
@@ -199,9 +199,15 @@ function atualizarGrafico1(data) {
 
     const desvioPadraoCpu = data.map(item => item.desvio_padrao_cpu);
     const desvioPadraoMemoria = data.map(item => item.desvio_padrao_memoria);
+    const estabilidadeServer = data.map(item => item.indice_estabilidade);
+    const eficienciaServer = data.map(item => item.eficiencia_io_cpu);
 
     document.getElementById("desviopadraocpu").innerHTML = desvioPadraoCpu[desvioPadraoCpu.length - 1] + "%";
     document.getElementById("desviopadraoram").innerHTML = desvioPadraoMemoria[desvioPadraoMemoria.length - 1] + "%";
+
+    document.getElementById("estabilidade").innerHTML = estabilidadeServer[estabilidadeServer.length - 1] + "%";
+    document.getElementById("eficiencia").innerHTML = eficienciaServer[eficienciaServer.length - 1] + "%";
+
 
     var options = {
         series: [
@@ -398,7 +404,7 @@ function atualizarGrafico2(data) {
         },
         yaxis: {
             min: 0,
-            max: 20000, 
+            max: 35000, 
             title: {
                 text: 'Taxa de Uso (%)',
                 style: {
