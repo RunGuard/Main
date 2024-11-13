@@ -7,8 +7,8 @@ from datetime import datetime, timedelta
 def conectar_banco():
     return mysql.connector.connect(
         host="localhost",        
-        user="aluno",       
-        password="sptech", 
+        user="root",       
+        password="43589543Lu", 
         database="runguard"
     )
 
@@ -40,17 +40,25 @@ def capturar_uso_io():
     }
     return uso_io
 
-def verificar_downtime():
+def verificar_downtime(simular_downtime=False):
     global inicio_uptime, duracao_downtime, ultima_verificacao_downtime
     hora_atual = datetime.now()
-    uso_cpu, _ = capturar_uso_cpu()
-    uso_memoria, _ = capturar_uso_memoria()
+    
+    if simular_downtime:
+        uso_cpu = 0 
+        uso_memoria = 0  
+    else:
+        uso_cpu, _ = capturar_uso_cpu()
+        uso_memoria, _ = capturar_uso_memoria()
+
     if uso_cpu == 0 and uso_memoria == 0:
         duracao_downtime += hora_atual - ultima_verificacao_downtime
     else:
         inicio_uptime = hora_atual
+    
     ultima_verificacao_downtime = hora_atual
-    return duracao_downtime.total_seconds() / 60 
+    return duracao_downtime.total_seconds() / 60
+ 
 
 def calcular_indice_estabilidade(desvio_padrao_cpu, desvio_padrao_memoria):
     indice_estabilidade = max(0, 100 - (desvio_padrao_cpu + desvio_padrao_memoria))
