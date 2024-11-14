@@ -270,6 +270,13 @@ nav:hover {
     margin: 10px 0;
 }
 
+#taxaup {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
 .kpi-description {
     font-size: 14px;
     color: #d1d1d1;

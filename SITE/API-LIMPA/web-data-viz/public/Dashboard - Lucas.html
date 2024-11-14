@@ -151,7 +151,7 @@
                 <!-- Taxa de Recuperação Pós-Downtime (TRPD) -->
                 <div class="kpi-card">
                     <h2>Taxa de Recuperação Pós-Downtime</h2>
-                    <p id="kpi-value">78%</p>
+                    <p id="taxaup"></p>
                     <p class="kpi-description">Avalia a capacidade do servidor de estabilizar CPU e Memória RAM após downtime.</p>
                 </div>
             </div>            
@@ -188,7 +188,6 @@ function buscarDadosGrafico(fkEquipamento) {
 }
 
 function atualizarGrafico1(data) {
-    // Ordena os dados pela data (do mais antigo para o mais recente)
     data.sort((a, b) => new Date(a.momento) - new Date(b.momento));
 
     const momentos = data.map(item => {
@@ -325,10 +324,9 @@ function atualizarGrafico1(data) {
 
 
 function atualizarGrafico2(data) {
-    // Extraímos o uso de I/O total e os momentos (horários)
     const momentos = data.map(item => {
         const dtHora = new Date(item.momento);
-        dtHora.setHours(dtHora.getHours() - 3); // Ajustando para o fuso horário correto
+        dtHora.setHours(dtHora.getHours() - 3); 
         return dtHora.toISOString();
     });
 
@@ -338,8 +336,6 @@ function atualizarGrafico2(data) {
     const usoIoTotal3 = data.map(item => item.uso_io_total + 1230);
     const usoIoTotal4 = data.map(item => item.uso_io_total + 5530);
 
-
-    // Atualizando o valor atual do I/O Disco na interface
     document.getElementById("iodisco").innerHTML = usoIoTotal[usoIoTotal.length - 1] + " Bytes";
 
     var options = {
@@ -371,7 +367,7 @@ function atualizarGrafico2(data) {
                 enabled: false
             }
         },
-        colors: ['#ffbb33', '#ffbb33'],  // O mesmo tom de amarelo para ambas as séries
+        colors: ['#ffbb33', '#ffbb33'],  
         dataLabels: {
             enabled: false
         },
@@ -387,8 +383,8 @@ function atualizarGrafico2(data) {
             }
         },
         xaxis: {
-            type: 'datetime',  // Usando datetime para suportar os dados reais
-            categories: momentos,  // Usando os momentos extraídos dos dados
+            type: 'datetime',  
+            categories: momentos,  
             labels: {
                 format: 'HH:mm',
                 style: {
@@ -438,18 +434,49 @@ function atualizarGrafico2(data) {
         }
     };
 
-    // Inicializando o gráfico com as opções definidas
     var chart = new ApexCharts(document.querySelector("#grafico2"), options);
     chart.render();
 }
 
-
 function atualizarGrafico3(data) {
-    const downtime = data.map(item => item.tempo_downtime);
+
+    function agruparPorSemana(dados) {
+        const semanas = [];
+        let semanaAtual = [];
+        let semanaIndex = 0;
+
+        dados.forEach((item, index) => {
+            const semana = Math.floor(index / 7); // Agrupar por 7 dias
+
+            if (semana !== semanaIndex) {
+                if (semanaAtual.length > 0) {
+                    semanas.push(semanaAtual.reduce((acc, curr) => acc + curr, 0)); // Soma dos downtimes da semana
+                }
+                semanaAtual = [];
+                semanaIndex = semana;
+            }
+
+            semanaAtual.push(item.tempo_downtime); // Adiciona o downtime do item na semana atual
+        });
+
+        if (semanaAtual.length > 0) {
+            semanas.push(semanaAtual.reduce((acc, curr) => acc + curr, 0)); // Soma da última semana
+        }
+
+        return semanas;
+    }
+
+    const downtime = agruparPorSemana(data);
+    const taxaRecuperacaoDowntime = data.map(item => item.taxa_recuperacao)
 
     document.getElementById("downtimetempo").innerHTML = downtime[downtime.length - 1] + " Min";
+    document.getElementById("taxaup").innerHTML = taxaRecuperacaoDowntime[taxaRecuperacaoDowntime.length - 1] + " %";
 
-    
+    const semanas = [];
+    for (let i = 1; i <= downtime.length; i++) {
+        semanas.push(`Semana ${i}`);
+    }
+
     var options = {
         series: [{
             data: downtime
@@ -484,20 +511,7 @@ function atualizarGrafico3(data) {
             }
         },
         xaxis: {
-            categories: [
-                'Janeiro',
-                'Fevereiro',
-                'Março',
-                'Abril',
-                'Maio',
-                'Junho',
-                'Julho',
-                'Agosto',
-                'Setembro',
-                'Outubro',
-                'Novembro',
-                'Dezembro'
-            ],
+            categories: semanas,
             labels: {
                 style: {
                     color: '#fff'
@@ -528,6 +542,7 @@ function atualizarGrafico3(data) {
     var chart = new ApexCharts(document.querySelector("#grafico3"), options);
     chart.render();
 }
+
 
 buscarDadosGrafico(fkEquipamento);
 
