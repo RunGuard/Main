@@ -63,7 +63,7 @@
                 </a></li>
             <li><a href="Dashboard - Diego.html">
                     <i class="fas fa-chart-pie"></i>
-                    <span class="nav-item">Dashboard 3</span>
+                    <span class="nav-item">Histórico de alertas</span>
                 </a></li>
             <li><a href="Dashboard - Guilherme.html">
                     <i class="fas fa-chart-column"></i>
@@ -89,13 +89,70 @@
     </nav>
     <div class="fantasma">a</div>
 
-    <div class="content d-flex row jc-center gap">
+    <div class="content d-flex row jc-space-evenly gap">
+        
+        <div class="padding d-flex column ai-center jc-space-around">
+
+            <h1>Visão geral</h1>
+
+            <div class="d-flex medias row jc-space-around">
+                <div class="total-alertas media">
+                    <p class="font-media"><span>Quantidade </span>total de alertas no<span> último ano</span></p>
+                    <hr>
+                    <p id="alerta-total" class="alerta-info">Sem dados</p>
+                </div>
+
+                <div class="media ai-center padding d-flex column jc-space-around">
+                    <p class="font-media"><span>Quantidade</span> de alertas <span>prevista</span>: <i
+                            onmouseover="abrirR2()" class="fa-regular fa-circle-question"
+                            style="color: #ffffff; cursor: pointer;"></i></p>
+                    <hr>
+                    <h1 id="previsao"> </h1>
+                </div>
+            </div>
+            
+            <div class="ranking js-center as-center">
+                <table class="font-media">
+                    <caption>Ranking dos 3 servidores com mais alertas</caption>
+                    <tr style="color: #ffdc60;">
+                        <th>Ranking</th>
+                        <th>Servidor</th>
+                        <th>Total alertas</th>
+                    </tr>
+                    <tr>
+                        <td>1°</td>
+                        <td id="ranking-primeiro">Sem dados</td>
+                        <td id="ranking-primeiro-qtd">Sem dados</td>
+                    </tr>
+                    <tr>
+                        <td>2°</td>
+                        <td id="ranking-segundo">Sem dados</td>
+                        <td id="ranking-segundo-qtd">Sem dados</td>
+                    </tr>
+                    <tr>
+                        <td>3°</td>
+                        <td id="ranking-terceiro">Sem dados</td>
+                        <td id="ranking-terceiro-qtd">Sem dados</td>
+                    </tr>
+                </table>
+            </div>
+
+            <a class="visao-detalhada d-flex column font-media" onclick="abrirModal()">Alertas a cada mês:
+                <br><span>Clique para visualizar ⟶</span>
+            </a>
+            
+        </div>
+
+        <div class="d-flex">
+            <hr class="separador js-center as-center">
+        </div>
+
         <div class="d-flex column ai-center jc-space-evenly">
 
             <h1>Filtre seus alertas</h1>
 
             <div class="d-flex column ai-center padding filtro">
-                <h2>Selecione o intervalo entre os meses para monitorar</h2>
+                <h3>Selecione o intervalo entre os meses para monitorar</h3>
                 <div class="range-container">
                     <div class="output">
                         <span id="minValue">1</span>
@@ -137,69 +194,15 @@
                 <div class="media">
                     <p><span>Servidor</span> com mais alerta no <span>período selecionado</span></p>
                     <hr>
-                    <p id="servidor-alerta" class="alerta-info">XX</p>
+                    <p id="servidor-alerta" class="alerta-info as-center" style="font-size: 1.4em !important;">XX</p>
                 </div>
             </div>
 
             <div class="grafico as-center">
                 <div id="chart"></div>
             </div>
-
         </div>
 
-        <div class="d-flex ai-center column gap">
-            <a class="visao-detalhada d-flex column font-media" onclick="abrirModal()">Alertas a cada mês: <br><span>Visão Detalhada ⟶</span></a>
-            <hr class="separador as-center">
-        </div>
-
-
-        <div class="padding d-flex column ai-center jc-space-around">
-
-            <h1>Visão geral</h1>
-
-            <div class="d-flex row content2 jc-space-evenly">
-                <div class="previsto ai-center padding d-flex column jc-space-around">
-                    <p class="font-media"><span>Quantidade</span> de alertas <span>prevista</span>: <i
-                            onmouseover="abrirR2()" class="fa-regular fa-circle-question"
-                            style="color: #ffffff; cursor: pointer;"></i></p>
-                    <h1 id="previsao"> </h1>
-                </div>
-            </div>
-
-            <div class="medias font-media">
-                <div class="total-alertas media">
-                    <p><span>Quantidade </span>total de alertas no<span> último ano</span></p>
-                    <hr>
-                    <p id="alerta-total" class="alerta-info">100</p>
-                </div>
-            </div>
-
-            <div class="ranking as-center">
-                <table class="font-media">
-                    <caption>Ranking de servidores com mais alertas</caption>
-                    <tr style="color: #ffdc60;">
-                        <th>Ranking</th>
-                        <th>Servidor</th>
-                        <th>Total alertas</th>
-                    </tr>
-                    <tr>
-                        <td>1°</td>
-                        <td id="ranking-primeiro">Sem dados</td>
-                        <td id="ranking-primeiro-qtd">Sem dados</td>
-                    </tr>
-                    <tr>
-                        <td>2°</td>
-                        <td id="ranking-segundo">Sem dados</td>
-                        <td id="ranking-segundo-qtd">Sem dados</td>
-                    </tr>
-                    <tr>
-                        <td>3°</td>
-                        <td id="ranking-terceiro">Sem dados</td>
-                        <td id="ranking-terceiro-qtd">Sem dados</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
     </div>
 
     <div id="r2" class="r2 d-flex column padding">
@@ -213,7 +216,8 @@
     <div id="modal-background" onclick="fecharModal()" class="modal-background">a</div>
 
     <div id="modal" class="modal padding d-flex column ai-center jc-space-evenly">
-        <i onclick="fecharModal()" class="as-end fa-regular fa-circle-xmark" style="color: #f7f7f7; cursor: pointer;"></i>
+        <i onclick="fecharModal()" class="as-end fa-regular fa-circle-xmark"
+            style="color: #f7f7f7; cursor: pointer;"></i>
         <h1>Visão detalhada</h1>
         <span>Selecione o mês que você deseja monitorar:</span>
         <select onchange="graficoDetails()" id="slc_mes">
@@ -233,7 +237,9 @@
         </select>
 
         <div class="grafico padding">
-            <div style="text-align: center;" class="ai-center d-flex padding" id="chartDetails"><h2>Selecione um mês</h2></div>
+            <div style="text-align: center;" class="ai-center d-flex padding" id="chartDetails">
+                <h2>Selecione um mês</h2>
+            </div>
         </div>
 
     </div>
@@ -298,5 +304,5 @@
         document.getElementById("modal-background").style.display = "none"
     }
 
-    
+
 </script>

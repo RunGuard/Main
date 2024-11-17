@@ -22,6 +22,10 @@
     justify-content: center;
 }
 
+.js-center {
+    justify-self: center;
+}
+
 .as-end {
     align-self: end;
 }
@@ -51,9 +55,9 @@
     height: 100vh;
 }
 
-.content2 {
-    width: 100%;
-    gap: 1%;
+.media {
+    box-shadow: #000000 -2px -2px 10px inset, #797979 2px 2px 10px inset;
+
 }
 
 .media span {
@@ -84,10 +88,11 @@
     background-color: #292930;
     width: 30vw;
     border-radius: 7px;
+    box-shadow: #000000 -2px -2px 10px inset, #797979 2px 2px 10px inset;
     height: 45vh;
     color: white;
     padding: 7px;
-    border: 2px solid #ffff;
+    border: 1px solid #ffff;
     justify-content: center;
     align-items: center;
 }
@@ -104,10 +109,11 @@
 .filtro {
     text-align: center;
     color: #ffff;
-    border: 2px solid #ddd;
     background-color: #292930;
     border-radius: 7px;
-    width: 65%;
+    width: 100%;
+    border: 1px solid #ffff;
+    box-shadow: #000000 -2px -2px 10px inset, #797979 2px 2px 10px inset;
 }
 
 .filtro input {
@@ -121,12 +127,13 @@ td, th {
 }
 
 h1 {
+    text-align: center;
     color: #fff;
     margin: 0.5%;
     margin-bottom: 0;
 }
 
-h2 {
+h3 {
     margin-bottom: 10%;
     width: 100%;
     justify-self: center;
@@ -218,7 +225,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .separador {
-    height: 86%;
+    height: 90%;
     width: 1px;
     border: 1px solid #ddd;
 }
@@ -234,32 +241,17 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .grafico {
+    box-shadow: #000000 -2px -2px 10px inset, #797979 2px 2px 10px inset;
     background-color: #292930;
     width: fit-content;
     height: fit-content;
     border-radius: 7px;
     color: white;
-    border: 2px solid #ffff;
+    border: 1px solid #ffff;
 }
 
 .apexcharts-menu-item {
     color: black !important;
-}
-
-.previsto {
-    background-color: #292930;
-    width: 15vw;
-    height: 15vh;
-    text-align: center;
-    border-radius: 7px;
-    align-self: center;
-    color: white;
-    padding: 7px;
-    border: 2px solid #ffff;
-}
-
-.previsto span {
-    color: #ffdc60;
 }
 
 #rquadrado {
@@ -267,14 +259,14 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .total-alertas {
-    width: 70%;
+    width: 15vw;
 }
 
 .r2 {
     display: none;
     position: absolute;
-    top: 3vh;
-    right: 1vw;
+    top: 2vh;
+    left: 41vw;
     background-color: #acacaceb;
     height: fit-content;
     width: 15vw;
@@ -330,12 +322,48 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .visao-detalhada {
-    margin: 2%;
-    border: 1px dashed #fff;
-    box-shadow: #1a1a1a 5px 5px 10px;
+    box-shadow: #000000 2px 2px 10px, #797979 -2px -2px 10px;
     text-align: center;
     cursor: pointer;
     color: #ececec;
+    position: relative;
+    background-color: #292930;
+    border-radius: 5px;
+}
+
+@property --angulo {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.visao-detalhada::after, .visao-detalhada::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(from var(--angulo), transparent 75%, #ffc014);
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 4px;
+    border-radius: 5px;
+    animation: 2.5s rodar linear infinite;
+}
+
+.visao-detalhada::before{
+    filter: blur(1.5rem);
+    opacity: 0.5;
+}
+
+@keyframes rodar {
+    from{
+        --angulo: 0deg
+    }
+    to{
+        --angulo: 360deg
+    }
 }
 
 .visao-detalhada:hover {
@@ -349,7 +377,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .visao-detalhada:hover span {
-    transform: translateX(110px);
+    transform: translateX(35%);
 }
 
 .modal h1 {

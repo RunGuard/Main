@@ -1,3 +1,4 @@
+var ranking = false
 async function atualizarGrafico() {
     var mes1 = sessionStorage.MINVALUE
     var mes2 = sessionStorage.MAXVALUE
@@ -19,14 +20,19 @@ async function atualizarGrafico() {
             console.log(dado)
             document.getElementById("servidor-alerta").innerHTML = `${dado[0].nomeEquipamento} <span id="qtd-servidor-alerta" style="font-size: 0.6em;"> XX</span><span
                         style="font-size: 0.6em;"> alertas</span>`
-
             document.getElementById("qtd-servidor-alerta").innerHTML = "/" + dado[0].total_alerta
-            document.getElementById("ranking-primeiro").innerHTML = dado[0].nomeEquipamento
-            document.getElementById("ranking-primeiro-qtd").innerHTML = dado[0].total_alerta
-            document.getElementById("ranking-segundo").innerHTML = dado[1].nomeEquipamento
-            document.getElementById("ranking-segundo-qtd").innerHTML = dado[1].total_alerta
-            document.getElementById("ranking-terceiro").innerHTML = dado[2].nomeEquipamento
-            document.getElementById("ranking-terceiro-qtd").innerHTML = dado[2].total_alerta
+
+            if (!ranking){
+                document.getElementById("ranking-primeiro").innerHTML = dado[0].nomeEquipamento
+                document.getElementById("ranking-primeiro-qtd").innerHTML = dado[0].total_alerta
+                document.getElementById("ranking-segundo").innerHTML = dado[1].nomeEquipamento
+                document.getElementById("ranking-segundo-qtd").innerHTML = dado[1].total_alerta
+                document.getElementById("ranking-terceiro").innerHTML = dado[2].nomeEquipamento
+                document.getElementById("ranking-terceiro-qtd").innerHTML = dado[2].total_alerta
+                ranking = true
+            } else {
+
+            }
         })
 
     fetch(`/dashboard-Diego/atualizarGrafico/${mes1}/${mes2}`, {
@@ -76,8 +82,8 @@ async function atualizarGrafico() {
                 }],
                 chart: {
                     type: 'bar',
-                    height: 375,
-                    width: 600,
+                    height: 300,
+                    width: 505,
                 },
                 plotOptions: {
                     bar: {
@@ -223,6 +229,8 @@ function graficoDetails() {
                     text: 'Quantidade de alertas por dia no mês selecionado',
                     align: 'center',
                     style: {
+                        fontWeight: '400',
+                        fontSize: '2em',
                         color: 'white'
                     }
                 },
