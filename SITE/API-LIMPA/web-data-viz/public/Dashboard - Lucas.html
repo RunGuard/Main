@@ -163,6 +163,7 @@
 </body>
 <script>
 var fkEquipamento = 1;
+var chart = null;
 
 
 function buscarDadosGrafico(fkEquipamento) {
@@ -207,9 +208,121 @@ function atualizarGrafico1(data) {
     document.getElementById("estabilidade").innerHTML = estabilidadeServer[estabilidadeServer.length - 1] + "%";
     document.getElementById("eficiencia").innerHTML = eficienciaServer[eficienciaServer.length - 1] + "%";
 
+    if (!chart) {
+        var options = {
+            series: [
+                {
+                    name: 'Desvio Padrão de CPU',
+                    data: desvioPadraoCpu
+                },
+                {
+                    name: 'Desvio Padrão de Memória RAM',
+                    data: desvioPadraoMemoria
+                }
+            ],
+            chart: {
+                height: 350,
+                type: 'line',
+                dropShadow: {
+                    enabled: true,
+                    color: '#000',
+                    top: 18,
+                    left: 7,
+                    blur: 10,
+                    opacity: 0.2
+                },
+                zoom: {
+                    enabled: false
+                },
+                toolbar: {
+                    show: false
+                },
+                background: '#292930',
+            },
+            colors: ['#FFD700', '#FFEA00'],
+            dataLabels: {
+                enabled: true
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            title: {
+                text: `Desvio Padrão de CPU e Memória RAM - Última Medida: ${momentos[momentos.length - 1]}`,
+                align: 'left',
+                style: {
+                    color: '#FFFFFF',
+                    fontSize: '16px'
+                }
+            },
+            grid: {
+                borderColor: '#444',
+                row: {
+                    colors: ['#555', 'transparent'],
+                    opacity: 0.5
+                }
+            },
+            markers: {
+                size: 5,
+                colors: ['#FFD700', '#FFEA00'],
+                strokeColor: '#fff',
+                strokeWidth: 2
+            },
+            xaxis: {
+                type: 'datetime',
+                categories: momentos,
+                title: {
+                    text: 'Hora',
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                },
+                labels: {
+                    style: {
+                        colors: ['#FFFFFF']
+                    }
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Desvio Padrão',
+                    style: {
+                        color: '#FFD700'
+                    }
+                },
+                labels: {
+                    style: {
+                        colors: ['#FFD700']
+                    }
+                },
+                min: 0,
+                max: 20
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                floating: true,
+                offsetY: -25,
+                offsetX: -5,
+                labels: {
+                    colors: '#FFFFFF'
+                }
+            },
+            tooltip: {
+                x: {
+                    format: 'dd/MM/yy HH:mm'
+                },
+                style: {
+                    fontSize: '12px',
+                    color: '#FFFFFF'
+                }
+            }
+        };
 
-    var options = {
-        series: [
+        chart = new ApexCharts(document.querySelector("#grafico1"), options);
+        chart.render();
+    } else {
+   
+        chart.updateSeries([
             {
                 name: 'Desvio Padrão de CPU',
                 data: desvioPadraoCpu
@@ -218,110 +331,25 @@ function atualizarGrafico1(data) {
                 name: 'Desvio Padrão de Memória RAM',
                 data: desvioPadraoMemoria
             }
-        ],
-        chart: {
-            height: 350,
-            type: 'line', 
-            dropShadow: {
-                enabled: true,
-                color: '#000',
-                top: 18,
-                left: 7,
-                blur: 10,
-                opacity: 0.2
-            },
-            zoom: {
-                enabled: false  
-            },
-            toolbar: {
-                show: false  
-            },
-            background: '#292930', 
-        },
-        colors: ['#FFD700', '#FFEA00'], 
-        dataLabels: {
-            enabled: true  
-        },
-        stroke: {
-            curve: 'smooth' 
-        },
-        title: {
-            text: `Desvio Padrão de CPU e Memória RAM - Última Medida: ${momentos[momentos.length - 1]}`,
-            align: 'left',
-            style: {
-                color: '#FFFFFF',  
-                fontSize: '16px'
-            }
-        },
-        grid: {
-            borderColor: '#444',  
-            row: {
-                colors: ['#555', 'transparent'],  
-                opacity: 0.5
-            }
-        },
-        markers: {
-            size: 5, 
-            colors: ['#FFD700', '#FFEA00'],
-            strokeColor: '#fff',
-            strokeWidth: 2
-        },
-        xaxis: {
-            type: 'datetime',  
-            categories: momentos,  
-            title: {
-                text: 'Hora',
-                style: {
-                    color: '#FFFFFF'  
-                }
-            },
-            labels: {
-                style: {
-                    colors: ['#FFFFFF']  
-                }
-            }
-        },
-        yaxis: {
-            title: {
-                text: 'Desvio Padrão',
-                style: {
-                    color: '#FFD700'  
-                }
-            },
-            labels: {
-                style: {
-                    colors: ['#FFD700']  
-                }
-            },
-            min: 0,
-            max: 20 
-        },
-        legend: {
-            position: 'top',
-            horizontalAlign: 'right',
-            floating: true,
-            offsetY: -25,
-            offsetX: -5,
-            labels: {
-                colors: '#FFFFFF'  
-            }
-        },
-        tooltip: {
-            x: {
-                format: 'dd/MM/yy HH:mm' 
-            },
-            style: {
-                fontSize: '12px',
-                color: '#FFFFFF' 
-            }
-        }
-    };
+        ]);
 
-    var chart = new ApexCharts(document.querySelector("#grafico1"), options);
-    chart.render();
+        chart.updateOptions({
+            title: {
+                text: `Desvio Padrão de CPU e Memória RAM - Última Medida: ${momentos[momentos.length - 1]}`
+            },
+            xaxis: {
+                categories: momentos
+            }
+        });
+    }
 }
 
+setInterval(() => {
+    buscarDadosGrafico(fkEquipamento);
+}, 5000);
 
+
+var chart2 = null; // 
 
 function atualizarGrafico2(data) {
     const momentos = data.map(item => {
@@ -331,112 +359,146 @@ function atualizarGrafico2(data) {
     });
 
     const usoIoTotal = data.map(item => item.uso_io_total);
-
     const usoIoTotal2 = data.map(item => item.uso_io_total + 2000);
     const usoIoTotal3 = data.map(item => item.uso_io_total + 1230);
     const usoIoTotal4 = data.map(item => item.uso_io_total + 5530);
 
     document.getElementById("iodisco").innerHTML = usoIoTotal[usoIoTotal.length - 1] + " Bytes";
 
-    var options = {
-        series: [{
-            name: 'Uso I/O Disco 1',
-            data: usoIoTotal,
-        }, {
-            name: 'Uso I/O Disco 2',
-            data: usoIoTotal2, 
-        }, {
-            name: 'Uso I/O Disco 3',
-            data: usoIoTotal3, 
-        }, {
-            name: 'Uso I/O Disco 4',
-            data: usoIoTotal4,
-        }],
-        chart: {
-            height: 350,
-            type: 'area',
-            dropShadow: {
-                enabled: true,
-                top: 10,
-                left: 5,
-                blur: 3,
-                color: '#000',
-                opacity: 0.2
+    if (!chart2) {
+        var options = {
+            series: [{
+                name: 'Uso I/O Disco 1',
+                data: usoIoTotal,
+            }, {
+                name: 'Uso I/O Disco 2',
+                data: usoIoTotal2, 
+            }, {
+                name: 'Uso I/O Disco 3',
+                data: usoIoTotal3, 
+            }, {
+                name: 'Uso I/O Disco 4',
+                data: usoIoTotal4,
+            }],
+            chart: {
+                height: 350,
+                type: 'area',
+                dropShadow: {
+                    enabled: true,
+                    top: 10,
+                    left: 5,
+                    blur: 3,
+                    color: '#000',
+                    opacity: 0.2
+                },
+                zoom: {
+                    enabled: false
+                }
             },
-            zoom: {
+            colors: ['#ffbb33', '#f39c12', '#e67e22', '#d35400'],  
+            dataLabels: {
                 enabled: false
-            }
-        },
-        colors: ['#ffbb33', '#ffbb33'],  
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            curve: 'smooth'
-        },
-        title: {
-            text: 'Monitoramento da Taxa de Uso de I/O de Disco',
-            align: 'left',
-            style: {
-                fontSize: '18px',
-                color: '#FFFFFF'
-            }
-        },
-        xaxis: {
-            type: 'datetime',  
-            categories: momentos,  
-            labels: {
-                format: 'HH:mm',
-                style: {
-                    colors: '#FFFFFF'
-                }
+            },
+            stroke: {
+                curve: 'smooth'
             },
             title: {
-                text: 'Horário',
+                text: 'Monitoramento da Taxa de Uso de I/O de Disco',
+                align: 'left',
                 style: {
-                    color: '#FFFFFF'
-                }
-            }
-        },
-        yaxis: {
-            min: 0,
-            max: 35000, 
-            title: {
-                text: 'Taxa de Uso (%)',
-                style: {
+                    fontSize: '18px',
                     color: '#FFFFFF'
                 }
             },
-            labels: {
-                style: {
+            xaxis: {
+                type: 'datetime',
+                categories: momentos,
+                labels: {
+                    format: 'HH:mm',
+                    style: {
+                        colors: '#FFFFFF'
+                    }
+                },
+                title: {
+                    text: 'Horário',
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                }
+            },
+            yaxis: {
+                min: 0,
+                max: 35000,
+                title: {
+                    text: 'Taxa de Uso (%)',
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                },
+                labels: {
+                    style: {
+                        colors: '#FFFFFF'
+                    }
+                }
+            },
+            tooltip: {
+                x: {
+                    format: 'dd/MM/yy HH:mm'
+                }
+            },
+            grid: {
+                borderColor: '#555',
+                row: {
+                    colors: ['transparent', 'rgba(255, 255, 255, 0.1)'],
+                    opacity: 0.5
+                }
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                labels: {
                     colors: '#FFFFFF'
                 }
             }
-        },
-        tooltip: {
-            x: {
-                format: 'dd/MM/yy HH:mm'
-            }
-        },
-        grid: {
-            borderColor: '#555',
-            row: {
-                colors: ['transparent', 'rgba(255, 255, 255, 0.1)'],
-                opacity: 0.5
-            }
-        },
-        legend: {
-            position: 'top',
-            horizontalAlign: 'right',
-            labels: {
-                colors: '#FFFFFF'
-            }
-        }
-    };
+        };
 
-    var chart = new ApexCharts(document.querySelector("#grafico2"), options);
-    chart.render();
+        chart2 = new ApexCharts(document.querySelector("#grafico2"), options);
+        chart2.render();
+
+    } else {
+        chart2.updateSeries([
+            {
+                name: 'Uso I/O Disco 1',
+                data: usoIoTotal,
+            },
+            {
+                name: 'Uso I/O Disco 2',
+                data: usoIoTotal2,
+            },
+            {
+                name: 'Uso I/O Disco 3',
+                data: usoIoTotal3,
+            },
+            {
+                name: 'Uso I/O Disco 4',
+                data: usoIoTotal4,
+            }
+        ]);
+
+        chart2.updateOptions({
+            xaxis: {
+                categories: momentos
+            }
+        });
+    }
 }
+
+setInterval(() => {
+    buscarDadosGrafico(fkEquipamento);
+}, 5000);
+
+
+var chart3 = null;
 
 function atualizarGrafico3(data) {
 
@@ -446,28 +508,28 @@ function atualizarGrafico3(data) {
         let semanaIndex = 0;
 
         dados.forEach((item, index) => {
-            const semana = Math.floor(index / 7); // Agrupar por 7 dias
+            const semana = Math.floor(index / 7); 
 
             if (semana !== semanaIndex) {
                 if (semanaAtual.length > 0) {
-                    semanas.push(semanaAtual.reduce((acc, curr) => acc + curr, 0)); // Soma dos downtimes da semana
+                    semanas.push(semanaAtual.reduce((acc, curr) => acc + curr, 0));
                 }
                 semanaAtual = [];
                 semanaIndex = semana;
             }
 
-            semanaAtual.push(item.tempo_downtime); // Adiciona o downtime do item na semana atual
+            semanaAtual.push(item.tempo_downtime); 
         });
 
         if (semanaAtual.length > 0) {
-            semanas.push(semanaAtual.reduce((acc, curr) => acc + curr, 0)); // Soma da última semana
+            semanas.push(semanaAtual.reduce((acc, curr) => acc + curr, 0)); 
         }
 
         return semanas;
     }
 
     const downtime = agruparPorSemana(data);
-    const taxaRecuperacaoDowntime = data.map(item => item.taxa_recuperacao)
+    const taxaRecuperacaoDowntime = data.map(item => item.taxa_recuperacao);
 
     document.getElementById("downtimetempo").innerHTML = downtime[downtime.length - 1] + " Min";
     document.getElementById("taxaup").innerHTML = taxaRecuperacaoDowntime[taxaRecuperacaoDowntime.length - 1] + " %";
@@ -477,71 +539,90 @@ function atualizarGrafico3(data) {
         semanas.push(`Semana ${i}`);
     }
 
-    var options = {
-        series: [{
-            data: downtime
-        }],
-        chart: {
-            type: 'bar',
-            height: 350,
-            toolbar: {
-                show: false
-            },
-        },
-        colors: ['#FFD700'],
-        title: {
-            text: 'Monitoramento de Downtime',
-            align: 'left',
-            style: {
-                color: '#FFFFFF',
-                fontSize: '20px'
-            }
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 4,
-                borderRadiusApplication: 'end',
-                horizontal: true,
-            }
-        },
-        dataLabels: {
-            enabled: true,
-            style: {
-                colors: ['#FFFFFF']
-            }
-        },
-        xaxis: {
-            categories: semanas,
-            labels: {
-                style: {
-                    color: '#fff'
-                }
-            }
-        },
-        yaxis: {
-            labels: {
-                style: {
-                    color: '#FFFFFF'
-                }
-            }
-        },
-        tooltip: {
-            y: {
-                formatter: function (val) {
-                    return val + " minutos";
-                }
-            }
-        },
-        legend: {
-            labels: {
-                colors: '#FFFFFF'
-            }
-        }
-    };
+    if (!chart3) {
 
-    var chart = new ApexCharts(document.querySelector("#grafico3"), options);
-    chart.render();
+        var options = {
+            series: [{
+                data: downtime
+            }],
+            chart: {
+                type: 'bar',
+                height: 350,
+                toolbar: {
+                    show: false
+                },
+            },
+            colors: ['#FFD700'],
+            title: {
+                text: 'Monitoramento de Downtime',
+                align: 'left',
+                style: {
+                    color: '#FFFFFF',
+                    fontSize: '20px'
+                }
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    borderRadiusApplication: 'end',
+                    horizontal: true,
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                style: {
+                    colors: ['#FFFFFF']
+                }
+            },
+            xaxis: {
+                categories: semanas,
+                labels: {
+                    style: {
+                        color: '#fff'
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        color: '#FFFFFF'
+                    }
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val + " minutos";
+                    }
+                }
+            },
+            legend: {
+                labels: {
+                    colors: '#FFFFFF'
+                }
+            }
+        };
+
+        chart3 = new ApexCharts(document.querySelector("#grafico3"), options);
+        chart3.render();
+    } else {
+
+        chart3.updateSeries([{
+            data: downtime
+        }]);
+
+        chart3.updateOptions({
+            xaxis: {
+                categories: semanas
+            }
+        });
+    }
 }
+
+setInterval(() => {
+    buscarDadosGrafico(fkEquipamento);
+}, 5000);
+
 
 
 buscarDadosGrafico(fkEquipamento);
