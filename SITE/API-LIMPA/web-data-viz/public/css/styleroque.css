@@ -238,10 +238,14 @@ nav:hover {
     background-color: #3B3B45;
     border-radius: 10px;
     padding: 20px;
-    width: 250px;
+    width: 300px;
+    height: 100%;
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .kpi-card h2 {
@@ -281,4 +285,45 @@ nav:hover {
     font-size: 14px;
     color: #d1d1d1;
 }
+
+select {
+    appearance: none;
+    border: 0;
+    box-shadow: none;
+    /* Personalize */
+    flex: 1;
+    padding: 0 1em;
+    color: #fff;
+    background: #3B3B45;
+    background-image: none;
+    cursor: pointer;
+  }
+  /* Remove IE arrow */
+  select::-ms-expand {
+    display: none;
+  }
+  .select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    border-radius: .25em;
+    overflow: hidden;
+    background: #3B3B45;
+  }
+  /* Arrow */
+  .select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1em;
+    background-color: #3B3B45;
+    transition: .25s all ease;
+    pointer-events: none;
+  }
+  .select:hover::after {
+    color: #f39c12;
+  }
+ 
 

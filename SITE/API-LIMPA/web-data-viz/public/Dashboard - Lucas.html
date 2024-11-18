@@ -87,84 +87,84 @@
     <div class="fundo">
         <div class="titulo">
             <h1>Monitoramento de Desvio e Demanda</h1>
+                <div class="select">
+                  <select id="selectServidor">
+                    <option disabled selected>Selecione um Servidor</option>
+                  </select>
         </div>
-        <div class="alinhamento">
-        <div class="fundografico">
-            <div id="grafico1"></div>
-        </div>
-        <div class="fundografico">
-          <div id="grafico2"></div>
-        </div>
-        <div class="fundografico">
-          <div id="grafico3"></div>
-        </div>
-      </div>
-      <div class="titulo">
-        <h1>KPI's para fácil entendimento dos gráficos</h1>
-    </div>
 
-    <div class="alinharcards">
-      <div class="alinhamento2">
        
-        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-left: 230px;">
-            <!-- Card para Desvio Padrão de CPU -->
-            <div class="card">
-                <div class="card-title">Desvio Padrão CPU</div>
-                <div id="desviopadraocpu"></div>
-            </div>
         
-            <!-- Card para Desvio Padrão de Memória RAM -->
-            <div class="card">
-                <div class="card-title">Desvio Padrão Memória RAM</div>
-                <div id="desviopadraoram"></div>
-            </div>
+        <div class="alinharcards">
+            <div class="alinhamento2">
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-left: 230px;">
+                    <!-- Card para Desvio Padrão de CPU -->
+                    <div class="card">
+                        <div class="card-title">Desvio Padrão CPU</div>
+                        <div id="desviopadraocpu"></div>
+                    </div>
         
-            <!-- Card para Taxa de Uso de I/O de Disco -->
-            <div class="card">
-                <div class="card-title">Taxa de I/O Disco</div>
-                <div id="iodisco">75%</div>
-            </div>
+                    <!-- Card para Desvio Padrão de Memória RAM -->
+                    <div class="card">
+                        <div class="card-title">Desvio Padrão Memória RAM</div>
+                        <div id="desviopadraoram"></div>
+                    </div>
         
-            <!-- Card para Downtime -->
-            <div class="card">
-                <div class="card-title">Downtime</div>
-                <div id="downtimetempo">120 min</div>
+                    <!-- Card para Taxa de Uso de I/O de Disco -->
+                    <div class="card">
+                        <div class="card-title">Taxa de I/O Disco</div>
+                        <div id="iodisco">75%</div>
+                    </div>
+        
+                    <!-- Card para Downtime -->
+                    <div class="card">
+                        <div class="card-title">Downtime</div>
+                        <div id="downtimetempo">120 min</div>
+                    </div>
+                </div>
+        
+                <div class="alinhamento3">
+                    <div class="kpi-cards-container">
+                        <!-- Índice de Estabilidade do Servidor (ISS) -->
+                        <div class="kpi-card">
+                            <h2>Índice de Estabilidade do Servidor</h2>
+                            <p id="estabilidade"></p>
+                            <p class="kpi-description">Mede a estabilidade geral do servidor com base no desvio padrão de CPU e Memória RAM.</p>
+                        </div>
+        
+                        <!-- Índice de Eficiência de I/O e CPU (IEIC) -->
+                        <div class="kpi-card">
+                            <h2>Índice de Eficiência de I/O e CPU</h2>
+                            <p id="eficiencia"></p>
+                            <p class="kpi-description">Relaciona a eficiência do uso de I/O com a estabilidade da CPU.</p>
+                        </div>
+        
+                        <!-- Taxa de Recuperação Pós-Downtime (TRPD) -->
+                        <div class="kpi-card">
+                            <h2>Taxa de Recuperação Pós-Downtime</h2>
+                            <p id="taxaup">10%</p>
+                            <p class="kpi-description">Avalia a capacidade do servidor de estabilizar CPU e Memória RAM após downtime.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="alinhamento3">
-            <div class="kpi-cards-container">
-                <!-- Índice de Estabilidade do Servidor (ISS) -->
-                <div class="kpi-card">
-                    <h2>Índice de Estabilidade do Servidor</h2>
-                    <p id="estabilidade"></p>
-                    <p class="kpi-description">Mede a estabilidade geral do servidor com base no desvio padrão de CPU e Memória RAM.</p>
-                </div>
-            
-                <!-- Índice de Eficiência de I/O e CPU (IEIC) -->
-                <div class="kpi-card">
-                    <h2>Índice de Eficiência de I/O e CPU</h2>
-                    <p id="eficiencia"></p>
-                    <p class="kpi-description">Relaciona a eficiência do uso de I/O com a estabilidade da CPU.</p>
-                </div>
-            
-                <!-- Taxa de Recuperação Pós-Downtime (TRPD) -->
-                <div class="kpi-card">
-                    <h2>Taxa de Recuperação Pós-Downtime</h2>
-                    <p id="taxaup"></p>
-                    <p class="kpi-description">Avalia a capacidade do servidor de estabilizar CPU e Memória RAM após downtime.</p>
-                </div>
-            </div>            
-        </div>
-    </div>
-      </div>
-    </div>
-</html>
-</body>
+    
+        <div class="alinhamento">
+            <div class="fundografico">
+                <div id="grafico1"></div>
+            </div>
+            <div class="fundografico">
+                <div id="grafico2"></div>
+            </div>
+            <div class="fundografico">
+                <div id="grafico3"></div>
+            </div>
+        </div>        
 <script>
-var fkEquipamento = 1;
+carregarServidores();
+var fkEquipamento = selectServidor.value;
 var chart = null;
-
 
 function buscarDadosGrafico(fkEquipamento) {
     fetch(`/rotaRoque/ultimaMedida/${fkEquipamento}`)
@@ -187,6 +187,36 @@ function buscarDadosGrafico(fkEquipamento) {
             console.error("Erro ao buscar dados: ", error);
         });
 }
+
+function carregarServidores() {
+    fetch('/rotaRoque/servidores')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar servidores: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(servidores => {
+            const selectServidor = document.getElementById('selectServidor');
+            
+            selectServidor.innerHTML = '<option disabled selected>Selecione um Servidor</option>';
+            
+            servidores.forEach(servidor => {
+                const option = document.createElement('option');
+                option.value = servidor.idEquipamento;
+                option.textContent = servidor.nomeEquipamento;
+                selectServidor.appendChild(option); 
+            });
+        })
+        .catch(error => {
+            console.error("Erro ao carregar servidores:", error);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    carregarServidores();
+});
+
 
 function atualizarGrafico1(data) {
     data.sort((a, b) => new Date(a.momento) - new Date(b.momento));
@@ -346,7 +376,7 @@ function atualizarGrafico1(data) {
 
 setInterval(() => {
     buscarDadosGrafico(fkEquipamento);
-}, 5000);
+}, 10000);
 
 
 var chart2 = null; // 
@@ -495,7 +525,7 @@ function atualizarGrafico2(data) {
 
 setInterval(() => {
     buscarDadosGrafico(fkEquipamento);
-}, 5000);
+}, 10000);
 
 
 var chart3 = null;
@@ -621,7 +651,7 @@ function atualizarGrafico3(data) {
 
 setInterval(() => {
     buscarDadosGrafico(fkEquipamento);
-}, 5000);
+}, 10000);
 
 
 

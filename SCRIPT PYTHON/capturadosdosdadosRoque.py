@@ -7,8 +7,8 @@ from datetime import datetime, timedelta
 def conectar_banco():
     return mysql.connector.connect(
         host="localhost",        
-        user="root",       
-        password="43589543Lu", 
+        user="aluno",       
+        password="sptech", 
         database="runguard"
     )
 
@@ -40,7 +40,7 @@ def capturar_uso_io():
     }
     return uso_io
 
-def verificar_downtime(simular_downtime=False):
+def verificar_downtime(simular_downtime= False):
     global inicio_uptime, duracao_downtime, ultima_verificacao_downtime
     hora_atual = datetime.now()
     

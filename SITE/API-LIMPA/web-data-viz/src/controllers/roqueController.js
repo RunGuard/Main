@@ -10,6 +10,14 @@ function buscarMedidas(req, res) {
         })
 }
 
+function buscarServidor(req, res) {
+    roqueModel.buscarServidores()
+        .then(function (servidores) {
+            res.status(200).json(servidores);
+        });
+}
+
 module.exports = {
-    buscarMedidas
+    buscarMedidas,
+    buscarServidor
 };
