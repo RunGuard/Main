@@ -107,3 +107,389 @@
             </div>
         </div>
     </div>
+
+
+
+<script>
+    function abrirChat() {
+        document.getElementById("janelaChat").style.display = "flex";
+    }
+
+    function fecharChat() {
+        document.getElementById("janelaChat").style.display = "none";
+    }
+
+    function obterHoraAtual() {
+        const options = {
+            timeZone: 'America/Sao_Paulo',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+        const agora = new Date();
+        return agora.toLocaleTimeString('pt-BR', options);
+    }
+
+    async function gerarResposta() {
+        const pergunta = document.getElementById('entradaUsuario').value;
+
+        var entrada = document.getElementById("entradaUsuario");
+        var mensagem = entrada.value.trim();
+
+        const response = await fetch('/perguntar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ pergunta })
+        });
+
+        const data = await response.json();
+
+        conversa.push(mensagem)
+        conversa.push(data.resultado)
+
+        if (mensagem !== "") {
+            var mensagemUsuario = document.createElement("div");
+            mensagemUsuario.classList.add("mensagem", "usuario");
+            mensagemUsuario.innerText = mensagem;
+            document.getElementById("corpoChat").appendChild(mensagemUsuario);
+
+            var horaUsuario = document.createElement("div");
+            horaUsuario.classList.add("hora-mensagem");
+            horaUsuario.innerText = obterHoraAtual();
+            document.getElementById("corpoChat").appendChild(horaUsuario);
+
+            entrada.value = "";
+
+            setTimeout(function () {
+                var mensagemAssistente = document.createElement("div");
+                mensagemAssistente.classList.add("mensagem", "assistente");
+                mensagemAssistente.innerText = data.resultado;
+                document.getElementById("corpoChat").appendChild(mensagemAssistente);
+
+                var horaAssistente = document.createElement("div");
+                horaAssistente.classList.add("hora-mensagem", "assistente");
+                horaAssistente.innerText = obterHoraAtual();
+                document.getElementById("corpoChat").appendChild(horaAssistente);
+
+                document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+            }, 1000);
+
+            document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+        }
+    }
+
+    // Função para monitorar dados enviados e recebidos
+    function monitorarDados() {
+        const minBytes = 1024 * 1024; // 1 MB em bytes
+        const minPacotes = 10;
+        
+        const ping  = 993;
+        const bytesEnviados = 500000;
+        const bytesRecebidos = 920000; 
+        const pacotesEnviados = 5; 
+        const pacotesRecebidos = 8; 
+        const bytesEnviadosMB = (bytesEnviados / (1024 * 1024)).toFixed(2); 
+        const bytesRecebidosMB = (bytesRecebidos / (1024 * 1024)).toFixed(2);
+        if (bytesEnviados < minBytes) {
+            document.getElementById("perdaBytes").innerText = `${bytesEnviadosMB} bytes enviados (Alerta: Abaixo de 1MB)`;
+        }
+        if (bytesRecebidos < minBytes) {
+            document.getElementById("perdaBytes").innerText = `${bytesRecebidosMB} bytes recebidos (Alerta: Abaixo de 1MB)`;
+        }
+        if (pacotesEnviados < minPacotes) {
+            document.getElementById("perdaPacotes").innerText = `${pacotesEnviados} pacotes enviados (Alerta: Abaixo de 10 pacotes)`;
+        }
+        if (pacotesRecebidos < minPacotes) {
+            document.getElementById("perdaPacotes").innerText = `${pacotesRecebidos} pacotes recebidos (Alerta: Abaixo de 10 pacotes)`;
+        }
+        if(ping > 100){
+            document.getElementById("pingAlerta").innerText = `${ping}ms (Alerta: Latência acima de 100ms) `
+        }
+    }
+
+    monitorarDados();
+
+    document.addEventListener('DOMContentLoaded', function () {
+    var optionsBytes = {
+        chart: {
+            type: 'line',
+            height: 350
+        },
+        series: [{
+            name: 'Bytes Enviados',
+            data: [300, 400, 350, 500, 490, 620, 690],
+            color: '#FFC300' // Amarelo
+        }, {
+            name: 'Bytes Recebidos',
+            data: [400, 430, 448, 470, 540, 580, 690],
+            color: '#3498DB' // Azul
+        }],
+        xaxis: {
+            categories: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00']
+        },
+        title: {
+            text: 'Monitoramento de Bytes',
+            style: {
+                color: '#FFFFFF'
+            }
+        },
+        legend: {
+            position: 'top',
+            labels: {
+                colors: ['#FFFFFF']
+            }
+        }
+    };
+
+    var chartBytes = new ApexCharts(document.querySelector("#chart-bytes"), optionsBytes);
+    chartBytes.render();
+});
+
+// Gráfico de Pacotes Enviados e Recebidos
+document.addEventListener('DOMContentLoaded', function () {
+    var optionsPackets = {
+        chart: {
+            type: 'line',
+            height: 350
+        },
+        series: [{
+            name: 'Pacotes Enviados',
+            data: [120, 130, 140, 160, 170, 180, 200],
+            color: '#FFC300' // Amarelo
+        }, {
+            name: 'Pacotes Recebidos',
+            data: [110, 125, 135, 150, 160, 170, 190],
+            color: '#3498DB' // Azul
+        }],
+        xaxis: {
+            categories: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00']
+        },
+        title: {
+            text: 'Monitoramento de Pacotes',
+            style: {
+                color: '#FFFFFF'
+            }
+        },
+        legend: {
+            position: 'top',
+            labels: {
+                colors: ['#FFFFFF']
+            }
+        }
+    };
+
+    var chartPackets = new ApexCharts(document.querySelector("#chart-packets"), optionsPackets);
+    chartPackets.render();
+});
+
+// Gráfico de Utilização de CPU
+var options = {
+    series: [75],
+    chart: {
+        height: 350,
+        type: 'radialBar',
+        toolbar: {
+            show: true
+        }
+    },
+    plotOptions: {
+        radialBar: {
+            startAngle: -135,
+            endAngle: 225,
+            hollow: {
+                margin: 0,
+                size: '70%',
+                background: '#fff',
+                image: undefined,
+                imageOffsetX: 0,
+                imageOffsetY: 0,
+                position: 'front',
+                dropShadow: {
+                    enabled: true,
+                    top: 3,
+                    left: 0,
+                    blur: 4,
+                    opacity: 0.24
+                }
+            },
+            track: {
+                background: '#fff',
+                strokeWidth: '67%',
+                margin: 0, // margin is in pixels
+                dropShadow: {
+                    enabled: true,
+                    top: -3,
+                    left: 0,
+                    blur: 4,
+                    opacity: 0.35
+                }
+            },
+
+            dataLabels: {
+                show: true,
+                name: {
+                    offsetY: -10,
+                    show: true,
+                    color: '#FFFFFF',
+                    fontSize: '17px'
+                },
+                value: {
+                    formatter: function (val) {
+                        return parseInt(val);
+                    },
+
+                    fontSize: '36px',
+                    show: true,
+                    color: '#FFFFFF'
+                }
+            }
+        }
+    },
+    fill: {
+        type: 'gradient',
+        gradient: {
+            shade: 'dark',
+            type: 'horizontal',
+            shadeIntensity: 0.5,
+            gradientToColors: ['#ABE5A1'],
+            inverseColors: true,
+            opacityFrom: 1,
+            opacityTo: 1,
+            stops: [0, 100]
+        }
+    },
+    title: {
+        text: 'Utilização de CPU',
+        style: {
+            color: '#FFFFFF'
+        }
+    },
+    legend: {
+        position: 'top',
+        labels: {
+            colors: ['#FFFFFF']
+        }
+    }
+};
+
+var chart = new ApexCharts(document.querySelector("#chart-cpu"), options);
+chart.render();
+
+// Gráfico de Pizza de Utilização de Memória
+document.addEventListener('DOMContentLoaded', function () {
+    var optionsPie = {
+        chart: {
+            type: 'pie',
+            height: 350
+        },
+        series: [70, 30],
+        labels: ['CPU Usada', 'CPU Livre'],
+        title: {
+            text: 'Utilização da CPU',
+            style: {
+                color: '#FFFFFF'
+            }
+        },
+        legend: {
+            position: 'top',
+            labels: {
+                colors: ['#FFFFFF']
+            }
+        },
+        colors: ['#FFC300', '#3498DB']
+    };
+
+    var chartPie = new ApexCharts(document.querySelector("#chart-pie"), optionsPie);
+    chartPie.render();
+});
+
+// Gráfico de Alertas
+var optionsAlerts = {
+    series: [{
+        name: 'Alertas',
+        data: data
+    }],
+    chart: {
+        type: 'bar',
+        height: 400,
+        width: 600,
+    },
+    plotOptions: {
+        bar: {
+            horizontal: false,
+            columnWidth: '55%',
+            endingShape: 'rounded'
+        },
+    },
+    colors: ['#ffdc60'],
+    title: {
+        text: 'Quantidade de alertas no período selecionado',
+        align: 'center',
+        style: {
+            color: 'white'
+        }
+    },
+    dataLabels: {
+        enabled: true,
+        style: {
+            color: '#000'
+        }
+    },
+    stroke: {
+        show: false,
+        width: 2,
+        colors: ['transparent']
+    },
+    xaxis: {
+        categories: categoria,
+        labels: {
+            style: {
+                colors: Array(categoria.length).fill('white'),
+                weight: 400
+            }
+        },
+    },
+    yaxis: {
+        labels: {
+            style: {
+                colors: Array(categoria.length).fill('#696969')
+            },
+        },
+        min: 0,
+    },
+    fill: {
+        opacity: 1
+    },
+    tooltip: {
+        y: {
+            formatter: function (val) {
+                return val + " alertas"
+            },
+            title: {
+                formatter: function (seriesName) {
+                    return seriesName + ':';
+                },
+                style: {
+                    color: '#fff'
+                }
+            }
+        },
+        style: {
+            fontSize: '14px',
+            fontFamily: 'Arial, sans-serif',
+            color: '#fff'
+        },
+        theme: 'dark'
+    }
+};
+
+var chartAlerts = new ApexCharts(document.querySelector("#chart-alerts"), optionsAlerts);
+chartAlerts.render();
+
+</script>
+
+</body>
+
+</html>
