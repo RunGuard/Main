@@ -40,10 +40,7 @@ bytes_recebidos double,
 bytes_enviados double,
 pacotes_recebidos double,
 pacotes_enviados double,
-erros_envio double,
-erros_recebidos double,
-pacotes_descartados_env double,
-pacotes_descartados_rec double,
+ping int,
 dtHora datetime default current_timestamp,
 fkEquipamento int,
     constraint fkEquipamentoDados foreign key (fkEquipamento) references equipamento (idEquipamento)
@@ -87,10 +84,8 @@ SELECT
     CONCAT(d.bytes_enviados, "GB") AS "Bytes enviados",
     CONCAT(d.pacotes_recebidos, "GB") AS "Pacotes recebidos",
     CONCAT(d.pacotes_enviados, "GB") AS "Pacotes enviados",
-    CONCAT(d.erros_envio, "GB") AS "Erros no envio",
-    CONCAT(d.erros_recebidos, "GB") AS "Erros na recepção",
-    CONCAT(d.pacotes_descartados_env, "GB") AS "Pacotes de envio descartados",
-    CONCAT(d.pacotes_descartados_rec, "GB") AS "Pacotes de recebimento descartados",
+    CONCAT(d.ping, "ms") AS "Latência",
+   
     d.dtHora AS "Data",
     e.nomeEquipamento AS Equipamento
 FROM 
