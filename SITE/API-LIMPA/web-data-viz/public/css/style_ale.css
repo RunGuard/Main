@@ -47,3 +47,35 @@
 .alert-content strong {
     color: #FFC300;
 }
+
+#charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding-top: 20px;
+    margin: 0 20px;
+}
+.chart, .alert {
+    margin: 20px;
+    background: #2c2c2c;
+    padding: 20px;
+    border-radius: 10px;
+    width: 45%;
+}
+.chart-title {
+    color: white;
+    text-align: center;
+}
+.alert-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    margin: 0 20px;
+}
+.alert-content {
+    color: white;
+    text-align: left;
+}
+.nav{
+    margin-right: 200px;
+}
