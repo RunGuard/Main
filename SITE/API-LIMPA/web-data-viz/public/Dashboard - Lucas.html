@@ -113,13 +113,13 @@
                     <!-- Card para Taxa de Uso de I/O de Disco -->
                     <div class="card">
                         <div class="card-title">Taxa de I/O Disco</div>
-                        <div id="iodisco">75%</div>
+                        <div id="iodisco"></div>
                     </div>
         
                     <!-- Card para Downtime -->
                     <div class="card">
                         <div class="card-title">Downtime</div>
-                        <div id="downtimetempo">120 min</div>
+                        <div id="downtimetempo"></div>
                     </div>
                 </div>
         
@@ -142,7 +142,7 @@
                         <!-- Taxa de Recuperação Pós-Downtime (TRPD) -->
                         <div class="kpi-card">
                             <h2>Taxa de Recuperação Pós-Downtime</h2>
-                            <p id="taxaup">10%</p>
+                            <p id="taxaup"></p>
                             <p class="kpi-description">Avalia a capacidade do servidor de estabilizar CPU e Memória RAM após downtime.</p>
                         </div>
                     </div>
@@ -162,11 +162,12 @@
             </div>
         </div>        
 <script>
-carregarServidores();
-var fkEquipamento = selectServidor.value;
-var chart = null;
-
 function buscarDadosGrafico(fkEquipamento) {
+    if (!fkEquipamento) {
+        console.error("fkEquipamento não foi definido. Certifique-se de que o servidor foi selecionado.");
+        return;
+    }
+
     fetch(`/rotaRoque/ultimaMedida/${fkEquipamento}`)
         .then(response => {
             if (!response.ok) {
@@ -176,9 +177,9 @@ function buscarDadosGrafico(fkEquipamento) {
         })
         .then(data => {
             if (Array.isArray(data)) {
-                atualizarGrafico1(data);
-                atualizarGrafico2(data);
-                atualizarGrafico3(data);
+                atualizarGrafico1(data); 
+                atualizarGrafico2(data); 
+                atualizarGrafico3(data); 
             } else {
                 console.error('Formato de dados inesperado:', data);
             }
@@ -187,6 +188,8 @@ function buscarDadosGrafico(fkEquipamento) {
             console.error("Erro ao buscar dados: ", error);
         });
 }
+
+let fkEquipamento = null;
 
 function carregarServidores() {
     fetch('/rotaRoque/servidores')
@@ -199,13 +202,23 @@ function carregarServidores() {
         .then(servidores => {
             const selectServidor = document.getElementById('selectServidor');
             
-            selectServidor.innerHTML = '<option disabled selected>Selecione um Servidor</option>';
+            selectServidor.innerHTML = '<option disabled selected value="">Selecione um Servidor</option>';
             
             servidores.forEach(servidor => {
                 const option = document.createElement('option');
-                option.value = servidor.idEquipamento;
+                option.value = servidor.idEquipamento; 
                 option.textContent = servidor.nomeEquipamento;
                 selectServidor.appendChild(option); 
+            });
+
+            selectServidor.addEventListener('change', function () {
+                fkEquipamento = this.value; // Define a variável global
+                if (fkEquipamento) {
+                    console.log(`Servidor selecionado: ${fkEquipamento}`);
+                    buscarDadosGrafico(fkEquipamento); 
+                } else {
+                    console.warn("Nenhum servidor foi selecionado.");
+                }
             });
         })
         .catch(error => {
@@ -217,6 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
     carregarServidores();
 });
 
+var chart = null;
 
 function atualizarGrafico1(data) {
     data.sort((a, b) => new Date(a.momento) - new Date(b.momento));
@@ -379,7 +393,7 @@ setInterval(() => {
 }, 10000);
 
 
-var chart2 = null; // 
+var chart2 = null; 
 
 function atualizarGrafico2(data) {
     const momentos = data.map(item => {
@@ -527,7 +541,6 @@ setInterval(() => {
     buscarDadosGrafico(fkEquipamento);
 }, 10000);
 
-
 var chart3 = null;
 
 function atualizarGrafico3(data) {
@@ -653,10 +666,7 @@ setInterval(() => {
     buscarDadosGrafico(fkEquipamento);
 }, 10000);
 
-
-
 buscarDadosGrafico(fkEquipamento);
-
 
     function abrirChat() {
         document.getElementById("janelaChat").style.display = "flex";

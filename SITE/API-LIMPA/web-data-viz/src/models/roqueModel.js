@@ -1,9 +1,7 @@
 var database = require("../database/config");
 
 async function buscarMedidaModel(fkEquipamento) {
-    if (isNaN(fkEquipamento)) {
-        throw new Error("fkEquipamento deve ser um número válido");
-    }
+    const fkEquipamentoNum = fkEquipamento;
 
     const query = `
         SELECT 
@@ -20,7 +18,7 @@ async function buscarMedidaModel(fkEquipamento) {
             taxa_recuperacao
         FROM dado 
         JOIN equipamento ON fkEquipamento = idEquipamento
-        WHERE fkEquipamento = ${fkEquipamento}
+        WHERE fkEquipamento = ${fkEquipamentoNum}
         ORDER BY dtHora DESC LIMIT 5;
     `;
 
@@ -31,7 +29,6 @@ async function buscarMedidaModel(fkEquipamento) {
         throw new Error("Erro ao buscar dados do banco: " + error.message);
     }
 }
-
 
 async function buscarServidores() {
     const query = `
