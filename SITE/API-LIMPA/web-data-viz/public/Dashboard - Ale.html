@@ -182,34 +182,78 @@
 
     // Função para monitorar dados enviados e recebidos
     function monitorarDados() {
-        const minBytes = 1024 * 1024; // 1 MB em bytes
-        const minPacotes = 10;
-        
-        const ping  = 993;
-        const bytesEnviados = 500000;
-        const bytesRecebidos = 920000; 
-        const pacotesEnviados = 5; 
-        const pacotesRecebidos = 8; 
-        const bytesEnviadosMB = (bytesEnviados / (1024 * 1024)).toFixed(2); 
-        const bytesRecebidosMB = (bytesRecebidos / (1024 * 1024)).toFixed(2);
-        if (bytesEnviados < minBytes) {
-            document.getElementById("perdaBytes").innerText = `${bytesEnviadosMB} bytes enviados (Alerta: Abaixo de 1MB)`;
-        }
-        if (bytesRecebidos < minBytes) {
-            document.getElementById("perdaBytes").innerText = `${bytesRecebidosMB} bytes recebidos (Alerta: Abaixo de 1MB)`;
-        }
-        if (pacotesEnviados < minPacotes) {
-            document.getElementById("perdaPacotes").innerText = `${pacotesEnviados} pacotes enviados (Alerta: Abaixo de 10 pacotes)`;
-        }
-        if (pacotesRecebidos < minPacotes) {
-            document.getElementById("perdaPacotes").innerText = `${pacotesRecebidos} pacotes recebidos (Alerta: Abaixo de 10 pacotes)`;
-        }
-        if(ping > 100){
-            document.getElementById("pingAlerta").innerText = `${ping}ms (Alerta: Latência acima de 100ms) `
-        }
+    const minBytes = 1024 * 1024; // 1 MB em bytes
+    const minPacotes = 10;
+    const maxPing = 100; // Latência máxima permitida
+
+    // Dados fictícios para teste
+    const ping = 993;
+    const bytesEnviados = 500000;
+    const bytesRecebidos = 920000;
+    const pacotesEnviados = 5;
+    const pacotesRecebidos = 8;
+
+    // Conversões para MB
+    const bytesEnviadosMB = (bytesEnviados / (1024 * 1024)).toFixed(2);
+    const bytesRecebidosMB = (bytesRecebidos / (1024 * 1024)).toFixed(2);
+
+    // Referências aos elementos HTML
+    const perdaBytesElem = document.getElementById("perdaBytes");
+    const perdaPacotesElem = document.getElementById("perdaPacotes");
+    const pingAlertaElem = document.getElementById("pingAlerta");
+
+    // Inicializa mensagens
+    let perdaBytesMsg = "";
+    let perdaPacotesMsg = "";
+    let pingMsg = "";
+
+    // Verificações e acúmulo de alertas
+    if (bytesEnviados < minBytes) {
+        perdaBytesMsg += `${bytesEnviadosMB} MB enviados (Alerta: Abaixo de 1 MB)<br>`;
+    }
+    if (bytesRecebidos < minBytes) {
+        perdaBytesMsg += `<br>${bytesRecebidosMB} MB recebidos (Alerta: Abaixo de 1 MB)<br>`;
+    }
+    if (pacotesEnviados < minPacotes) {
+        perdaPacotesMsg += `<br>${pacotesEnviados} pacotes enviados (Alerta: Abaixo de 10 pacotes)<br>`;
+    }
+    if (pacotesRecebidos < minPacotes) {
+        perdaPacotesMsg += `<br>${pacotesRecebidos} pacotes recebidos (Alerta: Abaixo de 10 pacotes)<br>`;
+    }
+    if (ping > maxPing) {
+        pingMsg += `<br>${ping} ms (Alerta: Latência acima de 100 ms)<br>`;
     }
 
-    monitorarDados();
+    
+    // Atualiza os elementos HTML
+    if (perdaBytesMsg) {
+        perdaBytesElem.innerHTML = perdaBytesMsg;
+        perdaBytesElem.style.color = "#E74C3C"; // Alerta em vermelho
+    } else {
+        perdaBytesElem.innerHTML = "Nenhum alerta";
+        perdaBytesElem.style.color = "lightgreen"; // Sem alerta, texto em verde
+    }
+
+    if (perdaPacotesMsg) {
+        perdaPacotesElem.innerHTML = perdaPacotesMsg;
+        perdaPacotesElem.style.color = "#E74C3C"; // Alerta em vermelho
+    } else {
+        perdaPacotesElem.innerHTML = "Nenhum alerta";
+        perdaPacotesElem.style.color = "lightgreen"; // Sem alerta, texto em verde
+    }
+
+    if (pingMsg) {
+        pingAlertaElem.innerHTML = pingMsg;
+        pingAlertaElem.style.color = "#E74C3C"; // Alerta em vermelho
+    } else {
+        pingAlertaElem.innerHTML = "Nenhum alerta";
+        pingAlertaElem.style.color = "lightgreen"; // Sem alerta, texto em verde
+    }
+}
+
+
+// Executa a função
+monitorarDados();
 
     document.addEventListener('DOMContentLoaded', function () {
     var optionsBytes = {
@@ -247,109 +291,110 @@
     chartBytes.render();
 });
 
-// Gráfico de Pacotes Enviados e Recebidos
-document.addEventListener('DOMContentLoaded', function () {
-    var optionsPackets = {
-        chart: {
-            type: 'line',
-            height: 350
-        },
-        series: [{
-            name: 'Pacotes Enviados',
-            data: [120, 130, 140, 160, 170, 180, 200],
-            color: '#FFC300' // Amarelo
-        }, {
-            name: 'Pacotes Recebidos',
-            data: [110, 125, 135, 150, 160, 170, 190],
-            color: '#3498DB' // Azul
-        }],
-        xaxis: {
-            categories: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00']
-        },
-        title: {
-            text: 'Monitoramento de Pacotes',
-            style: {
-                color: '#FFFFFF'
-            }
-        },
-        legend: {
-            position: 'top',
-            labels: {
-                colors: ['#FFFFFF']
-            }
-        }
-    };
+function atualizarPacotes() {
+    const pacotesEnviados = Math.floor(Math.random() * 200 +50); // Valores aleatórios
+    const pacotesRecebidos = Math.floor(Math.random() * 200 + 50);
 
-    var chartPackets = new ApexCharts(document.querySelector("#chart-packets"), optionsPackets);
-    chartPackets.render();
-});
+    const contadorEnviados = document.getElementById("contador-enviados");
+    const contadorRecebidos = document.getElementById("contador-recebidos");
+
+    // Atualizar o texto dos contadores
+    contadorEnviados.innerText = pacotesEnviados + " Pacotes Enviados";
+    contadorRecebidos.innerText = pacotesRecebidos + " Pacotes Recebidos";
+
+    // Alterar a cor com base nos valores
+    if (pacotesEnviados < 10) {
+        contadorEnviados.style.color = "#E74C3"; // Vermelho para valores abaixo de 10
+    } else {
+        contadorEnviados.style.color = "#FFC300"; // Amarelo para valores iguais ou acima de 10
+    }
+
+    if (pacotesRecebidos < 10) {
+        contadorRecebidos.style.color = "#E74C3"; // Vermelho para valores abaixo de 10
+    } else {
+        contadorRecebidos.style.color = "#3498DB"; // Azul para valores iguais ou acima de 10
+    }
+}
+    // Atualização contínua a cada 2 segundos
+    setInterval(atualizarPacotes, 2000);
+
+    // Renderizar os contadores no lugar do gráfico de pacotes
+    document.addEventListener('DOMContentLoaded', function () {
+        const monitoramentoPacotes = document.getElementById("chart-packets");
+        monitoramentoPacotes.innerHTML = `
+            <div>
+                <h2 style="color: #fff;">Monitoramento de Pacotes</h2>
+                <p id="contador-enviados" style="color: #FFC300; font-size: 1.5rem;">0 Pacotes Enviados</p>
+                <p id="contador-recebidos" style="color: #3498DB; font-size: 1.5rem;">0 Pacotes Recebidos</p>
+            </div>
+        `;
+    });
 
 // Gráfico de Utilização de CPU
 var options = {
-    series: [75],
-    chart: {
-        height: 350,
-        type: 'radialBar',
-        toolbar: {
+          series: [75],
+          chart: {
+          height: 430,
+          type: 'radialBar',
+          toolbar: {
             show: true
-        }
-    },
-    plotOptions: {
-        radialBar: {
+          }
+        },
+        plotOptions: {
+          radialBar: {
             startAngle: -135,
             endAngle: 225,
-            hollow: {
-                margin: 0,
-                size: '70%',
-                background: '#fff',
-                image: undefined,
-                imageOffsetX: 0,
-                imageOffsetY: 0,
-                position: 'front',
-                dropShadow: {
-                    enabled: true,
-                    top: 3,
-                    left: 0,
-                    blur: 4,
-                    opacity: 0.24
-                }
+             hollow: {
+              margin: 0,
+              size: '70%',
+              background: '#fff',
+              image: undefined,
+              imageOffsetX: 0,
+              imageOffsetY: 0,
+              position: 'front',
+              dropShadow: {
+                enabled: true,
+                top: 3,
+                left: 0,
+                blur: 4,
+                opacity: 0.24
+              }
             },
             track: {
-                background: '#fff',
-                strokeWidth: '67%',
-                margin: 0, // margin is in pixels
-                dropShadow: {
-                    enabled: true,
-                    top: -3,
-                    left: 0,
-                    blur: 4,
-                    opacity: 0.35
-                }
+              background: '#fff',
+              strokeWidth: '67%',
+              margin: 0, // margin is in pixels
+              dropShadow: {
+                enabled: true,
+                top: -3,
+                left: 0,
+                blur: 4,
+                opacity: 0.35
+              }
             },
-
+        
             dataLabels: {
+              show: true,
+              name: {
+                offsetY: -10,
                 show: true,
-                name: {
-                    offsetY: -10,
-                    show: true,
-                    color: '#FFFFFF',
-                    fontSize: '17px'
+                color: '#888',
+                fontSize: '17px'
+              },
+              value: {
+                formatter: function(val) {
+                  return parseInt(val);
                 },
-                value: {
-                    formatter: function (val) {
-                        return parseInt(val);
-                    },
-
-                    fontSize: '36px',
-                    show: true,
-                    color: '#FFFFFF'
-                }
+                color: '#111',
+                fontSize: '36px',
+                show: true,
+              }
             }
-        }
-    },
-    fill: {
-        type: 'gradient',
-        gradient: {
+          }
+        },
+        fill: {
+          type: 'gradient',
+          gradient: {
             shade: 'dark',
             type: 'horizontal',
             shadeIntensity: 0.5,
@@ -358,135 +403,57 @@ var options = {
             opacityFrom: 1,
             opacityTo: 1,
             stops: [0, 100]
-        }
-    },
-    title: {
-        text: 'Utilização de CPU',
-        style: {
-            color: '#FFFFFF'
-        }
-    },
-    legend: {
-        position: 'top',
-        labels: {
-            colors: ['#FFFFFF']
-        }
-    }
-};
-
-var chart = new ApexCharts(document.querySelector("#chart-cpu"), options);
-chart.render();
-
-// Gráfico de Pizza de Utilização de Memória
-document.addEventListener('DOMContentLoaded', function () {
-    var optionsPie = {
-        chart: {
-            type: 'pie',
-            height: 350
+          }
         },
-        series: [70, 30],
-        labels: ['CPU Usada', 'CPU Livre'],
-        title: {
+        title:{
             text: 'Utilização da CPU',
             style: {
                 color: '#FFFFFF'
             }
         },
-        legend: {
-            position: 'top',
-            labels: {
-                colors: ['#FFFFFF']
-            }
+        stroke: {
+          lineCap: 'round'
         },
-        colors: ['#FFC300', '#3498DB']
-    };
+        labels: ['Porcentagem da CPU'],
+        };
 
-    var chartPie = new ApexCharts(document.querySelector("#chart-pie"), optionsPie);
-    chartPie.render();
-});
+        var chart = new ApexCharts(document.querySelector("#chart"), options);
+        chart.render();
 
-// Gráfico de Alertas
-var optionsAlerts = {
-    series: [{
-        name: 'Alertas',
-        data: data
-    }],
-    chart: {
-        type: 'bar',
-        height: 400,
-        width: 600,
-    },
-    plotOptions: {
-        bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            endingShape: 'rounded'
-        },
-    },
-    colors: ['#ffdc60'],
-    title: {
-        text: 'Quantidade de alertas no período selecionado',
-        align: 'center',
-        style: {
-            color: 'white'
-        }
-    },
-    dataLabels: {
-        enabled: true,
-        style: {
-            color: '#000'
-        }
-    },
-    stroke: {
-        show: false,
-        width: 2,
-        colors: ['transparent']
-    },
-    xaxis: {
-        categories: categoria,
-        labels: {
-            style: {
-                colors: Array(categoria.length).fill('white'),
-                weight: 400
-            }
-        },
-    },
-    yaxis: {
-        labels: {
-            style: {
-                colors: Array(categoria.length).fill('#696969')
-            },
-        },
-        min: 0,
-    },
-    fill: {
-        opacity: 1
-    },
-    tooltip: {
-        y: {
-            formatter: function (val) {
-                return val + " alertas"
-            },
-            title: {
-                formatter: function (seriesName) {
-                    return seriesName + ':';
-                },
-                style: {
-                    color: '#fff'
-                }
-            }
-        },
-        style: {
-            fontSize: '14px',
-            fontFamily: 'Arial, sans-serif',
-            color: '#fff'
-        },
-        theme: 'dark'
+var chart = new ApexCharts(document.querySelector("#chart-cpu"), options);
+chart.render();
+
+// Gráfico de Pizza de Utilização de Memória
+// Simula o contador de latência
+function atualizarLatencia() {
+    const latencia = Math.floor(Math.random() * 150); // Latência aleatória
+    const contadorLatencia = document.getElementById("contador-latencia");
+
+    contadorLatencia.innerText = `Latência: ${latencia}ms`;
+
+    // Alterar a cor com base no valor da latência
+    if (latencia > 100) {
+        contadorLatencia.style.color = "#E74C3C"; // Vermelho para latências acima de 100ms
+    } else {
+        contadorLatencia.style.color = "lightgreen"; // Amarelo para latências abaixo ou igual a 100ms
     }
-};
+}
 
-var chartAlerts = new ApexCharts(document.querySelector("#chart-alerts"), optionsAlerts);
-chartAlerts.render();
+// Atualização contínua a cada 2 segundos
+setInterval(atualizarLatencia, 2000);
+
+// Renderizar o contador de latência no lugar do gráfico de CPU
+document.addEventListener('DOMContentLoaded', function () {
+    const utilizacaoCPU = document.getElementById("chart-pie");
+    if (utilizacaoCPU) {
+        utilizacaoCPU.innerHTML = `
+            <div>
+                <h2 style="color: #fff;">Monitoramento de Latência</h2>
+                <p id="contador-latencia" style="color: yellow; font-size: 1.5rem;">Latência: 0ms</p>
+            </div>
+        `;
+    }
+});
 
 </script>
 
