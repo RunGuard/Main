@@ -10,6 +10,18 @@ function buscarMedidas(req, res) {
         })
 }
 
+function buscarMedidasPorPeriodo(req, res) {
+    const { fkEquipamento, mes, semana } = req.params;
+
+    roqueModel.buscarMedidasPorPeriodoModel(fkEquipamento, mes, semana)
+        .then(resultado => {
+            res.status(200).json(resultado);
+        })
+        .catch(erro => {
+            res.status(500).json({ mensagem: erro.message });
+        });
+}
+
 function buscarServidor(req, res) {
     roqueModel.buscarServidores()
         .then(function (servidores) {
@@ -18,6 +30,7 @@ function buscarServidor(req, res) {
 }
 
 module.exports = {
+    buscarMedidasPorPeriodo,
     buscarMedidas,
     buscarServidor
 };
