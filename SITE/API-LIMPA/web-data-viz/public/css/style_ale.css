@@ -1,34 +1,95 @@
+/* Container geral dos gráficos */
+#charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Distribui os gráficos uniformemente */
+    align-items: flex-start;
+    padding: 10px;
+    margin-left: 220px; /* Mantém afastamento da navbar */
+    gap: 15px; /* Espaçamento entre gráficos */
+}
+
+/* Estilo padrão dos gráficos */
+.chart {
+    width: 48%; /* Dois gráficos lado a lado */
+    background: #2c2c2c; /* Fundo uniforme */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chart:hover {
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Ajuste específico para o gráfico de CPU */
+.chart-cpu {
+    order: -1; /* Move o gráfico para o topo */
+    width: 100%; /* O gráfico ocupa toda a largura */
+    margin: 0 auto; /* Centraliza o gráfico */
+    background: #2c2c2c;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Ajuste de cores das legendas e rótulos dos gráficos */
+.chart .legend text,
+.chart .x-axis text,
+.chart .y-axis text {
+    fill: #ffffff; /* Texto branco para legendas e rótulos */
+    font-size: 14px; /* Melhora a legibilidade */
+}
+
+/* Estilo do container de alertas */
 .alerts-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 80%;
-    max-width: 700px;
+    width: 80%; /* Define a largura do container */
+    max-width: 600px;
+    background: #2c2c2c; /* Mesmo fundo dos gráficos */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+    margin: 20px auto; /* Centraliza na página */
 }
 
+/* Estilo de cada alerta */
 .alert {
-    border-left: 6px solid #3498DB;
-    background-color: #FFFFFF;
-    color: #2C3E50;
+    border-left: 10px solid #FFC300; /* Borda amarela para destaque */
+    background-color: #2c2c2c; /* Fundo igual aos gráficos */
+    color: #FFFFFF;
     padding: 20px;
-    margin: 10px 0;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 15px 0;
+    border-radius: 12px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Sombra marcante */
     width: 100%;
-    transition: transform 0.3s ease;
+    font-size: 18px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .alert:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px); /* Leve movimento ao passar o mouse */
+    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.3);
 }
 
+/* Estilo interno do conteúdo dos alertas */
 .alert-content {
     text-align: left;
+    background-color: #2c2c2c;
+    border-radius: 12px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Sombra marcante */
+    
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .alert-content h2 {
-    color: #3498DB;
-    font-size: 24px;
+    color: #FFC300; /* Destaque para o título do alerta */
+    font-size: 22px;
     margin-bottom: 10px;
 }
 
@@ -38,42 +99,47 @@
 }
 
 .alert-content .highlight {
-    color: #E74C3C;
+    color: #E74C3C; /* Vermelho para alertas importantes */
     font-weight: bold;
 }
-
-.alert-content strong {
-    color: #FFC300;
+.alert-content p {
+    font-size: 18px;
+    margin: 5px 0;
+    line-height: 1.5;
+    transition: color 0.3s ease;
 }
 
-#charts-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding-top: 20px;
-    margin: 0 20px;
+.alert-content .highlight {
+    color: #E74C3C;
+    font-weight: bold;
+    transition: color 0.3s ease;
 }
-.chart, .alert {
-    margin: 20px;
-    background: #2c2c2c;
-    padding: 20px;
-    border-radius: 10px;
-    width: 45%;
-}
-.chart-title {
-    color: white;
-    text-align: center;
-}
-.alert-container {
-    display: flex;
-    justify-content: space-around;
-    padding: 20px;
-    margin: 0 20px;
+
+.alert-content:hover .highlight {
+    color: #2c2c2c;
 }
 .alert-content {
-    color: white;
     text-align: left;
+    background-color: #2c2c2c;
+    padding: 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
-.nav{
-    margin-right: 200px;
+
+.alert-content:hover {
+    background-color: #2c2c2c;
+    transform: scale(1.05);
 }
+
+/* Títulos dos alertas */
+.alert-content h2 {
+    color: #FFC300;
+    font-size: 22px;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.alert-content h2:hover {
+    color: #2c2c2c;
+}
+

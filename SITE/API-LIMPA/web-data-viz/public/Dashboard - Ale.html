@@ -9,34 +9,7 @@
     <link rel="stylesheet" href="css/style_ale.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <style>
-        #charts-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            padding-top: 20px;
-        }
-        .chart, .alert {
-            margin: 20px;
-            background: #2c2c2c;
-            padding: 20px;
-            border-radius: 10px;
-            width: 45%;
-        }
-        .chart-title {
-            color: white;
-            text-align: center;
-        }
-        .alert-container {
-            display: flex;
-            justify-content: space-around;
-            padding: 20px;
-        }
-        .alert-content {
-            color: white;
-            text-align: left;
-        }
-    </style>
+    
 </head>
 <body>
     <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
@@ -91,20 +64,13 @@
     </div>
 
     <div class="alert-container">
-        <div class="alert">
-            <div class="alert-content">
-                <h2>Alerta de Perda de Pacotes e Bytes</h2>
-                <p><strong>Perda na Última Hora:</strong></p>
-                <p>Pacotes em risco: <span id="perdaPacotes" class="highlight"></span></p>
-                <p>Bytes em Risco: <span id="perdaBytes" class="highlight"></span></p>
-            </div>
-        </div>
-        <div class="alert">
-            <div class="alert-content">
-                <h2>Alerta de Latência Alta</h2>
-                <p><strong>Eventos na Última Hora no Servidor:</strong></p>
-                <p>Latência alta: <span id="pingAlerta" class="highlight"></span></p>
-            </div>
+        <div class="alert-content">
+            <h2>Alertas de Monitoramento</h2>
+            <p><strong>Perda na Última Hora:</strong></p>
+            <p>Pacotes em risco: <span id="perdaPacotes" class="highlight"></span></p>
+            <p>Bytes em risco: <span id="perdaBytes" class="highlight"></span></p>
+            <p><strong>Eventos de Latência Alta:</strong></p>
+            <p>Latência alta: <span id="pingAlerta" class="highlight"></span></p>
         </div>
     </div>
 
