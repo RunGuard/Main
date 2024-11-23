@@ -6,12 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | RunGuard</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/chat.css">
 </head>
 
 <body>
+    <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
+
+    <div id="janelaChat" class="janela-chat">
+        <div class="cabecalho-chat">
+            <div style="display: flex; align-items: center;">
+                <img style="width: 100%;" src="imagens/robo-branco.png" alt="Perfil do assistente">
+                <span style="font-size: 2em;">Guardinha</span>
+            </div>
+            <!-- add imagem de um X -->
+            <button style="background: none; border: none; color: white; cursor: pointer; font-size: 2.5em;" onclick="fecharChat()">᰽</button> 
+        </div>
+        <div id="corpoChat" class="corpo-chat">
+            <div class="mensagem assistente">
+                Olá! <br> 
+                Me chamo Guardinha e sou a assistente virtual da RunGuard. <br>
+                <b>Como posso ajudar?</b>
+            </div>
+            <div class="hora-mensagem assistente" id="horaDeAbertura"></div> <!-- add pelo id a hora -->
+        </div>
+        <div class="rodape-chat">
+            <input type="text" id="entradaUsuario" placeholder="Escreva sua mensagem..." />
+            <button onclick="gerarResposta()">⟹</button>
+        </div>
+    </div>
+
     <header class="header">
         <section class="flex">
-            <a href="#" class="logo">LOGO</a>
+
+            <a href="#" class="logo"><img style="width: 70px;height: 60px;" src="imagens/logo2.png" alt=""></a>
+
             <nav class="navbar">
                 <a href="#home">Home</a>
                 <a href="#sobre">Sobre</a>
@@ -26,8 +54,10 @@
         <section class="flex">
             <div class="conteudo">
                 <span>RUNGUARD</span>
-                <p>Monitore seus servidores e mantenha a corrida a todo vapor: estratégias avançadas para maximizar
-                    o desempenho e garantir a estabilidade de seus sistemas em ambiente de alta demanda</p>
+
+                <p><b>Monitore seus servidores</b> e mantenha a <b>corrida a todo vapor</b>: <b>estratégias avançadas</b> para <b>maximizar</b>
+                    o <b> desempenho</b> e garantir a <b>estabilidade</b> de seus sistemas em <b>ambiente de alta demanda</b></p>
+
                 <a href="" class="btn">Saiba Mais</a>
             </div>
         </section>
@@ -46,7 +76,10 @@
                     <i class="fas fa-1"></i>
                 </div>
                 <h3>Confiança</h3>
-                <p>Priorizamos relações transparentes, construídas com base em promessas cumpridas e credibilidade constante
+
+                <p><b>Priorizamos</b> <b>relações transparentes</b>, construídas com base em <b> promessas cumpridas e credibilidade</b>
+                    <b>constante.</b>
+
                 </p>
             </div>
 
@@ -56,7 +89,9 @@
                     <i class="fas fa-2"></i>
                 </div>
                 <h3>Segurança</h3>
-                <p>Protegemos cada etapa do processo, garantindo que seus dados e operações estejam sempre seguros.</p>
+
+                <p><b>Protegemos</b> cada etapa do processo, garantindo que seus <b>dados e operações estejam sempre seguros.</b></p>
+
             </div>
 
             <div class="box">
@@ -65,7 +100,10 @@
                     <i class="fas fa-3"></i>
                 </div>
                 <h3>Inovação</h3>
-                <p>Buscamos constantemente soluções criativas e tecnológicas para superar expectativas e gerar resultados.</p>
+
+                <p>Buscamos constantemente <b>soluções criativas e tecnológicas</b> para <b>superar expectativas</b> e <b>gerar
+                    resultados.</b></p>
+
             </div>
 
             <div class="box">
@@ -74,7 +112,10 @@
                     <i class="fas fa-4"></i>
                 </div>
                 <h3>Qualidade</h3>
-                <p>Comprometemo-nos com a excelência, oferecendo serviços que atendem e superam os mais altos padrões.</p>
+
+                <p><b>Comprometemo-nos com a excelência</b>, oferecendo serviços que <b>atendem e superam os mais altos padrões</b>.
+                </p>
+
             </div>
 
             <div class="box">
@@ -83,7 +124,9 @@
                     <i class="fas fa-5"></i>
                 </div>
                 <h3>Responsabilidade</h3>
-                <p>Atuamos com ética, assumindo a responsabilidade em cada ação e garantindo um impacto positivo.</p>
+
+                <p>Atuamos com <b>ética</b>, <b>assumindo a responsabilidade</b> em cada ação e <b>garantindo um impacto positivo.</b></p>
+
             </div>
 
             <div class="box">
@@ -92,7 +135,10 @@
                     <i class="fas fa-6"></i>
                 </div>
                 <h3>Integridade</h3>
-                <p>Nossas decisões e ações são guiadas por princípios sólidos, respeitando sempre os valores fundamentais.</p>
+
+                <p>Nossas <b> decisões e ações </b>são guiadas por <b>princípios sólidos</b>, <b>respeitando</b> sempre os <b>valores
+                    fundamentais.</b></p>
+
             </div>
         </section>
     </section>
@@ -100,34 +146,142 @@
     <section class="sobre" id="sobre">
         <div class="titulo">
             <span>Sobre Nós</span>
-            <h3>Conheça nossa história</h3>
+
+            <h3><b style="color: black;text-shadow: none;" >Conheça nossa história</b></h3>
         </div>
         <div class="container">
             <div class="sobre-texto">
-                <p>Nossa empresa tem como principal objetivo garantir o funcionamento contínuo e eficiente de servidores que suportam grandes aplicativos de corrida, como Uber e 99. Utilizamos soluções avançadas em Python para monitorar o desempenho dos serviços, assegurando que os sistemas operem com máxima eficiência e sem interrupções. Além disso, fazemos o monitoramento do hardware dos servidores em tempo real, identificando falhas e sobrecargas de maneira preventiva. Nosso foco é ajudar as empresas a manterem suas operações estáveis e seguras, oferecendo tecnologia robusta para otimizar sua infraestrutura e evitar problemas críticos.</p>
-                <a href="#" class="btn">Conheça nossa equipe</a>
+                <p>Nossa empresa tem como principal <b style="color: black;text-shadow: none;">objetivo</b> garantir o funcionamento <b style="color: black;text-shadow: none;">contínuo</b> e <b style="color: black;text-shadow: none;">eficiente </b>de servidores
+                    que suportam <b style="color: black;text-shadow: none;">grandes aplicativos de corrida</b>, como <b style="color: black;text-shadow: none;">Uber e 99.</b> Utilizamos soluções avançadas
+                    para monitorar o<b style="color: black;text-shadow: none;"> desempenho </b>dos serviços, assegurando que os sistemas operem com máxima eficiência e
+                    <b style="color: black;text-shadow: none;">sem interrupções.</b> Além disso, fazemos o <b style="color: black;text-shadow: none;">monitoramento do hardware dos servidores em tempo real,</b>
+                    identificando <b style="color: black;text-shadow: none;"> falhas e sobrecargas</b> de maneira <b style="color: black;text-shadow: none;">preventiva</b>. Nosso foco é <b style="color: black;text-shadow: none;">ajudar</b> as empresas a manterem
+                    suas operações <b style="color: black;text-shadow: none;">estáveis e seguras,</b> oferecendo <b style="color: black;text-shadow: none;">tecnologia robusta</b> para <b style="color: black;text-shadow: none;">otimizar sua infraestrutura</b> e
+                    evitar problemas <b style="color: black;text-shadow: none;">    críticos.</b></p>
+                <a class="btn" onclick="abrir()">Conheça nossa equipe</a>
             </div>
             <div class="sobre-img">
                 <img src="imagens/img-sobre-nos.png" alt="">
             </div>
         </div>
-    </section>
+
+        <section id="divEquipe" class="tres">
+            <div class="fundoequipe">
+                <div class="containerequipe">
+                <a style="padding-bottom: 2%;padding-right: 5%;" class="btn close-button titulo" onclick="fechar()"><h3 style="padding-left: 42px;">X</h3></a>
+                <div class="titulo_equipe">
+                  <h1><b>Conheça a equipe RunGuard</b></h1>
+                  <div class="texto_equipe">
+                    Nossa equipe é composta por seis sócios <b>DEDICADOS</b> que combinam conhecimento profundo e tecnologia de ponta
+                    para oferecer uma <b> EXPERIÊNCIA INCOMPARÁVEL.</b> Focamos em <b>VOCÊ</b> e nas suas necessidades, garantindo
+                    <b>DISPONIBILIDADE </b>contínua e <b>EFICIÊNCIA OPERACIONAL</b> através de soluções personalizadas e centradas no cliente.
+                    Com a Runguard, você não apenas <b>GERENCIA </b>seu servidor; você os <b>POTENCIALIZA</b>. Descubra como nossa <b>SEGURANÇA DAS SUAS OPERAÇÕES.</b>
+                    pode <b>ELEVAR </b>a <b>PERFORMANCE </b>e a <b>SEGURANÇA </b>das suas operações.
+                  </div>
+              </div>
+              </article>
+              <div class="containercard">
+                <div class="cardcointainer2">
+                  <article class="cardarticle">
+                    <img src="imagens/fotoilys.jpg" class="cardimagem">
+      
+                    <div class="carddados">
+                      <span class="carddescricao1">Cargo: FullStack</span>
+                      <h2 class="titulocard1">Nome: Ilys Maroto</h2>
+                    </div>
+                </div>
+                </article>
+    
+              <div class="containercard">
+                <div class="cardcointainer2">
+                  <article class="cardarticle">
+                    <img src="imagens/fotoAnne.jpg" class="cardimagem">
+    
+                    <div class="carddados">
+                      <span class="carddescricao1">Cargo: Full Stack</span>
+                      <h2 class="titulocard1">Nome: Anne Caroline</h2>
+                    </div>
+                </div>
+    
+    
+                <div class="containercard">
+                  <div class="cardcointainer2">
+                    <article class="cardarticle">
+                      <img src="imagens/diegofoto.png" class="cardimagem" data-cardo="Lucas Coltre Roque">>
+    
+                      <div class="carddados">
+                        <span class="carddescricao1">Cargo: Full Stack</span>
+                        <h2 class="titulocard1">Nome: Diego Campos</h2>
+                      </div>
+                  </div>
+    
+    
+                  <div class="containercard">
+                    <div class="cardcointainer2">
+                      <article class="cardarticle">
+                        <img src="imagens/duarte.jpeg" class="cardimagem" data-cardo="Lucas Coltre Roque">>
+    
+                        <div class="carddados">
+                          <span class="carddescricao1">Cargo: Full Stack</span>
+                          <h2 class="titulocard1">Nome: Guilherme Duarte</h2>
+                        </div>
+                    </div>
+    
+    
+                    <div class="containercard">
+                      <div class="cardcointainer2">
+                        <article class="cardarticle">
+                          <img src="imagens/fotoroque.jpg" class="cardimagem" data-cardo="Lucas Coltre Roque">>
+    
+                          <div class="carddados">
+                            <span class="carddescricao1">Cargo: Full Stack</span>
+                            <h2 class="titulocard1">Nome: Lucas Coltre Roque</h2>
+                          </div>
+                      </div>
+    
+    
+                      <div class="containercard">
+                        <div class="cardcointainer2">
+                          <article class="cardarticle">
+                            <img src="imagens/fotoPerfilAlexandre.jpg" class="cardimagem"
+                              data-cardo="Lucas Coltre Roque">>
+    
+                            <div class="carddados">
+                              <span class="carddescricao1">Cargo: Full Stack</span>
+                              <h2 class="titulocard1">Nome: Alexandre Vasconelos</h2>
+                            </div>
+                        </div>
+                        </article>
+                      </div>
+                    </div>
+                  </div>
+    
+                </div>
+              </div>
+      </section>       
+</section>
+
 
     <section class="servicos" id="servicos">
         <div class="titulo">
             <span>Serviços</span>
-            <h3>O que te oferecemos?</h3>
+            <h3 style="color: black;text-shadow: none;">O que te oferecemos?</h3>
         </div>
         <div class="container">
             <div class="card">
                 <img src="imagens/confiabilidade.jpg" alt="">
                 <div class="conteudo-card">
                     <h2>
-                        Confiabilidade
+
+                        <b>Confiabilidade</b>
+                        <p>
+                            Oferecemos uma <b>infraestrutura estável</b>, com <b>alta disponibilidade e redundância</b>, para garantir que
+                            seus serviços e <b>sistemas permaneçam operacionais</b>, mesmo em <b>momentos críticos</b>, oferecendo suporte
+                            e <b>assistência contínuos</b>.
+    
+                        </p>
                     </h2>
-                    <p>
-                        Oferecemos uma infraestrutura estável, com alta disponibilidade e redundância, para garantir que seus serviços e sistemas permaneçam operacionais, mesmo em momentos críticos, oferecendo suporte e assistência contínuos.
-                    </p>
+                    
                 </div>
             </div>
 
@@ -135,11 +289,15 @@
                 <img src="imagens/monitoramento.jpg" alt="">
                 <div class="conteudo-card">
                     <h2>
-                        Monitoramento
+
+                        <b>Monitoramento</b>
+                        <p>
+                            Realizamos o <b>monitoramento completo</b> do hardware dos seus servidores e <b>sistemas 24/7</b>,
+                            <b>identificando possíveis falhas</b> e <b>quedas de desempenho em tempo real</b>, permitindo intervenções
+                           <b> rápidas e eficazes</b> para <b>minimizar qualquer impacto.</b>
+                        </p>
                     </h2>
-                    <p>
-                        Realizamos o monitoramento completo do hardware dos seus servidores e sistemas 24/7, identificando possíveis falhas e quedas de desempenho em tempo real, permitindo intervenções rápidas e eficazes para minimizar qualquer impacto.
-                    </p>
+                    
                 </div>
             </div>
 
@@ -147,11 +305,15 @@
                 <img src="imagens/seguranca.jpg" alt="">
                 <div class="conteudo-card">
                     <h2>
-                        Segurança
+
+                        <b>Segurança</b>
+                        <p>
+                            Garantimos uma <b>infraestrutura robusta e segura</b>, com <b>proteção contra ameaças cibernéticas</b> e
+                            <b>criptografia</b>, assegurando que seus dados e <b>operações estejam sempre resguardados contra riscos</b>.
+    
+                        </p>
                     </h2>
-                    <p>
-                        Garantimos uma infraestrutura robusta e segura, com proteção contra ameaças cibernéticas e criptografia, assegurando que seus dados e operações estejam sempre resguardados contra riscos.
-                    </p>
+                    
                 </div>
             </div>
         </div>
@@ -160,11 +322,12 @@
     <footer>
         <div class="footer-container">
             <div class="footer-coluna">
-                <h3>Sobre Nós</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.</p>
+
+                <h3><b>Sobre Nós</b></h3>
+                <p>A nossa empresa visa garantir a operação contínua e eficiente de servidores que suportam aplicativos de corrida, como Uber e 99. Utilizamos soluções avançadas para monitorar o desempenho dos serviços e o hardware dos servidores em tempo real, identificando falhas e sobrecargas preventivamente. Nosso objetivo é ajudar as empresas a manter operações estáveis e seguras, otimizando sua infraestrutura para evitar problemas críticos.</p>
             </div>
             <div class="footer-coluna">
-                <h3>Links Rápidos</h3>
+                <h3><b>Links Rápidos</b></h3>
                 <ul>
                     <li><a href="#">Início</a></li>
                     <li><a href="#">Valores</a></li>
@@ -174,12 +337,16 @@
                 </ul>
             </div>
             <div class="footer-coluna">
-                <h3>Fale Conosco</h3>
+
+                <h3><b>Fale Conosco</b></h3>
+
                 <p>Email: runguard@gmail.com</p>
                 <p>Telefone: (11) 1234-5678</p>
             </div>
             <div class="footer-coluna">
-                <h3>Siga-nos</h3>
+
+                <h3><b>Siga-nos</b></h3>
+
                 <div class="social-icons">
                     <a href="#"><img src="imagens/facebook.png" alt="Facebook"></a>
                     <a href="#"><img src="imagens/instagram.png" alt="Instagram"></a>
@@ -195,3 +362,84 @@
 </body>
 
 </html>
+
+<script>
+    divEquipe = document.getElementById("divEquipe");
+    function abrir() {
+        divEquipe.style.display = "flex";
+    }
+    function fechar() {
+        divEquipe.style.display = "none";
+    }
+
+    var conversa = []
+
+    function abrirChat() {
+        document.getElementById("janelaChat").style.display = "flex";
+    }
+
+    function fecharChat() {
+        document.getElementById("janelaChat").style.display = "none";
+    }
+
+    function obterHoraAtual() {
+        const options = {
+            timeZone: 'America/Sao_Paulo',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+        const agora = new Date();
+        return agora.toLocaleTimeString('pt-BR', options);
+    }
+        
+    async function gerarResposta() {
+      const pergunta = document.getElementById('entradaUsuario').value;
+
+      var entrada = document.getElementById("entradaUsuario");
+      var mensagem = entrada.value.trim();
+
+      const response = await fetch('/perguntar', {
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ pergunta })
+        });
+
+      const data = await response.json();
+
+      conversa.push(mensagem)
+      conversa.push(data.resultado)
+
+        if (mensagem !== "") {
+            var mensagemUsuario = document.createElement("div");
+            mensagemUsuario.classList.add("mensagem", "usuario");
+            mensagemUsuario.innerText = mensagem;
+            document.getElementById("corpoChat").appendChild(mensagemUsuario);
+
+            var horaUsuario = document.createElement("div");
+            horaUsuario.classList.add("hora-mensagem");
+            horaUsuario.innerText = obterHoraAtual();
+            document.getElementById("corpoChat").appendChild(horaUsuario);
+
+            entrada.value = "";
+
+            setTimeout(function() {
+                var mensagemAssistente = document.createElement("div");
+                mensagemAssistente.classList.add("mensagem", "assistente");
+                mensagemAssistente.innerText = data.resultado;
+                document.getElementById("corpoChat").appendChild(mensagemAssistente);
+
+                var horaAssistente = document.createElement("div");
+                horaAssistente.classList.add("hora-mensagem", "assistente");
+                horaAssistente.innerText = obterHoraAtual();
+                document.getElementById("corpoChat").appendChild(horaAssistente);
+
+                document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+            }, 1000);
+
+            document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+        }
+    }
+</script>

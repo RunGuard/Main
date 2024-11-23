@@ -181,7 +181,7 @@ def monitoramento_metricas():
 
     while run:
         os.system('cls')
-        
+    
         print("Escolha uma opção:\n a)média por máquina\n b)média total")
         respota_metrica = input("Digite a opção: ")
 

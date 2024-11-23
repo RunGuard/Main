@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASHBOARD-Guilherme | RunGuard</title>
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/style_duarte.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<body>
+    <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
+
+    <div id="janelaChat" class="janela-chat">
+        <div class="cabecalho-chat">
+            <div style="display: flex; align-items: center;">
+                <img style="width: 100%;" src="imagens/robo-branco.png" alt="Perfil do assistente">
+                <span style="font-size: 1.5em;">Guardinha</span>
+            </div>
+            <!-- add imagem de um X -->
+            <button style="background: none; border: none; color: white; cursor: pointer; font-size: 2em;"
+                onclick="fecharChat()">᰽</button>
+        </div>
+        <div id="corpoChat" class="corpo-chat">
+            <div class="mensagem assistente">
+                Olá! <br>
+                Me chamo Guardinha e sou a assistente virtual da RunGuard. <br>
+                <b>Como posso ajudar?</b>
+            </div>
+            <div class="hora-mensagem assistente" id="horaDeAbertura"></div> <!-- add pelo id a hora -->
+        </div>
+        <div class="rodape-chat">
+            <input type="text" id="entradaUsuario" placeholder="Escreva sua mensagem..." />
+            <button onclick="gerarResposta()">⟹</button>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="index.html" class="logo">
+                    <img src="imagens/logo.png" alt="Logo RunGuard">
+                    <span class="nav-item">RUNGUARD</span>
+                </a>
+            </li>
+            <li><a href="index.html">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-item">Home</span>
+                </a></li>
+            <li><a href="Dashboard - Ale.html">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-item">Dashboard 1</span>
+                </a></li>
+            <li><a href="Dashboard - Anne.html">
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="nav-item">Dashboard 2</span>
+                </a></li>
+            <li><a href="Dashboard - Diego.html">
+                    <i class="fas fa-chart-pie"></i>
+                    <span class="nav-item">Dashboard 3</span>
+                </a></li>
+            <li><a href="Dashboard - Guilherme.html">
+                    <i class="fas fa-chart-column"></i>
+                    <span class="nav-item">Dashboard 4</span>
+                </a></li>
+            <li><a href="Dashboard - Ilys.html">
+                    <i class="fas fa-chart-simple"></i>
+                    <span class="nav-item">Dashboard 5</span>
+                </a></li>
+            <li><a href="Dashboard - Lucas.html">
+                    <i class="fas fa-chart-area"></i>
+                    <span class="nav-item">Dashboard 6</span>
+                </a></li>
+            <li><a href="Dashboard - GuilhermeAlerta.html">
+                    <i class="fas fa-chart-column"></i>
+                    <span class="nav-item">Dashboard 7</span>
+                </a></li>
+            <li> <a href="insights-run-guard.pdf" download>
+                    <i class="fas fa-file-pdf"></i>
+                    <span class="nav-item">Baixe seus relatórios!</span>
+                </a></li>
+            <li><a href="#" class="sair">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-item">Sair</span>
+                </a></li>
+        </ul>
+    </nav>
+    <div class="fundo">
+        <div class="botao-voltar">
+            <a href="Dashboard - GuilhermeAlerta.html">Voltar para Dashboard 7</a>
+        </div>
+        <div class="container-select">
+            <select onchange="buscar(), buscarDadosGrafico()" id="select_equipamento">
+                <option selected disabled>Selecione o servidor a monitorar</option>
+            </select>
+        </div>
+        <div class="medias">
+            <div class="ultima-medida media">
+                <p>Estado da CPU: <span id="estadoCPU">Normal</span></p>
+                <p>Ultrapassagens consecutivas acima de 80%: <span id="cpu_ultrapassagens">0</span></p>
+                <div class="alerta" id="alertaCPU" style="display: none;">
+                    <p><b>Alerta:</b> Sobrecarga de CPU detectada! Uso de CPU ultrapassou 80% mais de 4 vezes
+                        consecutivas.</p>
+                </div>
+            </div>
+
+            <div class="data-atual media">
+                <p>Data de hoje:</p>
+                <span id="dataAtual"></span>
+            </div>
+            <!-- <div class="qtdAcima80 media">
+                <p>PENSANDOOOOOO <span id="maior_ram">pensando</span></p><span
+                    style="color: rgb(249, 255, 172);">pensando</span>
+                <span id="maior_ram">pensanso </span><span style="color: rgb(249, 255, 172);">pensando</span>
+            </div> -->
+
+            <div class="media3 media">
+                <p>Estado da RAM: <span id="estadoRAM">Normal</span></p>
+                <p>Ultrapassagens consecutivas acima de 80%: <span id="ram_ultrapassagens">0</span></p>
+                <div class="alerta" id="alertaRAM" style="display: none;">
+                    <p><b>Alerta:</b> Sobrecarga de RAM detectada! Uso de RAM ultrapassou 80% mais de 4 vezes
+                        consecutivas.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Primeira div com os gráficos -->
+        <div class="alinhamento">
+            <!-- <h2 style="color: #FFFFFF; text-align: center; margin-bottom: 20px;">Situação do servidor:</h2> -->
+            <div class="fundo_grafico">
+                <div id="grafico1"></div>
+            </div>
+            <div class="fundo_grafico">
+                <div id="graficoMemoria"></div>
+            </div>
+
+            <div class="fundo_grafico">
+                <div id="cpuRam" style="width: 100%; height: 350px;"></div>
+            </div>
+        </div>
+
+    </div>
+
+</html>
+</body>
+<script>
+    function atualizarData() {
+        const dataAtual = new Date();
+        const dia = String(dataAtual.getDate()).padStart(2, '0');
+        const mes = String(dataAtual.getMonth() + 1).padStart(2, '0'); // Janeiro é 0
+        const ano = dataAtual.getFullYear();
+
+        // Formata a data no estilo DD/MM/AAAA
+        document.getElementById('dataAtual').textContent = `${dia}/${mes}/${ano}`;
+    }
+    // Atualiza a data ao carregar a página
+    atualizarData();
+
+    var fkEquipamento = 2;
+
+
+
+    //fetch --> Memória RAM
+    // function percentualCPU(fkEquipamento) {
+    //     fetch(`/duarte/percentualMemoriaRAM/${fkEquipamento}`, { cache: 'no-store' })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (Array.isArray(data)) {
+    //                 atualizarGraficoMemoria(data);
+    // atualizarGrafico2(data); 
+    // atualizarGrafico3(data); 
+    //             } else {
+    //                 console.error('Formato de dados inesperado:', data);
+    //             }
+    //         })
+    //         .catch(error => console.error('Falha na captura de rodada', error));
+    // }
+    //GRÁFICO DE CPU EM TEMPO REAL -> 5min
+    async function atualizarGraficoCPU() {
+        try {
+            const dados = [
+                { data: '2024-11-04T10:00:00', media_cpu_percent: 40 },
+                { data: '2024-11-04T10:05:00', media_cpu_percent: 65 },
+                { data: '2024-11-04T10:10:00', media_cpu_percent: 50 },
+                { data: '2024-11-04T10:15:00', media_cpu_percent: 70 },
+                { data: '2024-11-04T10:20:00', media_cpu_percent: 55 },
+                { data: '2024-11-04T10:25:00', media_cpu_percent: 75 },
+                { data: '2024-11-04T10:30:00', media_cpu_percent: 60 },
+                { data: '2024-11-04T10:35:00', media_cpu_percent: 80 },
+                { data: '2024-11-04T10:40:00', media_cpu_percent: 65 },
+                { data: '2024-11-04T10:45:00', media_cpu_percent: 85 },
+                { data: '2024-11-04T10:50:00', media_cpu_percent: 68 },
+                { data: '2024-11-04T10:55:00', media_cpu_percent: 90 }
+            ];
+
+            const seriesGrafico1 = dados.map(item => ({
+                x: item.data,
+                y: item.media_cpu_percent
+            }));
+
+            const optionsGrafico1 = {
+                series: [{
+                    name: "Uso de CPU",
+                    data: seriesGrafico1
+                }],
+                chart: {
+                    type: 'area',
+                    height: 350,
+                    zoom: { enabled: false },
+                    background: '#292930', // Cor de fundo
+                    toolbar: {
+                        tools: {
+                            selection: false,
+                            zoom: false,
+                            zoomin: false,
+                            zoomout: false,
+                            pan: false,
+                            reset: false
+                        },
+                        show: true,
+                        autoSelected: 'menu'
+                    }
+                },
+                colors: ['#FFDC60'],
+                dataLabels: { enabled: false },
+                stroke: {
+                    curve: 'smooth', // Curva suave
+                    colors: ['#FFDC60']
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        inverseColors: false,
+                        opacityFrom: 0.5,
+                        opacityTo: 0,
+                        stops: [0, 90, 100]
+                    }
+                },
+                title: {
+                    text: 'Uso de CPU (%) - A cada 5 minutos',
+                    align: 'left',
+                    style: { color: 'white', fontSize: '16px' }
+                },
+                // subtitle: {
+                //     text: 'Horário: 13h - 13h55',
+                //     align: 'left',
+                //     style: { color: 'white', fontSize: '14px' }
+                // },
+                xaxis: {
+                    title: {
+                        text: 'Horário',
+                        style: { color: 'white' }
+                    },
+                    type: 'datetime',
+                    labels: {
+                        format: 'HH:mm',
+                        style: {
+                            colors: 'white',
+                            fontWeight: 400,
+                            fontSize: '12px'
+                        }
+                    },
+                    axisBorder: { show: true, color: '#FFFFFF' },
+                    axisTicks: { show: true, color: '#FFFFFF' }
+                },
+                yaxis: {
+                    labels: {
+                        formatter: function (val) {
+                            return val.toFixed(0) + '%';  // Exibindo valores como porcentagem
+                        },
+                        style: {
+                            colors: 'white',
+                            fontWeight: 400,
+                            fontSize: '12px'
+                        }
+                    },
+                    title: {
+                        text: 'Uso de CPU (%)',
+                        style: { color: 'white' }
+                    },
+                    max: 100,
+                    min: 0,
+                    axisBorder: { show: true, color: '#FFFFFF' },
+                    axisTicks: { show: true, color: '#FFFFFF' }
+                },
+                legend: {
+                    horizontalAlign: 'left',
+                    labels: {
+                        colors: ['white'],
+                        fontSize: '12px'
+                    }
+                },
+                tooltip: {
+                    theme: 'dark',
+                    y: {
+                        formatter: function (val) {
+                            return val.toFixed(0) + '%';  // Exibindo valores como porcentagem
+                        }
+                    }
+                }
+            };
+
+            const chartGrafico1 = new ApexCharts(document.querySelector("#grafico1"), optionsGrafico1);
+            chartGrafico1.render();
+        } catch (error) {
+            console.error('Erro ao carregar os dados do gráfico:', error);
+        }
+    }
+
+    // Chamando a função para renderizar o gráfico
+    atualizarGraficoCPU();
+
+
+    //fetch --> Memória RAM
+    function percentualMemoriaRAM(fkEquipamento) {
+        fetch(`/duarte/percentualMemoriaRAM/${fkEquipamento}`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    atualizarGraficoMemoria(data);
+                    // atualizarGrafico2(data); 
+                    // atualizarGrafico3(data); 
+                } else {
+                    console.error('Formato de dados inesperado:', data);
+                }
+            })
+            .catch(error => console.error('Falha na captura de rodada', error));
+    }
+
+    // Inicializando a variável para o gráfico fora da função
+    let chartMemoria;
+    // GRÁFICO DE MEMÓRIA RAM EM TEMPO REAL -> 5min
+    function atualizarGraficoMemoria(data) {
+        // Preparando os dados para o gráfico
+        // const dates = data.map(item => new Date(item.data).getTime());
+        const momentos = data.map(item => {
+            const dtHora = new Date(item.momento);
+            dtHora.setHours(dtHora.getHours() - 3);
+            return dtHora.toISOString();
+        });
+        const valoresMemoria = data.map(item => item.memoriaPercent);
+
+        if (!chartMemoria) {
+            // Configurações do gráfico
+            const options = {
+                series: [{
+                    name: 'Uso de Memória RAM',
+                    data: valoresMemoria
+                }],
+                chart: {
+                    type: 'area', // Tipo de gráfico: área
+                    stacked: false,
+                    height: 350,
+                    zoom: {
+                        type: 'x',
+                        enabled: true,
+                        autoScaleYaxis: true
+                    },
+                    toolbar: {
+                        tools: {
+                            selection: false, // Ocultar o ícone de seleção
+                            zoom: false, // Ocultar o ícone de zoom
+                            zoomin: false, // Ocultar o ícone de zoom-in
+                            zoomout: false, // Ocultar o ícone de zoom-out
+                            pan: false, // Ocultar o ícone de pan
+                            reset: false, // Ocultar o ícone de reset
+                        },
+                        show: true, // Exibe apenas o menu
+                        autoSelected: 'menu'
+                    },
+                    background: '#292930'  // Cor de fundo adicionada
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                markers: {
+                    size: 0
+                },
+                title: {
+                    text: 'Uso de Memória RAM (%) - A cada 5 minutos',
+                    align: 'left',
+                    style: {
+                        fontSize: '16px',
+                        color: 'white'
+                    }
+                },
+                colors: ['#73B7FF'],
+                stroke: {
+                    curve: 'smooth', // Curva suave
+                    colors: ['#73B7FF']
+                },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        inverseColors: false,
+                        opacityFrom: 0.5,
+                        opacityTo: 0,
+                        stops: [0, 90, 100]
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        formatter: function (val) {
+                            return val.toFixed(0) + '%';  // Exibindo valores como porcentagem
+                        },
+                        style: { colors: 'white' }
+                    },
+                    title: {
+                        text: 'Uso de Memória (%)',
+                        style: {
+                            color: 'white'
+                        }
+                    },
+                },
+                xaxis: {
+                    type: 'datetime',
+                    categories: momentos,
+                    title: {
+                        text: 'Horário',
+                        style: {
+                            color: 'white'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            colors: 'white',
+                            fontSize: '12px'
+                        }
+                    },
+                },
+                tooltip: {
+                    shared: false,
+                    y: {
+                        formatter: function (val) {
+                            return val.toFixed(0) + '%'; // Exibindo valores de memória como porcentagem
+                        }
+                    }
+                }
+            };
+
+            // Renderizando o gráfico
+            chartMemoria = new ApexCharts(document.querySelector("#graficoMemoria"), options);
+            chartMemoria.render();
+        } else {
+            // Atualizando os dados do gráfico
+            chartMemoria.updateSeries([{
+                name: 'Uso de Memória RAM',
+                data: valoresMemoria
+            }]);
+        }
+    }
+
+    percentualMemoriaRAM(fkEquipamento);
+
+
+
+
+    //GRÁFICO DE CPU/RAM/LATÊNCIA
+    async function atualizarGraficoLatencia() {
+        try {
+            const dados = [
+                { horario: '13:40', cpu: 65, ram: 78, latencia: 170 },
+                { horario: '13:45', cpu: 85, ram: 60, latencia: 175 },
+                { horario: '13:50', cpu: 68, ram: 60, latencia: 180 },
+                { horario: '13:55', cpu: 90, ram: 79, latencia: 185 }
+            ];
+
+            const categorias = dados.map(item => item.horario);
+            const valoresCpu = dados.map(item => item.cpu);
+            const valoresRam = dados.map(item => item.ram);
+            const valoresLatencia = dados.map(item => item.latencia);
+
+            const options = {
+                series: [
+                    { name: 'Uso de CPU', data: valoresCpu },
+                    { name: 'Uso de RAM', data: valoresRam },
+                    { name: 'Latência (ms)', data: valoresLatencia }
+                ],
+                chart: {
+                    type: 'bar', // Altera para gráfico de barras
+                    height: 350,
+                    background: '#292930',
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: true, // Barra horizontal
+                        dataLabels: {
+                            position: 'top', // Exibe os dados no topo das barras
+                        }
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    offsetX: -6,
+                    style: {
+                        fontSize: '12px',
+                        colors: ['#fff']
+                    }
+                },
+                stroke: {
+                    show: true,
+                    width: 1,
+                    colors: ['#fff']
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false
+                },
+                xaxis: {
+                    categories: categorias,
+                    labels: {
+                        style: {
+                            colors: 'white',
+                            fontSize: '12px'
+                        }
+                    }
+                },
+                yaxis: {
+                    categories: categorias,
+                    labels: {
+                        style: {
+                            colors: 'white', // Deixa os horários brancos no eixo Y
+                            fontSize: '12px'
+                        }
+                    }
+                },
+                colors: ['#FFDC60', '#73B7FF', '#FF4560'], // Cores personalizadas para cada linha
+                title: {
+                    text: 'Comparação(%) de Uso de CPU, RAM e Latência',
+                    align: 'center',
+                    style: {
+                        color: 'white',
+                        fontSize: '16px'
+                    }
+                },
+                legend: {
+                    position: 'top',
+                    labels: {
+                        colors: 'white',
+                        fontSize: '12px'
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#cpuRam"), options);
+            chart.render(); // Renderiza o gráfico de barras horizontal
+        } catch (error) {
+            console.error('Erro ao carregar os dados do gráfico de barras:', error);
+        }
+    }
+
+    atualizarGraficoLatencia(); // Chamando a função para renderizar o gráfico
+
+
+    function abrirChat() {
+        document.getElementById("janelaChat").style.display = "flex";
+    }
+
+    function fecharChat() {
+        document.getElementById("janelaChat").style.display = "none";
+    }
+
+    function obterHoraAtual() {
+        const options = {
+            timeZone: 'America/Sao_Paulo',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+        const agora = new Date();
+        return agora.toLocaleTimeString('pt-BR', options);
+    }
+
+    async function gerarResposta() {
+        const pergunta = document.getElementById('entradaUsuario').value;
+
+        var entrada = document.getElementById("entradaUsuario");
+        var mensagem = entrada.value.trim();
+
+        const response = await fetch('/perguntar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ pergunta })
+        });
+
+        const data = await response.json();
+
+        conversa.push(mensagem)
+        conversa.push(data.resultado)
+
+        if (mensagem !== "") {
+            var mensagemUsuario = document.createElement("div");
+            mensagemUsuario.classList.add("mensagem", "usuario");
+            mensagemUsuario.innerText = mensagem;
+            document.getElementById("corpoChat").appendChild(mensagemUsuario);
+
+            var horaUsuario = document.createElement("div");
+            horaUsuario.classList.add("hora-mensagem");
+            horaUsuario.innerText = obterHoraAtual();
+            document.getElementById("corpoChat").appendChild(horaUsuario);
+
+            entrada.value = "";
+
+            setTimeout(function () {
+                var mensagemAssistente = document.createElement("div");
+                mensagemAssistente.classList.add("mensagem", "assistente");
+                mensagemAssistente.innerText = data.resultado;
+                document.getElementById("corpoChat").appendChild(mensagemAssistente);
+
+                var horaAssistente = document.createElement("div");
+                horaAssistente.classList.add("hora-mensagem", "assistente");
+                horaAssistente.innerText = obterHoraAtual();
+                document.getElementById("corpoChat").appendChild(horaAssistente);
+
+                document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+            }, 1000);
+
+            document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+        }
+    }
+</script>

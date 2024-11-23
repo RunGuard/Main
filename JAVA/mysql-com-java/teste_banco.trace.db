@@ -1,0 +1,35 @@
+2024-09-05 11:10:16.160556-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS usuario (\000a    id int [*]primary keu auto_increament,\000a    nome varchar(45),\000a    senha varchar(20)\000a);\000a"; expected "ARRAY, INVISIBLE, VISIBLE, NOT NULL, DEFAULT, GENERATED, ON UPDATE, NOT NULL, DEFAULT ON NULL, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE IF NOT EXISTS usuario (
+    id int primary keu auto_increament,
+    nome varchar(45),
+    senha varchar(20)
+);
+ [42001-232]
+2024-09-05 11:10:29.030922-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS usuario (\000a    id int [*]primary keu auto_increament,\000a    nome varchar(45),\000a    senha varchar(20)\000a);\000a"; expected "ARRAY, INVISIBLE, VISIBLE, NOT NULL, DEFAULT, GENERATED, ON UPDATE, NOT NULL, DEFAULT ON NULL, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE IF NOT EXISTS usuario (
+    id int primary keu auto_increament,
+    nome varchar(45),
+    senha varchar(20)
+);
+ [42001-232]
+2024-09-05 11:11:59.996192-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS usuario (\000a    id int [*]primary keu auto_increament,\000a    nome varchar(45),\000a    senha varchar(20)\000a);\000a"; expected "ARRAY, INVISIBLE, VISIBLE, NOT NULL, DEFAULT, GENERATED, ON UPDATE, NOT NULL, DEFAULT ON NULL, SEQUENCE, SELECTIVITY, COMMENT, CONSTRAINT, COMMENT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE IF NOT EXISTS usuario (
+    id int primary keu auto_increament,
+    nome varchar(45),
+    senha varchar(20)
+);
+ [42001-232]
+2024-09-05 11:12:20.726259-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "CREATE TABLE IF NOT EXISTS usuario (\000a    id int primary key [*]auto_increament,\000a    nome varchar(45),\000a    senha varchar(20)\000a);\000a"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+CREATE TABLE IF NOT EXISTS usuario (
+    id int primary key auto_increament,
+    nome varchar(45),
+    senha varchar(20)
+);
+ [42001-232]
+2024-09-05 11:24:45.851047-03:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DROP TABLE [*]IF NOT EXISTS usuario"; expected "identifier"; SQL statement:
+DROP TABLE IF NOT EXISTS usuario [42001-232]

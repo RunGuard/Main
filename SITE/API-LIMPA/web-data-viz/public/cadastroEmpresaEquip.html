@@ -17,7 +17,8 @@
 
     <div class="container">
         <div class="signin-signup">
-            <form action="" class="sign-in-form">
+
+            <form onsubmit="submitForm(event)" class="sign-in-form">
                 <h2 class="title">Cadastro de Empresa</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
@@ -29,8 +30,9 @@
                 </div>
                 <button onclick="cadastrarEmpresa()" class="btn">Cadastrar</button>
                 <p class="account-text">Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a></p>
+
             </form>
-            <form action="" class="sign-up-form">
+            <form onsubmit="submitForm(event)" class="sign-up-form">
                 <h2 class="title">Cadastro de Equipamento</h2>
                 <div class="input-field">
                     <i class="fas fa-user"></i>
@@ -61,6 +63,8 @@
         <div class="panels-container">
             <div class="panel left-panel">
                 <div class="content">
+
+                    <a style="color: aliceblue;" href="index.html"><-Home</a>
                     <h3>Não possue uma Empresa Cadastrada?</h3>
                     <p>Se redirecione para o outro formuário clicando no botão abaixo para cadastrar uma empresa!</p>
                     <button class="btn" id="sign-in-btn">Clique aqui</button>
@@ -69,6 +73,7 @@
             </div>
             <div class="panel right-panel">
                 <div class="content">
+                    <a style="color: aliceblue;" href="index.html"><-Home</a>
                     <h3>Empresa cadastrada?</h3>
                     <p>Se redirecione para o outro formuário clicando no botão abaixo para cadastrar um Equipamento da
                         empresa!</p>
@@ -83,6 +88,10 @@
 
     <script>
 
+        function submitForm(event) {
+            event.preventDefault();
+        }
+
         // Array para armazenar empresas cadastradas para validação de código de ativação 
         let listaEmpresasCadastradas = [];
 
@@ -96,14 +105,14 @@
                 return;
             }
 
-            if (cnpj.length !== 18) {
+            if (cnpj.length !== 14) {
                 // Mensagem de erro para comprimento incorreto
                 console.log("CNPJ inválido! Deve conter exatamente 14 números.");
                 return;
             }
 
+            // CNPJ contém apenas números
             if (/^\d+$/.test(cnpj)) {
-                // CNPJ contém apenas números
                 console.log("CNPJ válido.");
                 // Continue com o cadastro
             } else {
@@ -124,13 +133,9 @@
                     console.log("resposta: ", resposta);
 
                     if (resposta.ok) {
-                        // cardErro.style.display = "block";
+
                         mensagem_erro.innerHTML =
                             "Cadastro realizado com sucesso! Redirecionando para a tela de Login...";
-
-                        setTimeout(() => {
-                            window.location = "login.html";
-                        }, 2000); // O tempo de espera em setTimeout deve ser um número, não uma string.
 
                         limparFormulario();
                     } else {
@@ -233,19 +238,7 @@
                 .then(function (resposta) {
                     console.log("resposta: ", resposta);
 
-                    if (resposta.ok) {
-                        // cardErro.style.display = "block";
 
-                        // mensagem_erro.innerHTML =
-                        //     "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
-
-                        // // setTimeout(() => {
-                        // //     window.location = "login.html";
-                        // // }, "2000");
-
-                        // limparFormulario();
-                        // finalizarAguardar();
-                        console.warn("CU")
                     } else {
                         throw "Houve um erro ao tentar realizar o cadastro!";
                     }
