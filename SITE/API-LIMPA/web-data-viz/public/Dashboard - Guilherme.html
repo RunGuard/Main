@@ -160,50 +160,38 @@
 
     var fkEquipamento = 2;
 
+    //fetch --> CPU
+    function percentualCPU(fkEquipamento) {
+        fetch(`/duarte/percentualCPU/${fkEquipamento}`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    atualizarGraficoCPU(data);
 
+                } else {
+                    console.error('Formato de dados inesperado:', data);
+                }
+            })
+            .catch(error => console.error('Falha na captura de rodada', error));
+    }
 
-    //fetch --> Memória RAM
-    // function percentualCPU(fkEquipamento) {
-    //     fetch(`/duarte/percentualMemoriaRAM/${fkEquipamento}`, { cache: 'no-store' })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             if (Array.isArray(data)) {
-    //                 atualizarGraficoMemoria(data);
-    // atualizarGrafico2(data); 
-    // atualizarGrafico3(data); 
-    //             } else {
-    //                 console.error('Formato de dados inesperado:', data);
-    //             }
-    //         })
-    //         .catch(error => console.error('Falha na captura de rodada', error));
-    // }
     //GRÁFICO DE CPU EM TEMPO REAL -> 5min
-    async function atualizarGraficoCPU() {
-        try {
-            const dados = [
-                { data: '2024-11-04T10:00:00', media_cpu_percent: 40 },
-                { data: '2024-11-04T10:05:00', media_cpu_percent: 65 },
-                { data: '2024-11-04T10:10:00', media_cpu_percent: 50 },
-                { data: '2024-11-04T10:15:00', media_cpu_percent: 70 },
-                { data: '2024-11-04T10:20:00', media_cpu_percent: 55 },
-                { data: '2024-11-04T10:25:00', media_cpu_percent: 75 },
-                { data: '2024-11-04T10:30:00', media_cpu_percent: 60 },
-                { data: '2024-11-04T10:35:00', media_cpu_percent: 80 },
-                { data: '2024-11-04T10:40:00', media_cpu_percent: 65 },
-                { data: '2024-11-04T10:45:00', media_cpu_percent: 85 },
-                { data: '2024-11-04T10:50:00', media_cpu_percent: 68 },
-                { data: '2024-11-04T10:55:00', media_cpu_percent: 90 }
-            ];
+    let chartCPU;
 
-            const seriesGrafico1 = dados.map(item => ({
-                x: item.data,
-                y: item.media_cpu_percent
-            }));
+    function atualizarGraficoCPU(data) {
 
+        const momentos = data.map(item => {
+            const dtHora = new Date(item.momento);
+            dtHora.setHours(dtHora.getHours() - 3);
+            return dtHora.toISOString();
+        });
+        const valoresCPU = data.map(item => item.cpuPercent);
+
+        if (!chartCPU) {
             const optionsGrafico1 = {
                 series: [{
                     name: "Uso de CPU",
-                    data: seriesGrafico1
+                    data: valoresCPU
                 }],
                 chart: {
                     type: 'area',
@@ -255,6 +243,7 @@
                         style: { color: 'white' }
                     },
                     type: 'datetime',
+                    categories: momentos,
                     labels: {
                         format: 'HH:mm',
                         style: {
@@ -303,16 +292,18 @@
                 }
             };
 
-            const chartGrafico1 = new ApexCharts(document.querySelector("#grafico1"), optionsGrafico1);
-            chartGrafico1.render();
-        } catch (error) {
-            console.error('Erro ao carregar os dados do gráfico:', error);
+            chartCPU = new ApexCharts(document.querySelector("#grafico1"), optionsGrafico1);
+            chartCPU.render();
+        } else {
+            // Atualizando os dados do gráfico
+            chartCPU.updateSeries([{
+                name: 'Uso de CPU',
+                data: valoresCPU
+            }]);
         }
     }
 
-    // Chamando a função para renderizar o gráfico
-    atualizarGraficoCPU();
-
+    percentualCPU(fkEquipamento);
 
     //fetch --> Memória RAM
     function percentualMemoriaRAM(fkEquipamento) {
@@ -321,8 +312,6 @@
             .then(data => {
                 if (Array.isArray(data)) {
                     atualizarGraficoMemoria(data);
-                    // atualizarGrafico2(data); 
-                    // atualizarGrafico3(data); 
                 } else {
                     console.error('Formato de dados inesperado:', data);
                 }
@@ -330,12 +319,10 @@
             .catch(error => console.error('Falha na captura de rodada', error));
     }
 
+    // GRÁFICO DE MEMÓRIA RAM EM TEMPO REAL -> 5min
     // Inicializando a variável para o gráfico fora da função
     let chartMemoria;
-    // GRÁFICO DE MEMÓRIA RAM EM TEMPO REAL -> 5min
     function atualizarGraficoMemoria(data) {
-        // Preparando os dados para o gráfico
-        // const dates = data.map(item => new Date(item.data).getTime());
         const momentos = data.map(item => {
             const dtHora = new Date(item.momento);
             dtHora.setHours(dtHora.getHours() - 3);
@@ -456,24 +443,33 @@
 
     percentualMemoriaRAM(fkEquipamento);
 
+    function comparacaoLatencia(fkEquipamento) {
+        fetch(`/duarte/comparacaoLatencia/${fkEquipamento}`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    atualizarGraficoLatencia(data);
+                } else {
+                    console.error('Formato de dados inesperado:', data);
+                }
+            })
+            .catch(error => console.error('Falha na captura de rodada', error));
+    }
 
-
-
+    let chartLatencia;
     //GRÁFICO DE CPU/RAM/LATÊNCIA
-    async function atualizarGraficoLatencia() {
-        try {
-            const dados = [
-                { horario: '13:40', cpu: 65, ram: 78, latencia: 170 },
-                { horario: '13:45', cpu: 85, ram: 60, latencia: 175 },
-                { horario: '13:50', cpu: 68, ram: 60, latencia: 180 },
-                { horario: '13:55', cpu: 90, ram: 79, latencia: 185 }
-            ];
 
-            const categorias = dados.map(item => item.horario);
-            const valoresCpu = dados.map(item => item.cpu);
-            const valoresRam = dados.map(item => item.ram);
-            const valoresLatencia = dados.map(item => item.latencia);
+    function atualizarGraficoLatencia(data) {
+        const momentos = data.map(item => {
+            const dtHora = new Date(item.momento);
+            dtHora.setHours(dtHora.getHours() - 3);
+            return dtHora.toISOString();
+        });
+        const valoresCpu = data.map(item => item.cpuPercent);
+        const valoresRam = data.map(item => item.ramPercent);
+        const valoresLatencia = data.map(item => item.latencia_rede);
 
+        if (!chartLatencia) {
             const options = {
                 series: [
                     { name: 'Uso de CPU', data: valoresCpu },
@@ -511,7 +507,8 @@
                     intersect: false
                 },
                 xaxis: {
-                    categories: categorias,
+                    categories: momentos,
+
                     labels: {
                         style: {
                             colors: 'white',
@@ -520,7 +517,7 @@
                     }
                 },
                 yaxis: {
-                    categories: categorias,
+                    categories: momentos,
                     labels: {
                         style: {
                             colors: 'white', // Deixa os horários brancos no eixo Y
@@ -546,15 +543,20 @@
                 }
             };
 
-            var chart = new ApexCharts(document.querySelector("#cpuRam"), options);
-            chart.render(); // Renderiza o gráfico de barras horizontal
-        } catch (error) {
-            console.error('Erro ao carregar os dados do gráfico de barras:', error);
+            var chartCompara = new ApexCharts(document.querySelector("#cpuRam"), options);
+            chartCompara.render(); // Renderiza o gráfico de barras horizontal
+        } else {
+            // Atualizando os dados do gráfico
+            chartMemoria.updateSeries([{
+                name: 'Uso de Memória RAM',
+                data: valoresMemoria
+            }]);
         }
+
     }
 
-    atualizarGraficoLatencia(); // Chamando a função para renderizar o gráfico
-
+    // Exemplo de chamada (substitua `fkEquipamento` pelo valor correto)
+    comparacaoLatencia(fkEquipamento);
 
     function abrirChat() {
         document.getElementById("janelaChat").style.display = "flex";
