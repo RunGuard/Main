@@ -56,7 +56,7 @@ async function buscarMedidasPorPeriodoModel(fkEquipamento, mes, semana) {
         `;
     }
 
-    query += ` ORDER BY dtHora DESC;`;
+    query += ` ORDER BY dtHora DESC LIMIT 5;`;
 
     try {
         const resultados = await database.executar(query);

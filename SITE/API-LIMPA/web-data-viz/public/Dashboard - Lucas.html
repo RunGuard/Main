@@ -96,28 +96,28 @@
                 <div class="select">
                 <select id="selectPeriodoSemanal">
                     <option disabled selected value="">Selecione a Semana</option>
-                    <option value="semana1">Semana 1</option>
-                    <option value="semana2">Semana 2</option>
-                    <option value="semana3">Semana 3</option>
-                    <option value="semana4">Semana 4</option>
+                    <option value="1">Semana 1</option>
+                    <option value="2">Semana 2</option>
+                    <option value="3">Semana 3</option>
+                    <option value="4">Semana 4</option>
                 </select>
                 </div>
 
                 <div class="select">
                 <select id="selectPeriodoMensal">
                     <option disabled selected value="">Selecione o Mês</option>
-                    <option value="janeiro">Janeiro</option>
-                    <option value="fevereiro">Fevereiro</option>
-                    <option value="marco">Março</option>
-                    <option value="abril">Abril</option>
-                    <option value="maio">Maio</option>
-                    <option value="junho">Junho</option>
-                    <option value="julho">Julho</option>
-                    <option value="agosto">Agosto</option>
-                    <option value="setembro">Setembro</option>
-                    <option value="outubro">Outubro</option>
-                    <option value="novembro">Novembro</option>
-                    <option value="dezembro">Dezembro</option>
+                    <option value="1">Janeiro</option>
+                    <option value="2">Fevereiro</option>
+                    <option value="3">Março</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Maio</option>
+                    <option value="6">Junho</option>
+                    <option value="7">Julho</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
                 </select>
                 </div>
         </div>
@@ -191,6 +191,62 @@
             </div>
         </div>        
 <script>
+let fkEquipamento = null;
+
+document.addEventListener('DOMContentLoaded', function () {
+    carregarServidores(); 
+
+    const selectSemana = document.getElementById("selectPeriodoSemanal");
+    const selectMes = document.getElementById("selectPeriodoMensal");
+
+    function buscarDadosPorPeriodo() {
+        const mes = selectMes.value; 
+        const semana = selectSemana.value;
+
+        if (!fkEquipamento) {
+            console.error("Selecione um servidor antes de aplicar o filtro.");
+            return;
+        }
+
+        if (!mes) {
+            console.error("Selecione um mês para aplicar o filtro.");
+            return;
+        }
+
+        buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana || null);
+    }
+
+    selectSemana.addEventListener("change", buscarDadosPorPeriodo);
+    selectMes.addEventListener("change", buscarDadosPorPeriodo);
+});
+
+function buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana) {
+    let url = `/rotaRoque/medidasPorPeriodo/${fkEquipamento}/${mes}`;
+    if (semana) {
+        url += `/${semana}`;
+    }
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados por período: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (Array.isArray(data)) {
+                atualizarGrafico1(data); 
+                atualizarGrafico2(data); 
+                atualizarGrafico3(data); 
+            } else {
+                console.error('Formato de dados inesperado:', data);
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao buscar dados por período: ", error);
+        });
+}
+
 function buscarDadosGrafico(fkEquipamento) {
     if (!fkEquipamento) {
         console.error("fkEquipamento não foi definido. Certifique-se de que o servidor foi selecionado.");
@@ -218,8 +274,6 @@ function buscarDadosGrafico(fkEquipamento) {
         });
 }
 
-let fkEquipamento = null;
-
 function carregarServidores() {
     fetch('/rotaRoque/servidores')
         .then(response => {
@@ -241,7 +295,7 @@ function carregarServidores() {
             });
 
             selectServidor.addEventListener('change', function () {
-                fkEquipamento = this.value; // Define a variável global
+                fkEquipamento = this.value;
                 if (fkEquipamento) {
                     console.log(`Servidor selecionado: ${fkEquipamento}`);
                     buscarDadosGrafico(fkEquipamento); 

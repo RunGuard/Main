@@ -7,7 +7,7 @@ router.get("/ultimaMedida/:fkEquipamento", function (req, res) {
     roqueController.buscarMedidas(req, res);
 });
 
-router.get("/medidas/:fkEquipamento/:mes/:semana?", function (req, res) {
+router.get("/medidasPorPeriodo/:fkEquipamento/:mes/:semana?", function (req, res) {
     roqueController.buscarMedidasPorPeriodo(req, res);
 });
 
