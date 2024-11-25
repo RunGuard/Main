@@ -95,7 +95,7 @@
 
                 <div class="select">
                 <select id="selectPeriodoSemanal">
-                    <option disabled selected value="">Selecione a Semana</option>
+                    <option disabled selected value="0">Selecione a Semana</option>
                     <option value="1">Semana 1</option>
                     <option value="2">Semana 2</option>
                     <option value="3">Semana 3</option>
@@ -105,7 +105,7 @@
 
                 <div class="select">
                 <select id="selectPeriodoMensal">
-                    <option disabled selected value="">Selecione o Mês</option>
+                    <option disabled selected value="0">Selecione o Mês</option>
                     <option value="1">Janeiro</option>
                     <option value="2">Fevereiro</option>
                     <option value="3">Março</option>
@@ -191,16 +191,15 @@
             </div>
         </div>        
 <script>
-let fkEquipamento = null;
-
 document.addEventListener('DOMContentLoaded', function () {
-    carregarServidores(); 
+    carregarServidores();
 
     const selectSemana = document.getElementById("selectPeriodoSemanal");
     const selectMes = document.getElementById("selectPeriodoMensal");
 
+    // Função que será chamada sempre que o filtro de período for alterado
     function buscarDadosPorPeriodo() {
-        const mes = selectMes.value; 
+        const mes = selectMes.value;
         const semana = selectSemana.value;
 
         if (!fkEquipamento) {
@@ -208,12 +207,13 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (!mes) {
-            console.error("Selecione um mês para aplicar o filtro.");
-            return;
+        if (mes == 0 && semana == 0) {
+            // Se não houver seleção de mês nem semana, buscar dados atuais (últimas medições)
+            buscarDadosGrafico(fkEquipamento);
+        } else {
+            // Se houver seleção de mês ou semana, buscar dados filtrados por período
+            buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana || null);
         }
-
-        buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana || null);
     }
 
     selectSemana.addEventListener("change", buscarDadosPorPeriodo);
@@ -235,9 +235,9 @@ function buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana) {
         })
         .then(data => {
             if (Array.isArray(data)) {
-                atualizarGrafico1(data); 
-                atualizarGrafico2(data); 
-                atualizarGrafico3(data); 
+                atualizarGrafico1(data);
+                atualizarGrafico2(data);
+                atualizarGrafico3(data);
             } else {
                 console.error('Formato de dados inesperado:', data);
             }
@@ -247,6 +247,7 @@ function buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana) {
         });
 }
 
+// Função para buscar os dados mais recentes (últimas medições)
 function buscarDadosGrafico(fkEquipamento) {
     if (!fkEquipamento) {
         console.error("fkEquipamento não foi definido. Certifique-se de que o servidor foi selecionado.");
@@ -262,9 +263,9 @@ function buscarDadosGrafico(fkEquipamento) {
         })
         .then(data => {
             if (Array.isArray(data)) {
-                atualizarGrafico1(data); 
-                atualizarGrafico2(data); 
-                atualizarGrafico3(data); 
+                atualizarGrafico1(data);
+                atualizarGrafico2(data);
+                atualizarGrafico3(data);
             } else {
                 console.error('Formato de dados inesperado:', data);
             }
