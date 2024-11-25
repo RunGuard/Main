@@ -5,7 +5,7 @@ async function obterDados(req, res) {
 
     try {
         const results = await dadosModel.obterDados(fkEquipamento); // Chama o método no Model
-        if (results.length === 0) {
+        if (results.length == 0) {
             return res.status(404).json({ message: 'Dados não encontrados' });
         }
         res.json(results);

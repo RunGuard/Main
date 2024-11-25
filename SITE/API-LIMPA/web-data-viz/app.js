@@ -24,6 +24,7 @@ var empresasRouter = require("./src/routes/empresas");
 var dashboardRouter = require("./src/routes/dashboard");
 var dashboardDiegoRouter = require("./src/routes/dashboard-Diego");
 var dashboardAleRouter = require("./src/routes/ale")
+var servidoresRoute = require("./src/routes/server");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -43,6 +44,7 @@ app.use("/empresas", empresasRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/dashboard-Diego", dashboardDiegoRouter);
 app.use("/ale",dashboardAleRouter)
+app.use("/server",servidoresRoute)
 
 app.listen(PORTA_APP, function () {
     console.log(`

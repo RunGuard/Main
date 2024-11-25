@@ -152,3 +152,31 @@
     color: #FFFFFF;
 }
 
+.botao-atualizar {
+    background-color: #4CAF50; /* Cor de fundo verde */
+    color: white; /* Cor do texto branca */
+    padding: 6px 15px; /* Espaçamento interno reduzido */
+    border: none; /* Remove a borda */
+    border-radius: 5px; /* Bordas arredondadas */
+    font-size: 14px; /* Tamanho da fonte reduzido */
+    cursor: pointer; /* Cursor de mão ao passar por cima */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Efeito de transição */
+}
+
+.botao-atualizar:hover {
+    background-color: #45a049; /* Cor mais escura no hover */
+    transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+.botao-atualizar:active {
+    background-color: #388e3c; /* Cor ainda mais escura quando pressionado */
+}
+
+/* Estilos para o select */
+#selectServidor {
+    padding: 6px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+}

@@ -9,11 +9,10 @@
     <link rel="stylesheet" href="css/style_ale.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    
 </head>
 <body>
     <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
-    
+
     <div id="janelaChat" class="janela-chat">
         <div class="cabecalho-chat">
             <div style="display: flex; align-items: center;">
@@ -60,11 +59,14 @@
         <div id="chart-packets" class="chart"></div>
         <div id="chart-pie" class="chart"></div>
         <div id="chart-bytes" class="chart"></div>
-        
         <div id="chart-cpu" class="chart"></div>
-       
     </div>
-
+  
+    <h1>Selecione um Servidor</h1>
+    <select id="selectServidor">
+        <option value="">Carregando...</option>
+    </select>
+    <button onclick="listarServidores()" class="botao-atualizar">Atualizar Servidores</button>
     <div class="alert-container">
         <div class="alert-content">
             <h2>Alertas de Monitoramento</h2>
@@ -75,7 +77,6 @@
             <p>Latência alta: <span id="pingAlerta" class="highlight"></span></p>
         </div>
     </div>
-
 
 
 <script>
@@ -147,6 +148,75 @@
             document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
         }
     }
+    var selectServidor = document.getElementById("selectServidor");
+
+        function listarServidores() {
+            var fkEquipamento = 1; // Obtendo o FK do equipamento da sessão
+
+            console.log('Buscando servidores...');
+
+            fetch(`/server/buscarServidor`, {
+            method: "GET",
+          }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO listarServidores()!")
+            
+            if (resposta.ok) {
+              console.log(resposta);
+              resposta.json().then(function (resposta) {
+                console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+                resposta.reverse();
+              })
+
+            } else {
+              console.error('Nenhum dado encontrado na API');
+            }
+
+          }).catch(function (error) {
+            console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+          });
+        }
+        //     fetch(`../server/buscarServidor`, {
+        //         method: "GET",
+        //     })
+        //     .then(function (resposta) {
+        //         if (!resposta.ok) {
+        //             throw new Error(`Erro na requisição: ${resposta.status}`);
+        //         }
+        //         resposta.json().then(function (resposta) {
+        //             console.log("Dados recebidos: "+ JSON.stringify(resposta))
+        //         });
+        //     })
+        //     .then(function (servidores) {
+        //         // Limpa o conteúdo atual do select
+        //         selectServidor.innerHTML = "";
+
+        //         // Adiciona um placeholder padrão
+        //         selectServidor.innerHTML = "<option value=''>Selecione um servidor</option>";
+
+        //         // Adiciona as opções dos servidores dinamicamente
+        //         servidores.forEach((servidor) => {
+        //             selectServidor.innerHTML += `<option value='${servidor.idServidor}'>Servidor ${servidor.idServidor}</option>`;
+        //         });
+
+        //         console.log('Servidores carregados com sucesso.');
+
+        //         // Chama a função para plotar o gráfico, se necessário
+        //         plotarGrafico();
+        //     })
+        //     .catch(function (erro) {
+        //         console.error(`#ERRO: ${erro}`);
+        //         selectServidor.innerHTML = "<option value=''>Erro ao carregar servidores</option>";
+        //     });
+        // }
+
+        // Função exemplo para o gráfico
+        function plotarGrafico() {
+            console.log('Função de plotagem do gráfico chamada.');
+        }
+
+        // Chama a função ao carregar a página para popular o select inicialmente
+        listarServidores();
+
   
 // Função para monitorar os dados (alertas para valores baixos)
 function monitorarDados() {
@@ -197,8 +267,13 @@ function monitorarDados() {
     atualizarTextoElemento("perdaPacotes", perdaPacotesMsg || "Nenhum alerta", perdaPacotesMsg ? "#E74C3C" : "lightgreen");
     atualizarTextoElemento("pingAlerta", pingMsg || "Nenhum alerta", pingMsg ? "#E74C3C" : "lightgreen");
 }
-var fkEquipamento = 2; // Atualiza a data quando a página carrega
-function fetchDadosChartPackets(fkEquipamento) {
+
+
+
+
+let fkEquipamento = 5; // Atualiza a data quando a página carrega
+function fetchPacotes(fkEquipamento) {
+    console.log(`teste1 = ${fkEquipamento}`)
     fetch(`/ale/obterDados/${fkEquipamento}`, { cache: 'no-store' })
         .then(response => response.json())
         .then(data => {
@@ -277,7 +352,7 @@ function atualizarGraficoPackets(data) {
         }]);
     }
 }
-fetchDadosChartPackets(fkEquipamento);
+fetchPacotes(fkEquipamento);
 function fetchDadosChartPie(fkEquipamento) {
     fetch(`/ale/obterDados/${fkEquipamento}`, { cache: 'no-store' })
         .then(response => response.json())
@@ -409,7 +484,8 @@ function atualizarGraficoBytes(data) {
     }
 }
 fetchDadosChartBytes(fkEquipamento);
-function fetchDadosChartCPU(fkEquipamento) {
+function fetchCPU(fkEquipamento) {
+    console.log(fkEquipamento)
     fetch(`/ale/obterDados/${fkEquipamento}`, { cache: 'no-store' })
         .then(response => response.json())
         .then(data => {
@@ -423,6 +499,7 @@ function fetchDadosChartCPU(fkEquipamento) {
 }
 
 let chartCPU;
+
 function atualizarGraficoCPU(data) {
     const momentos = data.map(item => {
         const dtHora = new Date(item.momento);
@@ -488,12 +565,12 @@ function atualizarGraficoCPU(data) {
         }]);
     }
 }
-fetchDadosChartCPU(fkEquipamento);
+fetchCPU(fkEquipamento);
 setInterval(() => {
-    fetchDadosChartPackets(fkEquipamento);
+    fetchPacotes(fkEquipamento);
     fetchDadosChartPie(fkEquipamento);
     fetchDadosChartBytes(fkEquipamento);
-    fetchDadosChartCPU(fkEquipamento);
+    fetchCPU(fkEquipamento);
 }, 300000);  // 300000ms = 5 minutos
 
 </script>
