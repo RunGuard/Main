@@ -6,7 +6,8 @@
     align-items: flex-start;
     padding: 10px;
     margin-left: 220px; /* Mantém afastamento da navbar */
-    gap: 15px; /* Espaçamento entre gráficos */
+    gap: 15px;
+    margin-right: 30px; /* Espaçamento entre gráficos */
 }
 
 /* Estilo padrão dos gráficos */
@@ -124,6 +125,8 @@
     padding: 15px;
     border-radius: 8px;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 20px;
+    margin-right: 20px;
 }
 
 .alert-content:hover {
@@ -141,5 +144,11 @@
 
 .alert-content h2:hover {
     color: #2c2c2c;
+}
+.alert-content p strong{
+    color: #3498DB;
+} 
+.alert-content p{
+    color: #FFFFFF;
 }
 

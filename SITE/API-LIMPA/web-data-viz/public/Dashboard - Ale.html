@@ -57,10 +57,12 @@
     </nav>
 
     <div id="charts-container">
-        <div id="chart-bytes" class="chart"></div>
         <div id="chart-packets" class="chart"></div>
-        <div id="chart-cpu" class="chart"></div>
         <div id="chart-pie" class="chart"></div>
+        <div id="chart-bytes" class="chart"></div>
+        
+        <div id="chart-cpu" class="chart"></div>
+       
     </div>
 
     <div class="alert-container">
@@ -68,7 +70,7 @@
             <h2>Alertas de Monitoramento</h2>
             <p><strong>Perda na Última Hora:</strong></p>
             <p>Pacotes em risco: <span id="perdaPacotes" class="highlight"></span></p>
-            <p>Bytes em risco: <span id="perdaBytes" class="highlight"></span></p>
+            <p>Bytes em risco: <br><span id="perdaBytes" class="highlight"></span></p>
             <p><strong>Eventos de Latência Alta:</strong></p>
             <p>Latência alta: <span id="pingAlerta" class="highlight"></span></p>
         </div>
@@ -145,14 +147,14 @@
             document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
         }
     }
-
-    // Função para monitorar dados enviados e recebidos
-    function monitorarDados() {
+  
+// Função para monitorar os dados (alertas para valores baixos)
+function monitorarDados() {
     const minBytes = 1024 * 1024; // 1 MB em bytes
     const minPacotes = 10;
     const maxPing = 100; // Latência máxima permitida
 
-    // Dados fictícios para teste
+    // Dados fictícios para teste (pode ser substituído por valores reais)
     const ping = 993;
     const bytesEnviados = 500000;
     const bytesRecebidos = 920000;
@@ -190,236 +192,309 @@
         pingMsg += `<br>${ping} ms (Alerta: Latência acima de 100 ms)<br>`;
     }
 
-    
     // Atualiza os elementos HTML
-    if (perdaBytesMsg) {
-        perdaBytesElem.innerHTML = perdaBytesMsg;
-        perdaBytesElem.style.color = "#E74C3C"; // Alerta em vermelho
-    } else {
-        perdaBytesElem.innerHTML = "Nenhum alerta";
-        perdaBytesElem.style.color = "lightgreen"; // Sem alerta, texto em verde
-    }
-
-    if (perdaPacotesMsg) {
-        perdaPacotesElem.innerHTML = perdaPacotesMsg;
-        perdaPacotesElem.style.color = "#E74C3C"; // Alerta em vermelho
-    } else {
-        perdaPacotesElem.innerHTML = "Nenhum alerta";
-        perdaPacotesElem.style.color = "lightgreen"; // Sem alerta, texto em verde
-    }
-
-    if (pingMsg) {
-        pingAlertaElem.innerHTML = pingMsg;
-        pingAlertaElem.style.color = "#E74C3C"; // Alerta em vermelho
-    } else {
-        pingAlertaElem.innerHTML = "Nenhum alerta";
-        pingAlertaElem.style.color = "lightgreen"; // Sem alerta, texto em verde
-    }
+    atualizarTextoElemento("perdaBytes", perdaBytesMsg || "Nenhum alerta", perdaBytesMsg ? "#E74C3C" : "lightgreen");
+    atualizarTextoElemento("perdaPacotes", perdaPacotesMsg || "Nenhum alerta", perdaPacotesMsg ? "#E74C3C" : "lightgreen");
+    atualizarTextoElemento("pingAlerta", pingMsg || "Nenhum alerta", pingMsg ? "#E74C3C" : "lightgreen");
+}
+var fkEquipamento = 2; // Atualiza a data quando a página carrega
+function fetchDadosChartPackets(fkEquipamento) {
+    fetch(`/ale/obterDados/${fkEquipamento}`, { cache: 'no-store' })
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data)) {
+                atualizarGraficoPackets(data);
+            } else {
+                console.error('Formato de dados inesperado:', data);
+            }
+        })
+        .catch(error => console.error('Falha ao capturar dados de pacotes:', error));
 }
 
-
-// Executa a função
-monitorarDados();
-
-    document.addEventListener('DOMContentLoaded', function () {
-    var optionsBytes = {
-        chart: {
-            type: 'line',
-            height: 350
-        },
-        series: [{
-            name: 'Bytes Enviados',
-            data: [300, 400, 350, 500, 490, 620, 690],
-            color: '#FFC300' // Amarelo
-        }, {
-            name: 'Bytes Recebidos',
-            data: [400, 430, 448, 470, 540, 580, 690],
-            color: '#3498DB' // Azul
-        }],
-        xaxis: {
-            categories: ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00']
-        },
-        title: {
-            text: 'Monitoramento de Bytes',
-            style: {
-                color: '#FFFFFF'
-            }
-        },
-        legend: {
-            position: 'top',
-            labels: {
-                colors: ['#FFFFFF']
-            }
-        }
-    };
-
-    var chartBytes = new ApexCharts(document.querySelector("#chart-bytes"), optionsBytes);
-    chartBytes.render();
-});
-
-function atualizarPacotes() {
-    const pacotesEnviados = Math.floor(Math.random() * 200 +50); // Valores aleatórios
-    const pacotesRecebidos = Math.floor(Math.random() * 200 + 50);
-
-    const contadorEnviados = document.getElementById("contador-enviados");
-    const contadorRecebidos = document.getElementById("contador-recebidos");
-
-    // Atualizar o texto dos contadores
-    contadorEnviados.innerText = pacotesEnviados + " Pacotes Enviados";
-    contadorRecebidos.innerText = pacotesRecebidos + " Pacotes Recebidos";
-
-    // Alterar a cor com base nos valores
-    if (pacotesEnviados < 10) {
-        contadorEnviados.style.color = "#E74C3"; // Vermelho para valores abaixo de 10
-    } else {
-        contadorEnviados.style.color = "#FFC300"; // Amarelo para valores iguais ou acima de 10
-    }
-
-    if (pacotesRecebidos < 10) {
-        contadorRecebidos.style.color = "#E74C3"; // Vermelho para valores abaixo de 10
-    } else {
-        contadorRecebidos.style.color = "#3498DB"; // Azul para valores iguais ou acima de 10
-    }
-}
-    // Atualização contínua a cada 2 segundos
-    setInterval(atualizarPacotes, 2000);
-
-    // Renderizar os contadores no lugar do gráfico de pacotes
-    document.addEventListener('DOMContentLoaded', function () {
-        const monitoramentoPacotes = document.getElementById("chart-packets");
-        monitoramentoPacotes.innerHTML = `
-            <div>
-                <h2 style="color: #fff;">Monitoramento de Pacotes</h2>
-                <p id="contador-enviados" style="color: #FFC300; font-size: 1.5rem;">0 Pacotes Enviados</p>
-                <p id="contador-recebidos" style="color: #3498DB; font-size: 1.5rem;">0 Pacotes Recebidos</p>
-            </div>
-        `;
+let chartPackets;
+function atualizarGraficoPackets(data) {
+    const momentos = data.map(item => {
+        const dtHora = new Date(item.momento);
+        dtHora.setHours(dtHora.getHours() - 3);
+        return dtHora.toISOString();
     });
+    const pacotes = data.map(item => item.pacotes);
 
-// Gráfico de Utilização de CPU
-var options = {
-          series: [75],
-          chart: {
-          height: 430,
-          type: 'radialBar',
-          toolbar: {
-            show: true
-          }
-        },
-        plotOptions: {
-          radialBar: {
-            startAngle: -135,
-            endAngle: 225,
-             hollow: {
-              margin: 0,
-              size: '70%',
-              background: '#fff',
-              image: undefined,
-              imageOffsetX: 0,
-              imageOffsetY: 0,
-              position: 'front',
-              dropShadow: {
-                enabled: true,
-                top: 3,
-                left: 0,
-                blur: 4,
-                opacity: 0.24
-              }
+    if (!chartPackets) {
+        const options = {
+            series: [{
+                name: 'Pacotes de Dados',
+                data: pacotes
+            }],
+            chart: {
+                type: 'line',
+                height: 350,
+                zoom: { enabled: false },
+                background: '#292930',
             },
-            track: {
-              background: '#fff',
-              strokeWidth: '67%',
-              margin: 0, // margin is in pixels
-              dropShadow: {
-                enabled: true,
-                top: -3,
-                left: 0,
-                blur: 4,
-                opacity: 0.35
-              }
+            xaxis: {
+                type: 'datetime',
+                categories: momentos,
+                labels: {
+                    format: 'HH:mm',
+                    style: {
+                        color: 'white',
+                        fontSize: '12px'
+                    }
+                }
             },
-        
-            dataLabels: {
-              show: true,
-              name: {
-                offsetY: -10,
-                show: true,
-                color: '#888',
-                fontSize: '17px'
-              },
-              value: {
-                formatter: function(val) {
-                  return parseInt(val);
+            yaxis: {
+                labels: {
+                    formatter: function (val) {
+                        return val.toFixed(0); // Exibindo número de pacotes
+                    },
+                    style: {
+                        color: 'white'
+                    }
                 },
-                color: '#111',
-                fontSize: '36px',
-                show: true,
-              }
+                title: {
+                    text: 'Pacotes de Dados',
+                    style: {
+                        color: 'white'
+                    }
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val.toFixed(0);
+                    }
+                }
             }
-          }
-        },
-        fill: {
-          type: 'gradient',
-          gradient: {
-            shade: 'dark',
-            type: 'horizontal',
-            shadeIntensity: 0.5,
-            gradientToColors: ['#ABE5A1'],
-            inverseColors: true,
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 100]
-          }
-        },
-        title:{
-            text: 'Utilização da CPU',
-            style: {
-                color: '#FFFFFF'
-            }
-        },
-        stroke: {
-          lineCap: 'round'
-        },
-        labels: ['Porcentagem da CPU'],
         };
 
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
-
-var chart = new ApexCharts(document.querySelector("#chart-cpu"), options);
-chart.render();
-
-// Gráfico de Pizza de Utilização de Memória
-// Simula o contador de latência
-function atualizarLatencia() {
-    const latencia = Math.floor(Math.random() * 150); // Latência aleatória
-    const contadorLatencia = document.getElementById("contador-latencia");
-
-    contadorLatencia.innerText = `Latência: ${latencia}ms`;
-
-    // Alterar a cor com base no valor da latência
-    if (latencia > 100) {
-        contadorLatencia.style.color = "#E74C3C"; // Vermelho para latências acima de 100ms
+        chartPackets = new ApexCharts(document.querySelector("#chartPackets"), options);
+        chartPackets.render();
     } else {
-        contadorLatencia.style.color = "lightgreen"; // Amarelo para latências abaixo ou igual a 100ms
+        chartPackets.updateSeries([{
+            name: 'Pacotes de Dados',
+            data: pacotes
+        }]);
     }
 }
+fetchDadosChartPackets(fkEquipamento);
+function fetchDadosChartPie(fkEquipamento) {
+    fetch(`/ale/obterDados/${fkEquipamento}`, { cache: 'no-store' })
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data)) {
+                atualizarGraficoPie(data);
+            } else {
+                console.error('Formato de dados inesperado:', data);
+            }
+        })
+        .catch(error => console.error('Falha ao capturar dados do gráfico pie:', error));
+}
 
-// Atualização contínua a cada 2 segundos
-setInterval(atualizarLatencia, 2000);
+let chartPie;
+function atualizarGraficoPie(data) {
+    const categorias = data.map(item => item.categoria);
+    const valores = data.map(item => item.valor);
 
-// Renderizar o contador de latência no lugar do gráfico de CPU
-document.addEventListener('DOMContentLoaded', function () {
-    const utilizacaoCPU = document.getElementById("chart-pie");
-    if (utilizacaoCPU) {
-        utilizacaoCPU.innerHTML = `
-            <div>
-                <h2 style="color: #fff;">Monitoramento de Latência</h2>
-                <p id="contador-latencia" style="color: yellow; font-size: 1.5rem;">Latência: 0ms</p>
-            </div>
-        `;
+    if (!chartPie) {
+        const options = {
+            series: valores,
+            chart: {
+                type: 'pie',
+                height: 350,
+                background: '#292930'
+            },
+            labels: categorias,
+            colors: ['#FFDC60', '#73B7FF', '#FF4560'],
+            title: {
+                text: 'Distribuição de Pacotes',
+                style: {
+                    color: 'white',
+                    fontSize: '16px'
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val.toFixed(0);
+                    }
+                }
+            }
+        };
+
+        chartPie = new ApexCharts(document.querySelector("#chartPie"), options);
+        chartPie.render();
+    } else {
+        chartPie.updateSeries(valores);
     }
-});
+}
+fetchDadosChartPie(fkEquipamento);
+function fetchDadosChartBytes(fkEquipamento) {
+    fetch(`/ale/obterDados/${fkEquipamento}`, { cache: 'no-store' })
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data)) {
+                atualizarGraficoBytes(data);
+            } else {
+                console.error('Formato de dados inesperado:', data);
+            }
+        })
+        .catch(error => console.error('Falha ao capturar dados de bytes:', error));
+}
+
+let chartBytes;
+function atualizarGraficoBytes(data) {
+    const momentos = data.map(item => {
+        const dtHora = new Date(item.momento);
+        dtHora.setHours(dtHora.getHours() - 3);
+        return dtHora.toISOString();
+    });
+    const bytes = data.map(item => item.bytes);
+
+    if (!chartBytes) {
+        const options = {
+            series: [{
+                name: 'Bytes de Dados',
+                data: bytes
+            }],
+            chart: {
+                type: 'line',
+                height: 350,
+                zoom: { enabled: false },
+                background: '#292930'
+            },
+            xaxis: {
+                type: 'datetime',
+                categories: momentos,
+                labels: {
+                    format: 'HH:mm',
+                    style: {
+                        color: 'white',
+                        fontSize: '12px'
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    formatter: function (val) {
+                        return val.toFixed(0);
+                    },
+                    style: {
+                        color: 'white'
+                    }
+                },
+                title: {
+                    text: 'Bytes de Dados',
+                    style: {
+                        color: 'white'
+                    }
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val.toFixed(0);
+                    }
+                }
+            }
+        };
+
+        chartBytes = new ApexCharts(document.querySelector("#chartBytes"), options);
+        chartBytes.render();
+    } else {
+        chartBytes.updateSeries([{
+            name: 'Bytes de Dados',
+            data: bytes
+        }]);
+    }
+}
+fetchDadosChartBytes(fkEquipamento);
+function fetchDadosChartCPU(fkEquipamento) {
+    fetch(`/ale/obterDados/${fkEquipamento}`, { cache: 'no-store' })
+        .then(response => response.json())
+        .then(data => {
+            if (Array.isArray(data)) {
+                atualizarGraficoCPU(data);
+            } else {
+                console.error('Formato de dados inesperado:', data);
+            }
+        })
+        .catch(error => console.error('Falha ao capturar dados de CPU:', error));
+}
+
+let chartCPU;
+function atualizarGraficoCPU(data) {
+    const momentos = data.map(item => {
+        const dtHora = new Date(item.momento);
+        dtHora.setHours(dtHora.getHours() - 3);
+        return dtHora.toISOString();
+    });
+    const valoresCPU = data.map(item => item.cpuPercent);
+
+    if (!chartCPU) {
+        const options = {
+            series: [{
+                name: 'Uso de CPU',
+                data: valoresCPU
+            }],
+            chart: {
+                type: 'area',
+                height: 350,
+                zoom: { enabled: false },
+                background: '#292930'
+            },
+            xaxis: {
+                type: 'datetime',
+                categories: momentos,
+                labels: {
+                    format: 'HH:mm',
+                    style: {
+                        color: 'white',
+                        fontSize: '12px'
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    formatter: function (val) {
+                        return val.toFixed(0) + '%';
+                    },
+                    style: {
+                        color: 'white'
+                    }
+                },
+                title: {
+                    text: 'Uso de CPU (%)',
+                    style: {
+                        color: 'white'
+                    }
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val.toFixed(0) + '%';
+                    }
+                }
+            }
+        };
+
+        chartCPU = new ApexCharts(document.querySelector("#chartCPU"), options);
+        chartCPU.render();
+    } else {
+        chartCPU.updateSeries([{
+            name: 'Uso de CPU',
+            data: valoresCPU
+        }]);
+    }
+}
+fetchDadosChartCPU(fkEquipamento);
+setInterval(() => {
+    fetchDadosChartPackets(fkEquipamento);
+    fetchDadosChartPie(fkEquipamento);
+    fetchDadosChartBytes(fkEquipamento);
+    fetchDadosChartCPU(fkEquipamento);
+}, 300000);  // 300000ms = 5 minutos
 
 </script>
 

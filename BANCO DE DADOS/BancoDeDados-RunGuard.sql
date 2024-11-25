@@ -24,7 +24,7 @@ fkEmpresa int,
 CREATE TABLE equipamento (
 idEquipamento int primary key auto_increment,
 nomeEquipamento varchar(45),
-cpuVersao varchar(45),
+cpuVersao varchar(255),
 memoriaRam varchar(45),
 SistemaOperacional varchar(45),
 fkEmpresa int,
@@ -65,14 +65,14 @@ statusAlerta varchar(45),
 );
 
 INSERT INTO empresa VALUES
-(default, 'Uber'),
-(default, '99 Táxi');
+(default, 'Uber',111111111111111111),
+(default, '99 Táxi',222222222222222222);
 
 INSERT INTO equipamento VALUES
-(default, 'M1', 1),
-(default, 'M2', 1),
-(default, 'M3', 1),
-(default, 'M4', 1);
+(default, 'M1', 1,8,'Windows',1),
+(default, 'M2', 1,8,'Windows',2),
+(default, 'M3', 1,8,'Ubuntu',1),
+(default, 'M4', 1,8,'Linux',2);
 
 CREATE VIEW Monitoramento AS
 SELECT 
@@ -147,3 +147,5 @@ BEGIN
     -- CRIPTOGRAFA A SENHA ANTES DE ATUALIZAR O NOVO REGISTRO
     SET NEW.senha = criptografia(NEW.senha,5);
 END$$
+
+select * from Monitoramento

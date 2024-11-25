@@ -10,19 +10,19 @@ import speedtest
 run = True
 
 # Configuração do cliente
-s3_client = boto3.client(
-'s3',
-aws_access_key_id='',
-aws_secret_access_key='',
-aws_session_token='',
-region_name='')
+# s3_client = boto3.client(
+# 's3',
+# aws_access_key_id='',
+# aws_secret_access_key='',
+# aws_session_token='',
+# region_name='')
 
 # Criação da conexão do Banco de Dados
 mydb = mysql.connector.connect(
-  host="",
-  user="",
-  password="",
-  database="",
+  host="127.0.0.1",
+  user="root",
+  password="Mysql123.",
+  database="runguard",
   port= 3306
 )
 
@@ -60,11 +60,36 @@ while run:
     net_io = psutil.net_io_counters()
 
     bytes_enviados = net_io.bytes_sent
+    bytes_enviados_formatada =  bytes_enviados / (1024 ** 2)
     bytes_recebidos = net_io.bytes_recv
+    bytes_recebidos_formatada =  bytes_recebidos / (1024 ** 2)
     pacotes_enviados = net_io.packets_sent
+    pacotes_enviados_formatada =  pacotes_enviados / (1024 ** 2)
     pacotes_recebidos = net_io.packets_recv
+    pacotes_enviados_formatada =  pacotes_enviados / (1024 ** 2)
     memoria_usada = byte_para_gb(memoria.used)  # Converte bytes para Gigabytes
-    memoria_usada_formatada = f'{memoria_usada:.1f}'  # Formata o número
+    memoria_usada_formatada = f'{memoria_usada:.1f}'
+
+    def formatar_pacotes(pacotes_enviados):
+        if pacotes_enviados >= 1_000_000:  # Milhões
+            return f"{pacotes_enviados / 1_000_000:.2f}M"
+        elif pacotes_enviados >= 1_000:  # Milhares
+            return f"{pacotes_enviados / 1_000:.2f}K"
+        else:  # Sem alteração
+            return str(pacotes_enviados)
+    
+    def formatar_pacotes(pacotes_recebidos):
+        if pacotes_recebidos >= 1_000_000:  # Milhões
+            return f"{pacotes_recebidos / 1_000_000:.2f}M"
+        elif pacotes_recebidos >= 1_000:  # Milhares
+            return f"{pacotes_recebidos / 1_000:.2f}K"
+        else:  # Sem alteração
+            return str(pacotes_recebidos)
+        
+    pacotes_enviados_formatada = formatar_pacotes(pacotes_enviados)
+    pacotes_recebidos_formatada = formatar_pacotes(pacotes_recebidos)
+    
+  # Formata o número
 
     # Captura o ping
     ping = get_ping()
@@ -75,8 +100,8 @@ while run:
     print(f'A memória está em {memoria.percent} %')
     print(f'O envio de bytes está em {bytes_enviados:.2f} bytes')
     print(f'O recebimento de bytes está em {bytes_recebidos:.2f} bytes')
-    print(f'Quantidade de pacotes enviados em  {pacotes_enviados:.2f} ')
-    print(f'Quantidade de pacotes recebidos em {pacotes_recebidos:.2f} ')
+    print(f'Quantidade de pacotes enviados em  {pacotes_enviados_formatada} ')
+    print(f'Quantidade de pacotes recebidos em {pacotes_recebidos_formatada} ')
     print(f'Ping: {ping} ms')
 
     # Select para verificação da inserção do equipamento
@@ -104,22 +129,22 @@ while run:
 
     # Imprime as informações no terminal para visualização
     print(f"""A CPU está em {cpu} %
-A memória está em {memoria.percent} %
-Total de memória usada: {memoria_usada_formatada} GB %
-O envio de bytes está em {bytes_enviados/ 1024 :.2f} bytes %
-O recebimento de bytes está em {bytes_recebidos/ 1024 :.2f} bytes %
-Quantidade de pacotes enviados em {pacotes_enviados}  %
-Quantidade de pacotes recebidos em {pacotes_recebidos}  %
-Ping: {ping} ms""")
+            A memória está em {memoria.percent} %
+            Total de memória usada: {memoria_usada_formatada} GB %
+            O envio de bytes está em {bytes_enviados/ 1024 :.2f} bytes %
+            O recebimento de bytes está em {bytes_recebidos/ 1024 :.2f} bytes %
+            Quantidade de pacotes enviados em {pacotes_enviados}  %
+            Quantidade de pacotes recebidos em {pacotes_recebidos}  %
+            Ping: {ping} ms""")
 
     # Faz as inserções no banco de dados passando os componentes
-    sql = "INSERT INTO dados (idDado, cpuPercent, memoriaPercent, memoriaUsada, bytes_recebidos, bytes_enviados, pacotes_recebidos, pacotes_enviados, ping, dtHora, fkEquipamento) VALUES (default, %s, %s, %s, %s, %s, %s, %s, %s, default, %s)"
-    val = (cpu, memoria.percent, memoria_usada_formatada, bytes_recebidos, bytes_enviados, pacotes_recebidos, pacotes_enviados, ping, idEquipamento)
+    sql = "INSERT INTO dado (idDado, cpuPercent, memoriaPercent, memoriaUsada, bytes_recebidos, bytes_enviados, pacotes_recebidos, pacotes_enviados, ping, dtHora, fkEquipamento) VALUES (default, %s, %s, %s, %s, %s, %s, %s, %s, default, %s)"
+    val = (cpu, memoria.percent, memoria_usada_formatada, bytes_recebidos, bytes_enviados, pacotes_enviados_formatada, pacotes_recebidos_formatada, ping, idEquipamento)
 
     mycursor.execute(sql, val)
     mydb.commit()
 
-    sql = "SELECT * FROM dados"
+    sql = "SELECT * FROM dado"
 
     mycursor.execute(sql)
     dados_coletados = mycursor.fetchall()
@@ -153,5 +178,5 @@ Ping: {ping} ms""")
     chave_bucket = "dados.json"
 
     # Faz upload de um arquivo para um bucket específico com um nome específico para o arquivo
-    s3_client.upload_file(caminho_arquivo, nome_bucket, chave_bucket)
+    # s3_client.upload_file(caminho_arquivo, nome_bucket, chave_bucket)
     time.sleep(tempo)
