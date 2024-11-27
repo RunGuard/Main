@@ -99,8 +99,8 @@
         </div>
         <div class="medias">
             <div class="ultima-medida media">
-                <p>Estado da CPU: <span id="estadoCPU">Normal</span></p>
-                <p>Ultrapassagens consecutivas acima de 80%: <span id="cpu_ultrapassagens">0</span></p>
+                <p>Estado da CPU: <span id="estadoCPU"></span></p>
+                <p>Ultrapassagens consecutivas acima de 80%: <span id="cpu_ultrapassagens"></span></p>
                 <div class="alerta" id="alertaCPU" style="display: none;">
                     <p><b>Alerta:</b> Sobrecarga de CPU detectada! Uso de CPU ultrapassou 80% mais de 4 vezes
                         consecutivas.</p>
@@ -165,9 +165,9 @@
         fetch(`/duarte/percentualCPU/${fkEquipamento}`, { cache: 'no-store' })
             .then(response => response.json())
             .then(data => {
+                console.log("Dados recebidos:", data); // Adicionando um log para verificar
                 if (Array.isArray(data)) {
                     atualizarGraficoCPU(data);
-
                 } else {
                     console.error('Formato de dados inesperado:', data);
                 }
@@ -176,13 +176,12 @@
     }
 
     //GRÁFICO DE CPU EM TEMPO REAL -> 5min
+    //GRÁFICO DE CPU EM TEMPO REAL -> 5min
     let chartCPU;
-
     function atualizarGraficoCPU(data) {
-
         const momentos = data.map(item => {
             const dtHora = new Date(item.momento);
-            dtHora.setHours(dtHora.getHours() - 3);
+            dtHora.setHours(dtHora.getHours());
             return dtHora.toISOString();
         });
         const valoresCPU = data.map(item => item.cpuPercent);
@@ -232,11 +231,6 @@
                     align: 'left',
                     style: { color: 'white', fontSize: '16px' }
                 },
-                // subtitle: {
-                //     text: 'Horário: 13h - 13h55',
-                //     align: 'left',
-                //     style: { color: 'white', fontSize: '14px' }
-                // },
                 xaxis: {
                     title: {
                         text: 'Horário',
@@ -245,7 +239,13 @@
                     type: 'datetime',
                     categories: momentos,
                     labels: {
-                        format: 'HH:mm',
+                        formatter: function (val) {
+                            const date = new Date(val);
+                            return date.toLocaleTimeString('pt-BR', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }); // Formata para "HH:mm"
+                        },
                         style: {
                             colors: 'white',
                             fontWeight: 400,
@@ -258,7 +258,7 @@
                 yaxis: {
                     labels: {
                         formatter: function (val) {
-                            return val.toFixed(0) + '%';  // Exibindo valores como porcentagem
+                            return val.toFixed(0) + '%'; // Exibindo valores como porcentagem
                         },
                         style: {
                             colors: 'white',
@@ -286,7 +286,7 @@
                     theme: 'dark',
                     y: {
                         formatter: function (val) {
-                            return val.toFixed(0) + '%';  // Exibindo valores como porcentagem
+                            return val.toFixed(0) + '%'; // Exibindo valores como porcentagem
                         }
                     }
                 }
@@ -300,10 +300,27 @@
                 name: 'Uso de CPU',
                 data: valoresCPU
             }]);
+            // Atualizando o eixo X (momentos)
+            chartCPU.updateOptions({
+                xaxis: {
+                    categories: momentos // Atualiza os horários aqui
+                }
+            });
         }
     }
 
+    setInterval(() => {
+        try {
+            console.log("Atualizando gráfico de CPU...");
+            percentualCPU(fkEquipamento);
+        } catch (error) {
+            console.error("Erro ao executar intervalo de atualização do gráfico de CPU:", error);
+        }
+    }, 10000);
+
+    // Chama a função pela primeira vez para carregar os dados imediatamente
     percentualCPU(fkEquipamento);
+
 
     //fetch --> Memória RAM
     function percentualMemoriaRAM(fkEquipamento) {
@@ -325,7 +342,7 @@
     function atualizarGraficoMemoria(data) {
         const momentos = data.map(item => {
             const dtHora = new Date(item.momento);
-            dtHora.setHours(dtHora.getHours() - 3);
+            dtHora.setHours(dtHora.getHours());
             return dtHora.toISOString();
         });
         const valoresMemoria = data.map(item => item.memoriaPercent);
@@ -402,6 +419,11 @@
                             color: 'white'
                         }
                     },
+                    min: 0, // Valor mínimo fixo
+                    max: 100, // Valor máximo fixo
+                    tickAmount: 5, // Divisão do eixo Y em 5 intervalos (0, 20, 40, 60, 80, 100)
+                    axisBorder: { show: true, color: '#FFFFFF' },
+                    axisTicks: { show: true, color: '#FFFFFF' }
                 },
                 xaxis: {
                     type: 'datetime',
@@ -413,6 +435,13 @@
                         }
                     },
                     labels: {
+                        formatter: function (val) {
+                            const date = new Date(val);
+                            return date.toLocaleTimeString('pt-BR', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }); // Formata para "HH:mm"
+                        },
                         style: {
                             colors: 'white',
                             fontSize: '12px'
@@ -438,8 +467,22 @@
                 name: 'Uso de Memória RAM',
                 data: valoresMemoria
             }]);
+            // Atualizando o eixo X (momentos)
+            chartMemoria.updateOptions({
+                xaxis: {
+                    categories: momentos // Atualiza os horários aqui
+                }
+            });
         }
     }
+    setInterval(() => {
+        try {
+            console.log("Atualizando gráfico de memória...");
+            percentualMemoriaRAM(fkEquipamento);
+        } catch (error) {
+            console.error("Erro ao executar intervalo de atualização da RAM:", error);
+        }
+    }, 10000);
 
     percentualMemoriaRAM(fkEquipamento);
 
@@ -458,15 +501,15 @@
 
     let chartLatencia;
     //GRÁFICO DE CPU/RAM/LATÊNCIA
-
     function atualizarGraficoLatencia(data) {
         const momentos = data.map(item => {
-            const dtHora = new Date(item.momento);
-            dtHora.setHours(dtHora.getHours() - 3);
+            const dtHora = new Date(item.dtHora); // Use dtHora do SQL
+            dtHora.setHours(dtHora.getHours());
             return dtHora.toISOString();
         });
+
         const valoresCpu = data.map(item => item.cpuPercent);
-        const valoresRam = data.map(item => item.ramPercent);
+        const valoresRam = data.map(item => item.memoriaPercent); // Corrigir para memória
         const valoresLatencia = data.map(item => item.latencia_rede);
 
         if (!chartLatencia) {
@@ -477,15 +520,15 @@
                     { name: 'Latência (ms)', data: valoresLatencia }
                 ],
                 chart: {
-                    type: 'bar', // Altera para gráfico de barras
+                    type: 'bar',
                     height: 350,
                     background: '#292930',
                 },
                 plotOptions: {
                     bar: {
-                        horizontal: true, // Barra horizontal
+                        horizontal: true,
                         dataLabels: {
-                            position: 'top', // Exibe os dados no topo das barras
+                            position: 'top',
                         }
                     }
                 },
@@ -508,7 +551,6 @@
                 },
                 xaxis: {
                     categories: momentos,
-
                     labels: {
                         style: {
                             colors: 'white',
@@ -517,15 +559,20 @@
                     }
                 },
                 yaxis: {
-                    categories: momentos,
                     labels: {
+                        formatter: function (value) {
+                            // Formatar ISO para hh:mm
+                            const date = new Date(value);
+                            return date.getHours().toString().padStart(2, '0') + ':' +
+                                date.getMinutes().toString().padStart(2, '0');
+                        },
                         style: {
-                            colors: 'white', // Deixa os horários brancos no eixo Y
+                            colors: 'white',
                             fontSize: '12px'
                         }
                     }
                 },
-                colors: ['#FFDC60', '#73B7FF', '#FF4560'], // Cores personalizadas para cada linha
+                colors: ['#FFDC60', '#73B7FF', '#FF4560'],
                 title: {
                     text: 'Comparação(%) de Uso de CPU, RAM e Latência',
                     align: 'center',
@@ -543,20 +590,112 @@
                 }
             };
 
-            var chartCompara = new ApexCharts(document.querySelector("#cpuRam"), options);
-            chartCompara.render(); // Renderiza o gráfico de barras horizontal
+            chartLatencia = new ApexCharts(document.querySelector("#cpuRam"), options);
+            chartLatencia.render();
         } else {
-            // Atualizando os dados do gráfico
-            chartMemoria.updateSeries([{
-                name: 'Uso de Memória RAM',
-                data: valoresMemoria
-            }]);
-        }
+            chartLatencia.updateSeries([
+                { name: 'Uso de CPU', data: valoresCpu },
+                { name: 'Uso de RAM', data: valoresRam },
+                { name: 'Latência (ms)', data: valoresLatencia }
+            ]);
+            chartLatencia.updateOptions({
+                xaxis: {
+                    categories: momentos // Atualiza os horários aqui
+                }
+            });
 
+        }
     }
+    setInterval(() => {
+        try {
+            console.log("Atualizando gráfico de comparação...");
+            comparacaoLatencia(fkEquipamento);
+        } catch (error) {
+            console.error("Erro ao executar intervalo de atualização do gráfico de comparação:", error);
+        }
+    }, 10000)
 
     // Exemplo de chamada (substitua `fkEquipamento` pelo valor correto)
     comparacaoLatencia(fkEquipamento);
+
+
+
+
+    function kpiSobrecargaCpu(fkEquipamento) {
+    fetch(`/duarte/kpiSobrecargaCpu/${fkEquipamento}`, { cache: 'no-store' })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.length === 0) {
+                console.log("Nenhum dado encontrado para a CPU.");
+                document.getElementById("estadoCPU").innerText = "Normal";
+                document.getElementById("cpu_ultrapassagens").innerText = "0";
+                document.getElementById("alertaCPU").style.display = "none";
+                return;
+            }
+
+            let contadorConsecutivoSobrecarga = 0;
+            let contadorConsecutivoNormal = 0;
+            let estadoAtual = "Normal"; // Estado padrão inicial
+
+            data.forEach(dado => {
+                const cpuPercent = dado.cpuPercent;
+
+                if (cpuPercent > 80) {
+                    contadorConsecutivoSobrecarga++;
+                    contadorConsecutivoNormal = 0; // Reinicia o contador de normalização
+                } else {
+                    contadorConsecutivoNormal++;
+                    // Apenas reinicia o contador de sobrecarga se o contador de normalização for maior que 4
+                    if (contadorConsecutivoNormal >= 4) {
+                        contadorConsecutivoSobrecarga = 0; // Reinicia o contador de sobrecarga quando chega em 4 leituras consecutivas abaixo de 80%
+                    }
+                }
+
+                // Define o estado como "Sobrecarga" após 4 leituras consecutivas acima de 80%
+                if (contadorConsecutivoSobrecarga >= 4) {
+                    estadoAtual = "Sobrecarga";
+                }
+
+                // Define o estado como "Normal" após 4 leituras consecutivas abaixo de 80%
+                if (contadorConsecutivoNormal >= 4) {
+                    estadoAtual = "Normal";
+                }
+            });
+
+            // Se o estado for "Normal", zerar o contador de ultrapassagens apenas quando o estado de "Sobrecarga" for encerrado
+            const contadorUltrapassagens = estadoAtual === "Sobrecarga" ? contadorConsecutivoSobrecarga : 0;
+
+            // Atualiza a KPI na interface
+            document.getElementById("estadoCPU").innerText = estadoAtual;
+            document.getElementById("cpu_ultrapassagens").innerText = contadorUltrapassagens;
+
+            // Exibe ou oculta o alerta
+            if (estadoAtual === "Sobrecarga") {
+                document.getElementById("alertaCPU").style.display = "block";
+            } else {
+                document.getElementById("alertaCPU").style.display = "none";
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao buscar dados da CPU:", error);
+        });
+}
+kpiSobrecargaCpu(fkEquipamento);
+
+
+
+
+
+    //FETCH KPI CPU
+    // function kpiSobrecargaCpu(fkEquipamento) {
+    //     fetch(`/duarte/kpiSobrecargaCpu/${fkEquipamento}`, { cache: 'no-store' })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //         })
+    //         .catch(error => console.error('Falha na captura de rodada', error));
+    // }
+
 
     function abrirChat() {
         document.getElementById("janelaChat").style.display = "flex";
