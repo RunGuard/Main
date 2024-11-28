@@ -19,7 +19,7 @@ router.get("/kpiSobrecargaCpu/:fkEquipamento", function (req, res) {
     duarteController.puxarSobrecargaCPU(req, res);
 });
 
-// router.get("/kpiSobrecargaRam/:fkEquipamento", function (req, res) {
-//     duarteController.puxarSobrecargaRAM(req, res);
-// });
+router.get("/kpiSobrecargaRam/:fkEquipamento", function (req, res) {
+    duarteController.puxarSobrecargaRAM(req, res);
+});
 module.exports = router;
