@@ -1,20 +1,44 @@
-const dadosModel = require("../models/aleModel");
+const aleModel = require("../models/aleModel");
 
-async function obterDados(req, res) {
+function obterDados(req, res) {
     const fkEquipamento = req.params.fkEquipamento;
 
-    try {
-        const results = await dadosModel.obterDados(fkEquipamento); // Chama o método no Model
-        if (results.length == 0) {
-            return res.status(404).json({ message: 'Dados não encontrados' });
-        }
-        res.json(results);
-    } catch (error) {
-        console.error('Erro ao buscar dados:', error);
-        res.status(500).json({ error: 'Erro interno do servidor' });
-    }
+    console.log("Puxando os dados do equipamento:", fkEquipamento);
+
+    aleModel.obterDados(fkEquipamento)
+        .then((resultado) => {
+            console.log("Resultado da consulta:", resultado);
+            if (resultado.length === 0) {
+                // Nenhum resultado encontrado
+                res.status(204).send("Nenhum resultado encontrado!");
+            } else {
+                // Resultado encontrado
+                res.status(200).json(resultado);
+            }
+        })
+        .catch((erro) => {
+            console.error("Erro ao obter dados:", erro);
+            res.status(500).json({ error: "Erro ao obter dados." });
+        });
+}
+
+function buscarServidor(req, res) {
+    aleModel.buscarServidor()
+        .then((resultado) => {
+            console.log("Servidores encontrados:", resultado);
+            if (resultado.length === 0) {
+                res.status(204).send("Nenhum servidor encontrado!");
+            } else {
+                res.status(200).json(resultado);
+            }
+        })
+        .catch((erro) => {
+            console.error("Erro ao buscar servidores:", erro);
+            res.status(500).json({ error: "Erro ao buscar servidores." });
+        });
 }
 
 module.exports = {
-    obterDados
+    obterDados,
+    buscarServidor
 };

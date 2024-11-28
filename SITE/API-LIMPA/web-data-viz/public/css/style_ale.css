@@ -4,7 +4,7 @@
     flex-wrap: wrap;
     justify-content: space-between; /* Distribui os gráficos uniformemente */
     align-items: flex-start;
-    padding: 10px;
+    padding: 20px;
     margin-left: 220px; /* Mantém afastamento da navbar */
     gap: 15px;
     margin-right: 30px; /* Espaçamento entre gráficos */
@@ -12,7 +12,6 @@
 
 /* Estilo padrão dos gráficos */
 .chart {
-    width: 48%; /* Dois gráficos lado a lado */
     background: #2c2c2c; /* Fundo uniforme */
     padding: 15px;
     border-radius: 10px;
@@ -25,15 +24,18 @@
     box-shadow: 0 12px 18px rgba(0, 0, 0, 0.3);
 }
 
+/* Tamanho dos gráficos específicos */
+#chart-CPU, #chart-Bytes, #chart-Packages, #chart-Ping {
+    width: 100%;
+    max-width: 500px; /* Limita o tamanho máximo dos gráficos */
+    height: 350px; /* Altura consistente para todos os gráficos */
+    margin: 0 auto;
+}
+
 /* Ajuste específico para o gráfico de CPU */
 .chart-cpu {
-    order: -1; /* Move o gráfico para o topo */
     width: 100%; /* O gráfico ocupa toda a largura */
     margin: 0 auto; /* Centraliza o gráfico */
-    background: #2c2c2c;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Ajuste de cores das legendas e rótulos dos gráficos */
@@ -84,51 +86,13 @@
     background-color: #2c2c2c;
     border-radius: 12px;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Sombra marcante */
-    
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.alert-content h2 {
-    color: #FFC300; /* Destaque para o título do alerta */
-    font-size: 22px;
-    margin-bottom: 10px;
-}
-
-.alert-content p {
-    font-size: 18px;
-    margin: 5px 0;
-}
-
-.alert-content .highlight {
-    color: #E74C3C; /* Vermelho para alertas importantes */
-    font-weight: bold;
-}
-.alert-content p {
-    font-size: 18px;
-    margin: 5px 0;
-    line-height: 1.5;
-    transition: color 0.3s ease;
-}
-
-.alert-content .highlight {
-    color: #E74C3C;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
-
-.alert-content:hover .highlight {
-    color: #2c2c2c;
-}
-.alert-content {
-    text-align: left;
-    background-color: #2c2c2c;
     padding: 15px;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
     margin-top: 20px;
     margin-right: 20px;
 }
 
+/* Hover efeito nos alertas */
 .alert-content:hover {
     background-color: #2c2c2c;
     transform: scale(1.05);
@@ -145,13 +109,26 @@
 .alert-content h2:hover {
     color: #2c2c2c;
 }
-.alert-content p strong{
-    color: #3498DB;
-} 
-.alert-content p{
+
+/* Estilos de texto dentro dos alertas */
+.alert-content p {
+    font-size: 18px;
+    margin: 5px 0;
+    line-height: 1.5;
     color: #FFFFFF;
+    transition: color 0.3s ease;
 }
 
+.alert-content .highlight {
+    color: #E74C3C;
+    font-weight: bold;
+}
+
+.alert-content p strong {
+    color: #3498DB;
+}
+
+/* Estilos para o botão de atualizar */
 .botao-atualizar {
     background-color: #4CAF50; /* Cor de fundo verde */
     color: white; /* Cor do texto branca */
@@ -179,4 +156,10 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-right: 10px;
+}
+
+/* Estilo do corpo da página */
+.body { 
+    height: 100%;
+    width: 100%;
 }

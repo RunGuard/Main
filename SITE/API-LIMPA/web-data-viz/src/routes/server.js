@@ -5,7 +5,7 @@ var serverController = require('../controllers/serverController');
 
 
 // Rota para buscar servidores de um equipamento específico
-router.get('/buscarServidor', function (req, res) {
+router.get('/buscarServidor/:fkEquipamento', function (req, res) {
 
     serverController.buscarServidor(req, res);
 });
