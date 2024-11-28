@@ -141,11 +141,11 @@ nav:hover {
 
 .titulo{
     display: flex;
-    flex-direction: column;
     width: 100%;
     font-size: 12px;
     margin-left: 15px;
     margin-top: 10px;
+    justify-content: space-around;
     color: white;
 }
 .alinhamento{

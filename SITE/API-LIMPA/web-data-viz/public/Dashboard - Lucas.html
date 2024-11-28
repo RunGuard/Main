@@ -95,29 +95,29 @@
 
                 <div class="select">
                 <select id="selectPeriodoSemanal">
-                    <option disabled selected value="0">Selecione a Semana</option>
-                    <option value="1">Semana 1</option>
-                    <option value="2">Semana 2</option>
-                    <option value="3">Semana 3</option>
-                    <option value="4">Semana 4</option>
+                    <option disabled selected value=0>Selecione a Semana</option>
+                    <option value= 1>Semana 1</option>
+                    <option value= 2>Semana 2</option>
+                    <option value= 3>Semana 3</option>
+                    <option value= 4>Semana 4</option>
                 </select>
                 </div>
 
                 <div class="select">
                 <select id="selectPeriodoMensal">
-                    <option disabled selected value="0">Selecione o Mês</option>
-                    <option value="1">Janeiro</option>
-                    <option value="2">Fevereiro</option>
-                    <option value="3">Março</option>
-                    <option value="4">Abril</option>
-                    <option value="5">Maio</option>
-                    <option value="6">Junho</option>
-                    <option value="7">Julho</option>
-                    <option value="8">Agosto</option>
-                    <option value="9">Setembro</option>
-                    <option value="10">Outubro</option>
-                    <option value="11">Novembro</option>
-                    <option value="12">Dezembro</option>
+                    <option disabled selected value=0>Selecione o Mês</option>
+                    <option value=1>Janeiro</option>
+                    <option value=2>Fevereiro</option>
+                    <option value=3>Março</option>
+                    <option value=4>Abril</option>
+                    <option value=5>Maio</option>
+                    <option value=6>Junho</option>
+                    <option value=7>Julho</option>
+                    <option value=8>Agosto</option>
+                    <option value=9>Setembro</option>
+                    <option value=10>Outubro</option>
+                    <option value=11>Novembro</option>
+                    <option value=12>Dezembro</option>
                 </select>
                 </div>
         </div>
@@ -197,7 +197,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const selectSemana = document.getElementById("selectPeriodoSemanal");
     const selectMes = document.getElementById("selectPeriodoMensal");
 
-    // Função que será chamada sempre que o filtro de período for alterado
     function buscarDadosPorPeriodo() {
         const mes = selectMes.value;
         const semana = selectSemana.value;
@@ -208,10 +207,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (mes == 0 && semana == 0) {
-            // Se não houver seleção de mês nem semana, buscar dados atuais (últimas medições)
             buscarDadosGrafico(fkEquipamento);
         } else {
-            // Se houver seleção de mês ou semana, buscar dados filtrados por período
             buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana || null);
         }
     }
@@ -235,6 +232,7 @@ function buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana) {
         })
         .then(data => {
             if (Array.isArray(data)) {
+                console.log(data)
                 atualizarGrafico1(data);
                 atualizarGrafico2(data);
                 atualizarGrafico3(data);
@@ -247,7 +245,6 @@ function buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana) {
         });
 }
 
-// Função para buscar os dados mais recentes (últimas medições)
 function buscarDadosGrafico(fkEquipamento) {
     if (!fkEquipamento) {
         console.error("fkEquipamento não foi definido. Certifique-se de que o servidor foi selecionado.");
@@ -375,7 +372,7 @@ function atualizarGrafico1(data) {
                 curve: 'smooth'
             },
             title: {
-                text: `Desvio Padrão de CPU e Memória RAM - Última Medida: ${momentos[momentos.length - 1]}`,
+                text: `Desvio Padrão de CPU e Memória RAM - Última Medida: ${momentos}`,
                 align: 'left',
                 style: {
                     color: '#FFFFFF',
@@ -474,9 +471,11 @@ function atualizarGrafico1(data) {
     }
 }
 
-setInterval(() => {
+const intervalorBuscarDadosGrafico = setInterval(() => {
     buscarDadosGrafico(fkEquipamento);
 }, 10000);
+
+clearInterval(intervalorBuscarDadosGrafico);
 
 
 var chart2 = null; 
@@ -753,8 +752,6 @@ function atualizarGrafico3(data) {
 setInterval(() => {
     buscarDadosGrafico(fkEquipamento);
 }, 10000);
-
-buscarDadosGrafico(fkEquipamento);
 
     function abrirChat() {
         document.getElementById("janelaChat").style.display = "flex";
