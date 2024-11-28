@@ -118,8 +118,8 @@
             </div> -->
 
             <div class="media3 media">
-                <p>Estado da RAM: <span id="estadoRAM">Normal</span></p>
-                <p>Ultrapassagens consecutivas acima de 80%: <span id="ram_ultrapassagens">0</span></p>
+                <p>Estado da RAM: <span id="estadoRAM"></span></p>
+                <p>Ultrapassagens consecutivas acima de 80%: <span id="ram_ultrapassagens"></span></p>
                 <div class="alerta" id="alertaRAM" style="display: none;">
                     <p><b>Alerta:</b> Sobrecarga de RAM detectada! Uso de RAM ultrapassou 80% mais de 4 vezes
                         consecutivas.</p>
@@ -618,83 +618,134 @@
     // Exemplo de chamada (substitua `fkEquipamento` pelo valor correto)
     comparacaoLatencia(fkEquipamento);
 
-
-
-
     function kpiSobrecargaCpu(fkEquipamento) {
-    fetch(`/duarte/kpiSobrecargaCpu/${fkEquipamento}`, { cache: 'no-store' })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            if (data.length === 0) {
-                console.log("Nenhum dado encontrado para a CPU.");
-                document.getElementById("estadoCPU").innerText = "Normal";
-                document.getElementById("cpu_ultrapassagens").innerText = "0";
-                document.getElementById("alertaCPU").style.display = "none";
-                return;
-            }
+        fetch(`/duarte/kpiSobrecargaCpu/${fkEquipamento}`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.length === 0) {
+                    console.log("Nenhum dado encontrado para a CPU.");
+                    document.getElementById("estadoCPU").innerText = "Normal";
+                    document.getElementById("cpu_ultrapassagens").innerText = "0";
+                    document.getElementById("alertaCPU").style.display = "none";
+                    return;
+                }
 
-            let contadorConsecutivoSobrecarga = 0;
-            let contadorConsecutivoNormal = 0;
-            let estadoAtual = "Normal"; // Estado padrão inicial
+                let contadorConsecutivoSobrecarga = 0;
+                let contadorConsecutivoNormal = 0;
+                let contadorUltrapassagens = 0; // Conta as ultrapassagens acima de 80%
+                let estadoAtual = "Normal"; // Estado padrão inicial
 
-            data.forEach(dado => {
-                const cpuPercent = dado.cpuPercent;
+                data.forEach(dado => {
+                    const cpuPercent = dado.cpuPercent;
 
-                if (cpuPercent > 80) {
-                    contadorConsecutivoSobrecarga++;
-                    contadorConsecutivoNormal = 0; // Reinicia o contador de normalização
-                } else {
-                    contadorConsecutivoNormal++;
-                    // Apenas reinicia o contador de sobrecarga se o contador de normalização for maior que 4
-                    if (contadorConsecutivoNormal >= 4) {
-                        contadorConsecutivoSobrecarga = 0; // Reinicia o contador de sobrecarga quando chega em 4 leituras consecutivas abaixo de 80%
+                    if (cpuPercent > 80) {
+                        // Incrementa o contador de ultrapassagens
+                        contadorUltrapassagens++;
+
+                        contadorConsecutivoSobrecarga++;
+                        contadorConsecutivoNormal = 0; // Reinicia o contador de normalização
+
+                    } else {
+                        contadorConsecutivoNormal++;
+                        contadorConsecutivoSobrecarga = 0; // Reinicia o contador de sobrecarga
                     }
-                }
 
-                // Define o estado como "Sobrecarga" após 4 leituras consecutivas acima de 80%
-                if (contadorConsecutivoSobrecarga >= 4) {
-                    estadoAtual = "Sobrecarga";
-                }
+                    // Define o estado como "Sobrecarga" após 4 leituras consecutivas acima de 80%
+                    if (contadorConsecutivoSobrecarga >= 4) {
+                        estadoAtual = "Sobrecarga";
+                    }
 
-                // Define o estado como "Normal" após 4 leituras consecutivas abaixo de 80%
-                if (contadorConsecutivoNormal >= 4) {
-                    estadoAtual = "Normal";
+                    // Define o estado como "Normal" após 4 leituras consecutivas abaixo de 80%
+                    if (contadorConsecutivoNormal >= 4) {
+                        estadoAtual = "Normal";
+                        contadorUltrapassagens = 0; // Zera as ultrapassagens quando volta para "Normal"
+                    }
+                });
+
+                // Atualiza a KPI na interface
+                document.getElementById("estadoCPU").innerText = estadoAtual;
+                document.getElementById("cpu_ultrapassagens").innerText = contadorUltrapassagens;
+
+                // Exibe ou oculta o alerta
+                if (estadoAtual === "Sobrecarga") {
+                    document.getElementById("alertaCPU").style.display = "block";
+                } else {
+                    document.getElementById("alertaCPU").style.display = "none";
                 }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar dados da CPU:", error);
             });
+    }
 
-            // Se o estado for "Normal", zerar o contador de ultrapassagens apenas quando o estado de "Sobrecarga" for encerrado
-            const contadorUltrapassagens = estadoAtual === "Sobrecarga" ? contadorConsecutivoSobrecarga : 0;
-
-            // Atualiza a KPI na interface
-            document.getElementById("estadoCPU").innerText = estadoAtual;
-            document.getElementById("cpu_ultrapassagens").innerText = contadorUltrapassagens;
-
-            // Exibe ou oculta o alerta
-            if (estadoAtual === "Sobrecarga") {
-                document.getElementById("alertaCPU").style.display = "block";
-            } else {
-                document.getElementById("alertaCPU").style.display = "none";
-            }
-        })
-        .catch(error => {
-            console.error("Erro ao buscar dados da CPU:", error);
-        });
-}
-kpiSobrecargaCpu(fkEquipamento);
+    kpiSobrecargaCpu(fkEquipamento);
 
 
 
-
-
-    //FETCH KPI CPU
-    // function kpiSobrecargaCpu(fkEquipamento) {
-    //     fetch(`/duarte/kpiSobrecargaCpu/${fkEquipamento}`, { cache: 'no-store' })
+    // function kpiSobrecargaRam(fkEquipamento) {
+    //     fetch(`/duarte/kpiSobrecargaRam/${fkEquipamento}`, { cache: 'no-store' })
     //         .then(response => response.json())
     //         .then(data => {
+    //             console.log(data);
+    //             if (data.length === 0) {
+    //                 console.log("Nenhum dado encontrado para a CPU.");
+    //                 document.getElementById("estadoRAM").innerText = "Normal";
+    //                 document.getElementById("ram_ultrapassagens").innerText = "0";
+    //                 document.getElementById("alertaRAM").style.display = "none";
+    //                 return;
+    //             }
+
+    //             let contadorConsecutivoSobrecarga = 0;
+    //             let contadorConsecutivoNormal = 0;
+    //             let contadorUltrapassagens = 0; // Conta as ultrapassagens acima de 80%
+    //             let estadoAtual = "Normal"; // Estado padrão inicial
+
+    //             data.forEach(dado => {
+    //                 const cpuPercent = dado.cpuPercent;
+
+    //                 if (cpuPercent > 80) {
+    //                     // Incrementa o contador de ultrapassagens
+    //                     contadorUltrapassagens++;
+
+    //                     contadorConsecutivoSobrecarga++;
+    //                     contadorConsecutivoNormal = 0; // Reinicia o contador de normalização
+
+    //                 } else {
+    //                     contadorConsecutivoNormal++;
+    //                     contadorConsecutivoSobrecarga = 0; // Reinicia o contador de sobrecarga
+    //                 }
+
+    //                 // Define o estado como "Sobrecarga" após 4 leituras consecutivas acima de 80%
+    //                 if (contadorConsecutivoSobrecarga >= 4) {
+    //                     estadoAtual = "Sobrecarga";
+    //                 }
+
+    //                 // Define o estado como "Normal" após 4 leituras consecutivas abaixo de 80%
+    //                 if (contadorConsecutivoNormal >= 4) {
+    //                     estadoAtual = "Normal";
+    //                     contadorUltrapassagens = 0; // Zera as ultrapassagens quando volta para "Normal"
+    //                 }
+    //             });
+
+    //             // Atualiza a KPI na interface
+    //             document.getElementById("estadoRAM").innerText = estadoAtual;
+    //             document.getElementById("ram_ultrapassagens").innerText = contadorUltrapassagens;
+
+    //             // Exibe ou oculta o alerta
+    //             if (estadoAtual === "Sobrecarga") {
+    //                 document.getElementById("alertaRAM").style.display = "block";
+    //             } else {
+    //                 document.getElementById("alertaRAM").style.display = "none";
+    //             }
     //         })
-    //         .catch(error => console.error('Falha na captura de rodada', error));
+    //         .catch(error => {
+    //             console.error("Erro ao buscar dados da RAM:", error);
+    //         });
     // }
+
+    // kpiSobrecargaRam(fkEquipamento);
+
 
 
     function abrirChat() {

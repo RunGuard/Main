@@ -7,7 +7,7 @@ function puxarPercentualRam(req, res) {
         console.log("Acessei o controller puxarPercentualRam")
         if (resultado.length > 0) {
             res.status(200).json(resultado);
-        console.log("Resultado maior que zero!! Deu certo.")
+            console.log("Resultado maior que zero!! Deu certo.")
         } else {
             res.status(204).send("Nenhum resultado encontrado!")
             console.log("Bigode, não recebi resultado nenhum.")
@@ -26,7 +26,7 @@ function puxarPercentualCPU(req, res) {
         console.log("Acessei o controller puxarPercentualCPU")
         if (resultado.length > 0) {
             res.status(200).json(resultado);
-        console.log("Resultado maior que zero!! Deu certo.")
+            console.log("Resultado maior que zero!! Deu certo.")
         } else {
             res.status(204).send("Nenhum resultado encontrado!")
             console.log("Bigode, não recebi resultado nenhum.")
@@ -45,7 +45,7 @@ function puxarComparacao(req, res) {
         console.log("Acessei o controller puxarComparacao")
         if (resultado.length > 0) {
             res.status(200).json(resultado);
-        console.log("Resultado maior que zero!! Deu certo.")
+            console.log("Resultado maior que zero!! Deu certo.")
         } else {
             res.status(204).send("Nenhum resultado encontrado!")
             console.log("Bigode, não recebi resultado nenhum.")
@@ -64,7 +64,7 @@ function puxarSobrecargaCPU(req, res) {
         console.log("Acessei o controller puxarSobrecargaCPU")
         if (resultado.length > 0) {
             res.status(200).json(resultado);
-        console.log("Resultado maior que zero!! Deu certo.")
+            console.log("Resultado maior que zero!! Deu certo.")
         } else {
             res.status(204).send("Nenhum resultado encontrado!")
             console.log("Bigode, não recebi resultado nenhum.")
@@ -83,7 +83,7 @@ function puxarSobrecargaCPU(req, res) {
 //         console.log("Acessei o controller puxarSobrecargaRAM")
 //         if (resultado.length > 0) {
 //             res.status(200).json(resultado);
-//         console.log("Resultado maior que zero!! Deu certo.")
+//             console.log("Resultado maior que zero!! Deu certo.")
 //         } else {
 //             res.status(204).send("Nenhum resultado encontrado!")
 //             console.log("Bigode, não recebi resultado nenhum.")
