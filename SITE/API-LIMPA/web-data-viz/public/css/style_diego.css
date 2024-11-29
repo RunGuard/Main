@@ -86,15 +86,13 @@
 
 .ranking {
     background-color: #292930;
-    width: 30vw;
+    width: 45%;
+    height: 50vh;
     border-radius: 7px;
     box-shadow: #000000 -2px -2px 10px inset, #797979 2px 2px 10px inset;
-    height: 45vh;
     color: white;
     padding: 7px;
     border: 1px solid #ffff;
-    justify-content: center;
-    align-items: center;
 }
 
 .ranking table{
@@ -105,13 +103,13 @@
     padding: 0;
 }
 
-
 .filtro {
+    margin-left: 4.5%;
     text-align: center;
     color: #ffff;
     background-color: #292930;
     border-radius: 7px;
-    width: 100%;
+    width: 43%;
     border: 1px solid #ffff;
     box-shadow: #000000 -2px -2px 10px inset, #797979 2px 2px 10px inset;
 }
@@ -127,6 +125,7 @@ td, th {
 }
 
 h1 {
+    font-size: 3em;
     text-align: center;
     color: #fff;
     margin: 0.5%;
@@ -224,12 +223,6 @@ input[type="range"]::-moz-range-thumb {
     justify-content: space-between;
 }
 
-.separador {
-    height: 90%;
-    width: 1px;
-    border: 1px solid #ddd;
-}
-
 .tickmarks {
     display: flex;
     justify-content: space-around;
@@ -243,11 +236,23 @@ input[type="range"]::-moz-range-thumb {
 .grafico {
     box-shadow: #000000 -2px -2px 10px inset, #797979 2px 2px 10px inset;
     background-color: #292930;
-    width: fit-content;
-    height: fit-content;
+    width: 45%;
+    height: 100%;
     border-radius: 7px;
     color: white;
     border: 1px solid #ffff;
+    justify-content: center;
+}
+
+.graficoDetalhe {
+    box-shadow: #000000 -2px -2px 10px inset, #797979 2px 2px 10px inset;
+    background-color: #292930;
+    width: 70%;
+    height: 35vh;
+    border-radius: 7px;
+    color: white;
+    border: 1px solid #ffff;
+    justify-content: center;
 }
 
 .apexcharts-menu-item {
@@ -265,8 +270,8 @@ input[type="range"]::-moz-range-thumb {
 .r2 {
     display: none;
     position: absolute;
-    top: 2vh;
-    left: 41vw;
+    top: 3vh;
+    left: 20vw;
     background-color: #acacaceb;
     height: fit-content;
     width: 15vw;
@@ -312,16 +317,23 @@ input[type="range"]::-moz-range-thumb {
     z-index: 100;
     position: absolute;
     top: 7%;
-    left: 30%;
-    gap: 50px;
+    left: 35%;
+    gap: 40px;
     background-color: #919191;
     border: 2px solid white;
     border-radius: 2px;
-    width: 750px;
+    width: 650px;
     height: fit-content;
 }
 
+.width {
+    width: 70vw;
+}
+
 .visao-detalhada {
+    margin-left: 13%;
+    height: 40%;
+    width: 25%;
     box-shadow: #000000 2px 2px 10px, #797979 -2px -2px 10px;
     text-align: center;
     cursor: pointer;
@@ -342,7 +354,7 @@ input[type="range"]::-moz-range-thumb {
     position: absolute;
     height: 100%;
     width: 100%;
-    background-image: conic-gradient(from var(--angulo), transparent 75%, #ffc014);
+    background-image: conic-gradient(from var(--angulo), transparent 75%, #1e8cfa);
     top: 50%;
     left: 50%;
     translate: -50% -50%;

@@ -89,126 +89,126 @@
     </nav>
     <div class="fantasma">a</div>
 
-    <div class="content d-flex row jc-space-evenly gap">
-        
+    <div class="content d-flex row jc-center">
+
+        <div class="padding font-media d-flex column jc-space-around ai-center">
+            <div class="total-alertas media">
+                <p class="font-media"><span style="color: #1e8cfa;">Quantidade </span>total de alertas no<span
+                        style="color: #1e8cfa;"> último ano</span></p>
+                <hr>
+                <p id="alerta-total" class="alerta-info">Sem dados</p>
+            </div>
+
+            <div class="media ai-center padding d-flex column jc-space-around">
+                <p class="font-media"><span>Quantidade</span> de alertas <span>prevista</span>: <i
+                        onmouseover="abrirR2()" class="fa-regular fa-circle-question"
+                        style="color: #ffffff; cursor: pointer;"></i></p>
+                <hr>
+                <p class="alerta-info" id="previsao"> </p>
+            </div>
+            <div class="media">
+                <p><span style="color: #1e8cfa;">Quantidade </span>de alertas no<span style="color: #1e8cfa;"> período
+                        selecionado</span></p>
+                <hr>
+                <p id="alerta-info" class="alerta-info">XX</p>
+            </div>
+            <div class="media">
+                <p><span>Servidor</span> com mais alerta no <span>período selecionado</span></p>
+                <hr>
+                <p id="servidor-alerta" class="alerta-info as-center" style="font-size: 1.4em !important;">XX</p>
+            </div>
+
+        </div>
+
         <div class="padding d-flex column ai-center jc-space-around">
 
-            <h1>Visão geral</h1>
+            <h1>Histórico de alertas</h1>
 
-            <div class="d-flex medias row jc-space-around">
-                <div class="total-alertas media">
-                    <p class="font-media"><span>Quantidade </span>total de alertas no<span> último ano</span></p>
-                    <hr>
-                    <p id="alerta-total" class="alerta-info">Sem dados</p>
-                </div>
+            <div class="d-flex row ai-center width">
+                <div class="d-flex column ai-center padding filtro">
+                    <h3>Selecione o intervalo entre os meses para monitorar</h3>
+                    <div class="range-container">
+                        <div class="output">
+                            <span id="minValue">1</span>
+                            <span id="maxValue">12</span>
+                        </div>
 
-                <div class="media ai-center padding d-flex column jc-space-around">
-                    <p class="font-media"><span>Quantidade</span> de alertas <span>prevista</span>: <i
-                            onmouseover="abrirR2()" class="fa-regular fa-circle-question"
-                            style="color: #ffffff; cursor: pointer;"></i></p>
-                    <hr>
-                    <h1 id="previsao"> </h1>
-                </div>
-            </div>
-            
-            <div class="ranking js-center as-center">
-                <table class="font-media">
-                    <caption>Ranking dos 3 servidores com mais alertas</caption>
-                    <tr style="color: #ffdc60;">
-                        <th>Ranking</th>
-                        <th>Servidor</th>
-                        <th>Total alertas</th>
-                    </tr>
-                    <tr>
-                        <td>1°</td>
-                        <td id="ranking-primeiro">Sem dados</td>
-                        <td id="ranking-primeiro-qtd">Sem dados</td>
-                    </tr>
-                    <tr>
-                        <td>2°</td>
-                        <td id="ranking-segundo">Sem dados</td>
-                        <td id="ranking-segundo-qtd">Sem dados</td>
-                    </tr>
-                    <tr>
-                        <td>3°</td>
-                        <td id="ranking-terceiro">Sem dados</td>
-                        <td id="ranking-terceiro-qtd">Sem dados</td>
-                    </tr>
-                </table>
-            </div>
+                        <div class="range-background"></div>
+                        <div class="range-fill" id="rangeFill"></div>
 
-            <a class="visao-detalhada d-flex column font-media" onclick="abrirModal()">Alertas a cada mês:
-                <br><span>Clique para visualizar ⟶</span>
-            </a>
-            
-        </div>
+                        <!-- Range esquerdo -->
+                        <input type="range" min="1" max="12" value="1" id="rangeMin" oninput="updateRange()">
+                        <!-- Range direito -->
+                        <input type="range" min="1" max="12" value="12" id="rangeMax" oninput="updateRange()">
 
-        <div class="d-flex">
-            <hr class="separador js-center as-center">
-        </div>
-
-        <div class="d-flex column ai-center jc-space-evenly">
-
-            <h1>Filtre seus alertas</h1>
-
-            <div class="d-flex column ai-center padding filtro">
-                <h3>Selecione o intervalo entre os meses para monitorar</h3>
-                <div class="range-container">
-                    <div class="output">
-                        <span id="minValue">1</span>
-                        <span id="maxValue">12</span>
+                        <div class="tickmarks">
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                        </div>
                     </div>
-
-                    <div class="range-background"></div>
-                    <div class="range-fill" id="rangeFill"></div>
-
-                    <!-- Range esquerdo -->
-                    <input type="range" min="1" max="12" value="1" id="rangeMin" oninput="updateRange()">
-                    <!-- Range direito -->
-                    <input type="range" min="1" max="12" value="12" id="rangeMax" oninput="updateRange()">
-
-                    <div class="tickmarks">
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                    </div>
+                    <button class="padding" onclick="atualizarGrafico()">Filtrar</button>
                 </div>
-                <button class="padding" onclick="atualizarGrafico()">Filtrar</button>
+
+                <a class="visao-detalhada d-flex column font-media" onclick="abrirModal()">Alertas a cada mês:
+                    <br><span>Clique para visualizar ⟶</span>
+                </a>
+
             </div>
 
-            <div class="medias pad font-media d-flex row">
-                <div class="media">
-                    <p><span>Quantidade </span>de alertas no<span> período selecionado</span></p>
-                    <hr>
-                    <p id="alerta-info" class="alerta-info">XX</p>
+            <div class="d-flex row width jc-space-evenly">
+
+                <div class="grafico d-flex ai-center as-center">
+                    <div id="chart"></div>
                 </div>
-                <div class="media">
-                    <p><span>Servidor</span> com mais alerta no <span>período selecionado</span></p>
-                    <hr>
-                    <p id="servidor-alerta" class="alerta-info as-center" style="font-size: 1.4em !important;">XX</p>
+
+                <div class="ranking js-center as-center">
+                    <table class="font-media">
+                        <caption>Ranking dos 3 servidores com <span style="color: #1e8cfa;">mais alertas</span>
+                        </caption>
+                        <tr style="color: #1e8cfa;">
+                            <th>Ranking</th>
+                            <th>Servidor</th>
+                            <th>Total alertas</th>
+                        </tr>
+                        <tr>
+                            <td>1°</td>
+                            <td id="ranking-primeiro">Sem dados</td>
+                            <td id="ranking-primeiro-qtd">Sem dados</td>
+                        </tr>
+                        <tr>
+                            <td>2°</td>
+                            <td id="ranking-segundo">Sem dados</td>
+                            <td id="ranking-segundo-qtd">Sem dados</td>
+                        </tr>
+                        <tr>
+                            <td>3°</td>
+                            <td id="ranking-terceiro">Sem dados</td>
+                            <td id="ranking-terceiro-qtd">Sem dados</td>
+                        </tr>
+                    </table>
                 </div>
+
             </div>
 
-            <div class="grafico as-center">
-                <div id="chart"></div>
-            </div>
         </div>
 
     </div>
 
     <div id="r2" class="r2 d-flex column padding">
         <i onclick="fecharR2()" class="as-end fa-regular fa-circle-xmark" style="color: #636363; cursor: pointer;"></i>
-        <p>A partir dos dados expostos no gráfico, é possível calcular a porcentagem da previsão para o próximo mês de
-            janeiro estar correta (também
+        <p>A partir dos dados expostos no gráfico, é possível calcular a porcentagem da previsão para o próximo mês
+            (<span id="mesPrevisto"></span>)
+            estar correta (também
             chamada de R²):</p>
         <b> <span id="explicacaor2"></span></b>
     </div>
@@ -220,6 +220,7 @@
             style="color: #f7f7f7; cursor: pointer;"></i>
         <h1>Visão detalhada</h1>
         <span>Selecione o mês que você deseja monitorar:</span>
+
         <select onchange="graficoDetails()" id="slc_mes">
             <option value="0" disabled selected>Selecione um mês</option>
             <option value="1">Janeiro</option>
@@ -236,8 +237,8 @@
             <option value="12">Dezembro</option>
         </select>
 
-        <div class="grafico padding">
-            <div style="text-align: center;" class="ai-center d-flex padding" id="chartDetails">
+        <div class="graficoDetalhe d-flex ai-center jc-center padding">
+            <div id="chartDetails">
                 <h2>Selecione um mês</h2>
             </div>
         </div>
