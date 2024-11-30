@@ -365,14 +365,14 @@
             });
         }
     }
-    // setInterval(() => {
-    //     try {
-    //         console.log("Atualizando gráfico de CPU...");
-    //         percentualCPU(fkEquipamento);
-    //     } catch (error) {
-    //         console.error("Erro ao executar intervalo de atualização do gráfico de CPU:", error);
-    //     }
-    // }, 10000);
+    setInterval(() => {
+        try {
+            console.log("Atualizando gráfico de CPU...");
+            percentualCPU(fkEquipamento);
+        } catch (error) {
+            console.error("Erro ao executar intervalo de atualização do gráfico de CPU:", error);
+        }
+    }, 10000);
 
     // Chama a função pela primeira vez para carregar os dados imediatamente
     percentualCPU(fkEquipamento);
@@ -528,14 +528,14 @@
             });
         }
     }
-    // setInterval(() => {
-    //     try {
-    //         console.log("Atualizando gráfico de memória...");
-    //         percentualMemoriaRAM(fkEquipamento);
-    //     } catch (error) {
-    //         console.error("Erro ao executar intervalo de atualização da RAM:", error);
-    //     }
-    // }, 10000);
+    setInterval(() => {
+        try {
+            console.log("Atualizando gráfico de memória...");
+            percentualMemoriaRAM(fkEquipamento);
+        } catch (error) {
+            console.error("Erro ao executar intervalo de atualização da RAM:", error);
+        }
+    }, 10000);
 
     percentualMemoriaRAM(fkEquipamento);
 
@@ -658,14 +658,14 @@
 
         }
     }
-    // setInterval(() => {
-    //     try {
-    //         console.log("Atualizando gráfico de comparação...");
-    //         comparacaoLatencia(fkEquipamento);
-    //     } catch (error) {
-    //         console.error("Erro ao executar intervalo de atualização do gráfico de comparação:", error);
-    //     }
-    // }, 10000)
+    setInterval(() => {
+        try {
+            console.log("Atualizando gráfico de comparação...");
+            comparacaoLatencia(fkEquipamento);
+        } catch (error) {
+            console.error("Erro ao executar intervalo de atualização do gráfico de comparação:", error);
+        }
+    }, 10000)
 
     // Exemplo de chamada (substitua `fkEquipamento` pelo valor correto)
     comparacaoLatencia(fkEquipamento);
