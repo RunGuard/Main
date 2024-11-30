@@ -95,10 +95,18 @@ function puxarSobrecargaRAM(req, res) {
     });
 }
 
+function buscarServidor(req, res) {
+    duarteModel.buscarServidores()
+        .then(function (servidores) {
+            res.status(200).json(servidores);
+        });
+}
+
 module.exports = {
     puxarPercentualRam,
     puxarPercentualCPU,
     puxarComparacao,
     puxarSobrecargaCPU,
-    puxarSobrecargaRAM
+    puxarSobrecargaRAM,
+    buscarServidor
 }

@@ -93,31 +93,25 @@
             <a href="Dashboard - GuilhermeAlerta.html">Voltar para Dashboard 7</a>
         </div>
         <div class="container-select">
-            <select onchange="buscar(), buscarDadosGrafico()" id="select_equipamento">
+            <select id="selectServidor">
                 <option selected disabled>Selecione o servidor a monitorar</option>
             </select>
         </div>
         <div class="medias">
-            <div class="ultima-medida media">
+            <div class="medida_cpu media">
                 <p>Estado da CPU: <span id="estadoCPU"></span></p>
                 <p>Ultrapassagens consecutivas acima de 80%: <span id="cpu_ultrapassagens"></span></p>
                 <div class="alerta" id="alertaCPU" style="display: none;">
-                    <p><b>Alerta:</b> Sobrecarga de CPU detectada! Uso de CPU ultrapassou 80% mais de 4 vezes
+                    <p><b>Alerta:</b> Sobrecarga de CPU detectada! Uso de CPU
+                        ultrapassou 80% mais de 4 vezes
                         consecutivas.</p>
                 </div>
             </div>
-
             <div class="data-atual media">
-                <p>Data de hoje:</p>
+                <p style="font-weight: bold; font-size: 1.3em;">Data de hoje:</p>
                 <span id="dataAtual"></span>
             </div>
-            <!-- <div class="qtdAcima80 media">
-                <p>PENSANDOOOOOO <span id="maior_ram">pensando</span></p><span
-                    style="color: rgb(249, 255, 172);">pensando</span>
-                <span id="maior_ram">pensanso </span><span style="color: rgb(249, 255, 172);">pensando</span>
-            </div> -->
-
-            <div class="media3 media">
+            <div class="media_ram media">
                 <p>Estado da RAM: <span id="estadoRAM"></span></p>
                 <p>Ultrapassagens consecutivas acima de 80%: <span id="ram_ultrapassagens"></span></p>
                 <div class="alerta" id="alertaRAM" style="display: none;">
@@ -146,6 +140,73 @@
 </html>
 </body>
 <script>
+    let chartMemoria;
+    let chartCPU;
+    let chartLatencia;
+
+    var fkEquipamento;
+
+    function atualizarIntervalos() {
+        if (intervaloCPU) clearInterval(intervaloCPU);
+        if (intervaloMemoria) clearInterval(intervaloMemoria);
+        if (intervaloLatencia) clearInterval(intervaloLatencia);
+
+        intervaloCPU = setInterval(() => {
+            percentualCPU(fkEquipamento);
+        }, 10000);
+        intervaloMemoria = setInterval(() => {
+            percentualMemoriaRAM(fkEquipamento);
+        }, 10000);
+        intervaloLatencia = setInterval(() => {
+            comparacaoLatencia(fkEquipamento);
+        }, 10000);
+    }
+
+    carregarServidores();
+
+    function carregarServidores() {
+        fetch('/duarte/servidores')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar servidores: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(servidores => {
+                const selectServidor = document.getElementById('selectServidor');
+
+                selectServidor.innerHTML = '<option disabled selected value="">Selecione um Servidor</option>';
+
+                servidores.forEach(servidor => {
+                    const option = document.createElement('option');
+                    option.value = servidor.idEquipamento;
+                    option.textContent = servidor.nomeEquipamento;
+                    selectServidor.appendChild(option);
+                });
+
+                selectServidor.addEventListener('change', function () {
+                    fkEquipamento = this.value;
+                    if (fkEquipamento) {
+                        console.log(`Servidor selecionado: ${fkEquipamento}`);
+                        percentualCPU(fkEquipamento);
+                        percentualMemoriaRAM(fkEquipamento);
+                        comparacaoLatencia(fkEquipamento);
+                        kpiSobrecargaCpu(fkEquipamento);
+                        kpiSobrecargaRam(fkEquipamento);
+                    } else {
+                        console.warn("Nenhum servidor foi selecionado.");
+                    }
+                });
+            })
+            .catch(error => {
+                console.error("Erro ao carregar servidores:", error);
+            });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        carregarServidores();
+    });
+
     function atualizarData() {
         const dataAtual = new Date();
         const dia = String(dataAtual.getDate()).padStart(2, '0');
@@ -155,10 +216,9 @@
         // Formata a data no estilo DD/MM/AAAA
         document.getElementById('dataAtual').textContent = `${dia}/${mes}/${ano}`;
     }
-    // Atualiza a data ao carregar a página
     atualizarData();
 
-    var fkEquipamento = 2;
+    // var fkEquipamento
 
     //fetch --> CPU
     function percentualCPU(fkEquipamento) {
@@ -176,8 +236,6 @@
     }
 
     //GRÁFICO DE CPU EM TEMPO REAL -> 5min
-    //GRÁFICO DE CPU EM TEMPO REAL -> 5min
-    let chartCPU;
     function atualizarGraficoCPU(data) {
         const momentos = data.map(item => {
             const dtHora = new Date(item.momento);
@@ -291,7 +349,6 @@
                     }
                 }
             };
-
             chartCPU = new ApexCharts(document.querySelector("#grafico1"), optionsGrafico1);
             chartCPU.render();
         } else {
@@ -308,15 +365,14 @@
             });
         }
     }
-
-    setInterval(() => {
-        try {
-            console.log("Atualizando gráfico de CPU...");
-            percentualCPU(fkEquipamento);
-        } catch (error) {
-            console.error("Erro ao executar intervalo de atualização do gráfico de CPU:", error);
-        }
-    }, 10000);
+    // setInterval(() => {
+    //     try {
+    //         console.log("Atualizando gráfico de CPU...");
+    //         percentualCPU(fkEquipamento);
+    //     } catch (error) {
+    //         console.error("Erro ao executar intervalo de atualização do gráfico de CPU:", error);
+    //     }
+    // }, 10000);
 
     // Chama a função pela primeira vez para carregar os dados imediatamente
     percentualCPU(fkEquipamento);
@@ -338,7 +394,6 @@
 
     // GRÁFICO DE MEMÓRIA RAM EM TEMPO REAL -> 5min
     // Inicializando a variável para o gráfico fora da função
-    let chartMemoria;
     function atualizarGraficoMemoria(data) {
         const momentos = data.map(item => {
             const dtHora = new Date(item.momento);
@@ -348,14 +403,13 @@
         const valoresMemoria = data.map(item => item.memoriaPercent);
 
         if (!chartMemoria) {
-            // Configurações do gráfico
             const options = {
                 series: [{
                     name: 'Uso de Memória RAM',
                     data: valoresMemoria
                 }],
                 chart: {
-                    type: 'area', // Tipo de gráfico: área
+                    type: 'area',
                     stacked: false,
                     height: 350,
                     zoom: {
@@ -409,7 +463,7 @@
                 yaxis: {
                     labels: {
                         formatter: function (val) {
-                            return val.toFixed(0) + '%';  // Exibindo valores como porcentagem
+                            return val.toFixed(0) + '%';
                         },
                         style: { colors: 'white' }
                     },
@@ -452,12 +506,11 @@
                     shared: false,
                     y: {
                         formatter: function (val) {
-                            return val.toFixed(0) + '%'; // Exibindo valores de memória como porcentagem
+                            return val.toFixed(0) + '%';
                         }
                     }
                 }
             };
-
             // Renderizando o gráfico
             chartMemoria = new ApexCharts(document.querySelector("#graficoMemoria"), options);
             chartMemoria.render();
@@ -475,14 +528,14 @@
             });
         }
     }
-    setInterval(() => {
-        try {
-            console.log("Atualizando gráfico de memória...");
-            percentualMemoriaRAM(fkEquipamento);
-        } catch (error) {
-            console.error("Erro ao executar intervalo de atualização da RAM:", error);
-        }
-    }, 10000);
+    // setInterval(() => {
+    //     try {
+    //         console.log("Atualizando gráfico de memória...");
+    //         percentualMemoriaRAM(fkEquipamento);
+    //     } catch (error) {
+    //         console.error("Erro ao executar intervalo de atualização da RAM:", error);
+    //     }
+    // }, 10000);
 
     percentualMemoriaRAM(fkEquipamento);
 
@@ -499,17 +552,16 @@
             .catch(error => console.error('Falha na captura de rodada', error));
     }
 
-    let chartLatencia;
     //GRÁFICO DE CPU/RAM/LATÊNCIA
     function atualizarGraficoLatencia(data) {
         const momentos = data.map(item => {
-            const dtHora = new Date(item.dtHora); // Use dtHora do SQL
+            const dtHora = new Date(item.dtHora); // Usar dtHora do SQL
             dtHora.setHours(dtHora.getHours());
             return dtHora.toISOString();
         });
 
         const valoresCpu = data.map(item => item.cpuPercent);
-        const valoresRam = data.map(item => item.memoriaPercent); // Corrigir para memória
+        const valoresRam = data.map(item => item.memoriaPercent);
         const valoresLatencia = data.map(item => item.latencia_rede);
 
         if (!chartLatencia) {
@@ -606,14 +658,14 @@
 
         }
     }
-    setInterval(() => {
-        try {
-            console.log("Atualizando gráfico de comparação...");
-            comparacaoLatencia(fkEquipamento);
-        } catch (error) {
-            console.error("Erro ao executar intervalo de atualização do gráfico de comparação:", error);
-        }
-    }, 10000)
+    // setInterval(() => {
+    //     try {
+    //         console.log("Atualizando gráfico de comparação...");
+    //         comparacaoLatencia(fkEquipamento);
+    //     } catch (error) {
+    //         console.error("Erro ao executar intervalo de atualização do gráfico de comparação:", error);
+    //     }
+    // }, 10000)
 
     // Exemplo de chamada (substitua `fkEquipamento` pelo valor correto)
     comparacaoLatencia(fkEquipamento);
@@ -640,7 +692,7 @@
                     const cpuPercent = dado.cpuPercent;
 
                     if (cpuPercent > 80) {
-                        // Incrementa o contador de ultrapassagens
+
                         contadorUltrapassagens++;
 
                         contadorConsecutivoSobrecarga++;
@@ -662,7 +714,6 @@
                         contadorUltrapassagens = 0; // Zera as ultrapassagens quando volta para "Normal"
                     }
                 });
-
                 // Atualiza a KPI na interface
                 document.getElementById("estadoCPU").innerText = estadoAtual;
                 document.getElementById("cpu_ultrapassagens").innerText = contadorUltrapassagens;
@@ -678,10 +729,16 @@
                 console.error("Erro ao buscar dados da CPU:", error);
             });
     }
+    setInterval(() => {
+        try {
+            // console.log("Atualizando gráfico de comparação...");
+            kpiSobrecargaCpu(fkEquipamento);
+        } catch (error) {
+            console.error("Erro ao executar intervalo de atualização da KPI de sobrecarga da CPU:", error);
+        }
+    }, 10000)
 
     kpiSobrecargaCpu(fkEquipamento);
-
-
 
     function kpiSobrecargaRam(fkEquipamento) {
         fetch(`/duarte/kpiSobrecargaRam/${fkEquipamento}`, { cache: 'no-store' })
@@ -698,40 +755,36 @@
 
                 let contadorConsecutivoSobrecarga = 0;
                 let contadorConsecutivoNormal = 0;
-                let contadorUltrapassagens = 0; // Conta as ultrapassagens acima de 80%
-                let estadoAtual = "Normal"; // Estado padrão inicial
+                let contadorUltrapassagens = 0;
+                let estadoAtual = "Normal";
 
                 data.forEach(dado => {
                     const memoriaPercent = dado.memoriaPercent;
 
                     if (memoriaPercent > 80) {
-                        // Incrementa o contador de ultrapassagens
+
                         contadorUltrapassagens++;
 
                         contadorConsecutivoSobrecarga++;
-                        contadorConsecutivoNormal = 0; // Reinicia o contador de normalização
+                        contadorConsecutivoNormal = 0;
 
                     } else {
                         contadorConsecutivoNormal++;
-                        contadorConsecutivoSobrecarga = 0; // Reinicia o contador de sobrecarga
+                        contadorConsecutivoSobrecarga = 0;
                     }
 
-                    // Define o estado como "Sobrecarga" após 4 leituras consecutivas acima de 80%
                     if (contadorConsecutivoSobrecarga >= 4) {
                         estadoAtual = "Sobrecarga";
                     }
 
-                    // Define o estado como "Normal" após 4 leituras consecutivas abaixo de 80%
                     if (contadorConsecutivoNormal >= 4) {
                         estadoAtual = "Normal";
-                        contadorUltrapassagens = 0; // Zera as ultrapassagens quando volta para "Normal"
+                        contadorUltrapassagens = 0;
                     }
                 });
-
                 // Atualiza a KPI na interface
                 document.getElementById("estadoRAM").innerText = estadoAtual;
                 document.getElementById("ram_ultrapassagens").innerText = contadorUltrapassagens;
-
                 // Exibe ou oculta o alerta
                 if (estadoAtual === "Sobrecarga") {
                     document.getElementById("alertaRAM").style.display = "block";
@@ -743,9 +796,16 @@
                 console.error("Erro ao buscar dados da RAM:", error);
             });
     }
+    setInterval(() => {
+        try {
+            // console.log("Atualizando gráfico de comparação...");
+            kpiSobrecargaRam(fkEquipamento);
+        } catch (error) {
+            console.error("Erro ao executar intervalo de atualização da KPI de sobrecarga da RAM:", error);
+        }
+    }, 10000)
 
     kpiSobrecargaRam(fkEquipamento);
-
 
 
     function abrirChat() {

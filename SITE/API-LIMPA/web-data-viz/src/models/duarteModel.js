@@ -7,6 +7,7 @@ function puxarPercentualRam(fkEquipamento) {
         `
     SELECT memoriaPercent, dtHora as momento
         FROM dado 
+        JOIN equipamento ON fkEquipamento = idEquipamento
             WHERE fkEquipamento = ${fkEquipamento}
         ORDER BY dtHora DESC 
     LIMIT 5;
@@ -22,6 +23,7 @@ function puxarPercentualCPU(fkEquipamento) {
         `
     SELECT cpuPercent, dtHora as momento
         FROM dado 
+        JOIN equipamento ON fkEquipamento = idEquipamento
             WHERE fkEquipamento = ${fkEquipamento}
         ORDER BY dtHora DESC 
     LIMIT 5;
@@ -41,6 +43,7 @@ function puxarComparacao(fkEquipamento) {
             latencia_rede, 
             dtHora 
         FROM dado 
+        JOIN equipamento ON fkEquipamento = idEquipamento
             WHERE fkEquipamento = ${fkEquipamento}
                 ORDER BY dtHora DESC 
         LIMIT 3;
@@ -60,6 +63,7 @@ function puxarSobrecargaCPU(fkEquipamento) {
         dtHora,
             IF(cpuPercent > 80, 1, 0) AS cpuAcima80
     FROM dado
+    JOIN equipamento ON fkEquipamento = idEquipamento
         WHERE fkEquipamento = ${fkEquipamento}
     ORDER BY dtHora ASC;
     `;
@@ -78,6 +82,7 @@ function puxarSobrecargaRAM(fkEquipamento) {
         dtHora,
             IF(memoriaPercent > 80, 1, 0) AS ramAcima80
     FROM dado
+    JOIN equipamento ON fkEquipamento = idEquipamento
         WHERE fkEquipamento = ${fkEquipamento}
     ORDER BY dtHora ASC;
     `;
@@ -85,10 +90,25 @@ function puxarSobrecargaRAM(fkEquipamento) {
     return database.executar(instrucaoSql);
 }
 
+async function buscarServidores() {
+    const query = `
+        SELECT idEquipamento, nomeEquipamento
+        FROM equipamento;
+    `;
+    
+    try {
+        const servidores = await database.executar(query);
+        return servidores;
+    } catch (error) {
+        throw new Error("Erro ao buscar servidores no banco: " + error.message);
+    }
+}
+
 module.exports = {
     puxarPercentualRam,
     puxarPercentualCPU,
     puxarComparacao,
     puxarSobrecargaCPU,
-    puxarSobrecargaRAM
+    puxarSobrecargaRAM,
+    buscarServidores
 }

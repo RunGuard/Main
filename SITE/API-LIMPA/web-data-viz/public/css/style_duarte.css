@@ -201,7 +201,7 @@ nav:hover {
     background: linear-gradient(135deg, #2e2e38 0%, #3a3a47 100%);
     width: 18vw;
     border-radius: 12px;
-    height: 20vh;
+    height: 25vh;
     color: #ffffff;
     padding: 20px;
     border: 1px solid #ffdc60;
@@ -236,11 +236,35 @@ nav:hover {
 }
 
 .media .alerta {
-    color: #ff7272;
-    font-weight: bold;
-    font-size: 0.9em;
+    color: #ff7272; /* Cor do texto do alerta */
+    font-weight: bold; /* Negrito para destaque */
+    font-size: 1em; /* Aumenta ligeiramente o tamanho da fonte */
     margin-top: 8px;
+    border: 1px solid #ff7272; /* Adiciona uma borda */
+    padding: 1px;
+    border-radius: 8px;
+    background: rgba(255, 114, 114, 0.1); /* Fundo suave */
+    box-shadow: 0 0 10px rgba(255, 114, 114, 0.6); /* Efeito de brilho */
+    text-align: center;
+    animation: alertaPulse 1.5s infinite; /* Animação para dar ênfase */
 }
+
+/* Animação para dar efeito de pulsação */
+@keyframes alertaPulse {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 114, 114, 0.6);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 114, 114, 0.8);
+        transform: scale(1.05);
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(255, 114, 114, 0.6);
+        transform: scale(1);
+    }
+}
+
 
 .media .info-medida {
     font-size: 0.85em;
