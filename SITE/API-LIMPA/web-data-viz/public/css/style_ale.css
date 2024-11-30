@@ -12,7 +12,7 @@
 
 /* Estilo padrão dos gráficos */
 .chart {
-    background: #2c2c2c; /* Fundo uniforme */
+    background: #292930; /* Fundo uniforme */
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -53,7 +53,7 @@
     align-items: center;
     width: 80%; /* Define a largura do container */
     max-width: 600px;
-    background: #2c2c2c; /* Mesmo fundo dos gráficos */
+    background: #292930; /* Mesmo fundo dos gráficos */
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -64,7 +64,7 @@
 /* Estilo de cada alerta */
 .alert {
     border-left: 10px solid #FFC300; /* Borda amarela para destaque */
-    background-color: #2c2c2c; /* Fundo igual aos gráficos */
+    background-color: #292930; /* Fundo igual aos gráficos */
     color: #FFFFFF;
     padding: 20px;
     margin: 15px 0;
@@ -83,7 +83,7 @@
 /* Estilo interno do conteúdo dos alertas */
 .alert-content {
     text-align: left;
-    background-color: #2c2c2c;
+    background-color: #292930;
     border-radius: 12px;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Sombra marcante */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -94,7 +94,7 @@
 
 /* Hover efeito nos alertas */
 .alert-content:hover {
-    background-color: #2c2c2c;
+    background-color: #292930;
     transform: scale(1.05);
 }
 
@@ -107,7 +107,7 @@
 }
 
 .alert-content h2:hover {
-    color: #2c2c2c;
+    color: #292930;
 }
 
 /* Estilos de texto dentro dos alertas */
@@ -162,4 +162,345 @@
 .body { 
     height: 100%;
     width: 100%;
+}
+
+/* Centralizar e estilizar a seleção de servidores */
+.selecao-servidor-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #292930;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto; /* Centraliza horizontalmente */
+    gap: 10px;
+}
+
+/* Estilo do título */
+.selecao-servidor-container h1 {
+    color: #FFC300;
+    font-size: 24px;
+    margin: 0;
+}
+
+/* Estilo do select */
+#selectServidor {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #000;
+}
+
+/* Estilo do botão */
+.botao-atualizar {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.botao-atualizar:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.botao-atualizar:active {
+    background-color: #388e3c;
+}
+.charts-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Estilo das colunas dos gráficos */
+.chart-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Centralizar o seletor no centro */
+.chart-center {
+    flex: 0.5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo do seletor de servidores */
+.selecao-servidor-container {
+    background: #292930;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+}
+
+/* Título da seleção */
+.selecao-servidor-container h1 {
+    color: #FFC300;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+/* Campo de seleção */
+#selectServidor {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+/* Botão atualizar */
+.botao-atualizar {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.charts-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Estilo das colunas dos gráficos */
+.chart-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Centralizar o seletor de servidores */
+.chart-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo do seletor de servidores */
+.selecao-servidor-container {
+    background: #292930;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+}
+
+/* Gráficos */
+.chart {
+    background-color: #1f1f27;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    height: 200px;
+}
+
+/* Botão atualizar */
+.botao-atualizar {
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* Container geral dos gráficos */
+#charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Distribui os gráficos uniformemente */
+    align-items: flex-start;
+    padding: 20px;
+    margin-left: 260px; /* Afastamento da navbar */
+    margin-top: 80px; /* Espaçamento para evitar sobreposição da navbar */
+    margin-right: 30px; /* Espaçamento lateral */
+    gap: 15px; /* Espaçamento entre os gráficos */
+}
+/* Estilo da navbar */
+.navbar {
+    position: fixed; /* Fixa no topo da página */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Ajuste conforme o tamanho real da navbar */
+    background-color: #292930; /* Exemplo de cor de fundo */
+    z-index: 1000; /* Garante que fique acima dos outros elementos */
+}
+
+/* Container geral dos gráficos */
+#charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    margin-left: 260px; /* Afastamento lateral */
+    margin-top: 80px; /* Garante espaço abaixo da navbar */
+    margin-right: 30px;
+    gap: 15px;
+}
+/* Adicionar espaço ao corpo da página para acomodar a navbar */
+.selecao-servidor-container {
+    width: 50%; /* Reduz o tamanho para 50% da largura disponível */
+    margin: 20px auto; /* Centraliza horizontalmente e adiciona espaço acima */
+    padding: 10px;
+    /* border: 1px solid #ccc; Linha ao redor para destaque */
+    background-color: #f9f9f9; /* Fundo claro */
+    border-radius: 5px;
+}
+/* Estilo para a seleção de servidor */
+.selecao-servidor-container {
+    width: 50%; /* Reduz o tamanho para 50% da largura disponível */
+    margin: 20px auto; /* Centraliza horizontalmente e adiciona espaço acima */
+    padding: 20px;
+    /* border: 1px solid #ccc;  Linha ao redor para destaque */
+    background-color: #f9f9f9; /* Fundo claro */
+    border-radius: 5px;
+    text-align: center; /* Centraliza o conteúdo dentro */
+}
+
+.selecao-servidor-container h1 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.selecao-servidor-container select {
+    width: 100%; /* Faz o select ocupar toda a largura disponível */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd; /* Borda leve */
+    border-radius: 5px; /* Bordas arredondadas */
+    font-size: 1em;
+    background-color: #fff; /* Fundo branco para o select */
+    color: #333; /* Texto escuro */
+}
+
+.selecao-servidor-container button {
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Cor verde para o botão */
+    color: white; /* Texto branco */
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transição suave para o fundo do botão */
+}
+
+.selecao-servidor-container button:hover {
+    background-color: #45a049; /* Cor do botão quando em hover */
+}
+/* Estilo para o container de seleção de servidor */
+.selecao-servidor-container {
+    background-color: #292930;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 350px; /* Tamanho máximo do container */
+    margin-left: 220px; /* Distância da navbar */
+    margin-right: 30px;
+    margin-bottom: 20px; /* Espaçamento entre as seções */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Espaçamento entre os elementos */
+}
+
+/* Estilo do título dentro do container */
+.selecao-servidor-container h1 {
+    font-size: 20px;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Estilo do select */
+#selectServidor {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #444444;
+    border: 1px solid #555555;
+    color: #ffffff;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Estilo do botão de atualização */
+.botao-atualizar {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #5c6bc0;
+    /* color: #ffffff; */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo do botão ao passar o mouse */
+.botao-atualizar:hover {
+    background-color: #3f4a92;
+}
+
+
+
+/* Estilo do container de alertas */
+.alerts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    max-width: 600px;
+    background: #292930;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* color: white; */
+    margin: 10px auto; /* Reduzido de 20px para 10px para diminuir a margem */
+}
+
+/* Estilo do container do seletor de servidor */
+.selecao-servidor-container {
+    width: 50%;
+    margin: 10px auto; /* Reduzido de 20px para 10px para diminuir a margem */
+    padding: 20px;
+    /* border: 1px solid #ccc; */
+    background-color: #292930;
+    border-radius: 5px;
+    text-align: center;
 }

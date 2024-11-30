@@ -54,22 +54,29 @@
             <li><a href="#" class="sair"><i class="fas fa-sign-out-alt"></i><span class="nav-item">Sair</span></a></li>
         </ul>
     </nav>
-
-    <div id="charts-container">
-        <div id="chart-packets" class="chart"></div>
-        <div id="chart-ping" class="chart"></div>
-        <div id="chart-bytes" class="chart"></div>
-        <div id="chart-cpu" class="chart"></div>
-    </div>
-  <div>
-
-      <h1 style="size: 2px;">Selecione um Servidor</h1>
-      <select id="selectServidor">
-          <option value="">Carregando...</option>
-      </select>
-      <button onclick="listarServidor()" class="botao-atualizar">Atualizar Servidores</button>
-  </div>
+    <div class="charts-container" style="margin-left: 200px;">
+        <!-- Coluna esquerda: Pacotes e Bytes empilhados -->
+        <div class="chart-column">
+            <div class="chart" id="chart-packets">
+                <!-- Conteúdo do gráfico de Pacotes -->
+            </div>
+            <div class="chart" id="chart-bytes">
+                <!-- Conteúdo do gráfico de Bytes -->
+            </div>
+        </div>
     
+        <!-- Coluna direita: Ping e CPU empilhados -->
+        <div class="chart-column">
+            <div class="chart" id="chart-ping">
+                <!-- Conteúdo do gráfico de Ping -->
+            </div>
+            <div class="chart" id="chart-cpu">
+                <!-- Conteúdo do gráfico de CPU -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Alertas de Monitoramento -->
     <div class="alert-container">
         <div class="alert-content">
             <h2>Alertas de Monitoramento</h2>
@@ -80,7 +87,16 @@
             <p>Latência alta: <span id="pingAlerta" class="highlight"></span></p>
         </div>
     </div>
-
+    
+    <!-- Seleção de Servidor abaixo dos alertas -->
+    <div class="selecao-servidor-container">
+        <h1>Selecione um Servidor</h1>
+        <select id="selectServidor">
+            <option value="">Carregando...</option>
+        </select>
+        <button onclick="listarServidor()" class="botao-atualizar">Atualizar Servidores</button>
+    </div>
+    
 <script>
 //     function obterFkEquipamento() {
 //     const selectElement = document.getElementById("equipamentoSelect");
@@ -121,7 +137,7 @@ async function buscarDadosGrafico(fkEquipamento) {
             const bytesRecebidos = data.map(item => item.bytes_recebidos !== undefined ? item.bytes_recebidos : null);
             const pacotesEnviados = ultimoDado.pacotes_enviados || null;
             const pacotesRecebidos = ultimoDado.pacotes_recebidos || null;
-            const ping = ultimoDado.ping || 0; // Definir como 0 se for undefined ou null
+            const ping = ultimoDado?.ping || 0;  // Definir como 0 se for undefined ou null
             const usoDoCPU= ultimoDado.usoCPU || 0;
             const horario = data.map(item => item.horario !== undefined ? item.horario : null); // Pega o último valor de uso da CPU
 
@@ -147,6 +163,10 @@ async function buscarDadosGrafico(fkEquipamento) {
     } catch (error) {
         console.error("Erro ao buscar dados:", error);
     }
+//     setInterval(() => {
+//     buscarDadosGrafico(fkEquipamento); // Atualiza `ping` continuamente
+// }, 2000);
+
 }
 
 // Lista os servidores e inicializa a seleção
@@ -191,9 +211,23 @@ async function listarServidor() {
 
 
 // Atualiza gráficos específicos
-let chartBytes; // Variável global para armazenar a instância do gráfico
+let chartBytes; 
+function formatarBytes(bytes_valor) {
+    if (bytes_valor >= 1_000_000_000) {
+        return `${(bytes_valor / 1_000_000_000).toFixed(2)} GB`;
+    } else if (bytes_valor >= 1_000_000) {
+        return `${(bytes_valor / 1_000_000).toFixed(2)} MB`;
+    } else if (bytes_valor >= 1_000) {
+        return `${(bytes_valor / 1_000).toFixed(2)} KB`;
+    }
+    return `${bytes_valor.toFixed(2)} B`;
+}// Variável global para armazenar a instância do gráfico
 
 function atualizarGraficoBytes(bytesEnviados, bytesRecebidos, horarios) {
+
+    const bytesEnviadosF = bytesEnviados.map(formatarBytes);
+    const bytesRecebidosF = bytesRecebidos.map(formatarBytes);
+
     document.addEventListener("DOMContentLoaded", () => {
     listarServidor(); // Inicializa a listagem de servidores após o DOM estar pronto
 });
@@ -208,11 +242,12 @@ function atualizarGraficoBytes(bytesEnviados, bytesRecebidos, horarios) {
             series: [
                 {
                     name: 'Bytes Enviados',
-                    data: bytesEnviados
+                    data: bytesEnviadosF,
+                    name: ''
                 },
                 {
                     name: 'Bytes Recebidos',
-                    data: bytesRecebidos
+                    data: bytesRecebidosF
                 }
             ],
             xaxis: {
@@ -220,6 +255,7 @@ function atualizarGraficoBytes(bytesEnviados, bytesRecebidos, horarios) {
                 title: { text: 'Horário' }
             },
             yaxis: {
+            
                 title: { text: 'Bytes' },
                 min: 0
             },
@@ -236,8 +272,8 @@ function atualizarGraficoBytes(bytesEnviados, bytesRecebidos, horarios) {
     else {
         chartBytes.updateOptions({
             series: [
-                { name: 'Bytes Enviados', data: bytesEnviados },
-                { name: 'Bytes Recebidos', data: bytesRecebidos }
+                { name: 'Bytes Enviados', data: bytesEnviadosF },
+                { name: 'Bytes Recebidos', data: bytesRecebidosF }
             ],
             xaxis: { categories: horarios }
         });
@@ -247,10 +283,20 @@ function atualizarGraficoBytes(bytesEnviados, bytesRecebidos, horarios) {
 function atualizarGraficoPackets(pacotesEnviados = 0, pacotesRecebidos = 0) {
     const contadorEnviados = document.getElementById("contador-enviados");
     const contadorRecebidos = document.getElementById("contador-recebidos");
+    function formatarPacotes(pacotes) {
+        if (pacotes >= 1000000) {
+            return (pacotes / 1000000).toFixed(2)  + "M"; // Formata para GB
+        } else if (pacotes >= 1000) {
+            return (pacotes / 1000).toFixed(2) + " K"; // Formata para MB
+        } else {
+            return pacotes + " Pacotes"; // Retorna o valor original se menor que 1000
+        }
+    }
 
     if (contadorEnviados && contadorRecebidos) {
-        contadorEnviados.innerText = pacotesEnviados + " Pacotes Enviados";
-        contadorRecebidos.innerText = pacotesRecebidos + " Pacotes Recebidos";
+        // Usa a função de formatação para atualizar os textos
+        contadorEnviados.innerText = formatarPacotes(pacotesEnviados) + " Enviados";
+        contadorRecebidos.innerText = formatarPacotes(pacotesRecebidos) + " Recebidos";
 
         // Alterar a cor com base nos valores
         contadorEnviados.style.color = pacotesEnviados < 10 ? "#E74C3C" : "#FFC300"; // Vermelho ou Amarelo
@@ -322,7 +368,7 @@ function atualizarGraficoCPU(usoDoCPU) {
         };
 
         // Inicializa o gráfico radial
-        chartCPU = new ApexCharts(chartElement, options);
+        chartCPU = new ApexCharts(document.querySelector("#chart-cpu"), options);
         chartCPU.render();
     } else {
         // Atualiza o valor do gráfico radial
@@ -331,16 +377,15 @@ function atualizarGraficoCPU(usoDoCPU) {
 }
 
 // Simulação de valores dinâmicos para teste
-setInterval(() => { 
-    const usoDoCPU = [0];// Gera valores aleatórios de 0 a// Gera um valor aleatório entre 0 e 100
-    atualizarGraficoCPU(usoDoCPU);
-}, 2000); // Atualiza a cada 2 segundos
+setInterval(// Gera valores aleatórios de 0 a// Gera um valor aleatório entre 0 e 100
+    atualizarGraficoCPU()
+, 2000); // Atualiza a cada 2 segundos
  // Atualiza a cada 2 segundos
 
 
 
- function atualizarGraficoPing(ping) {
-    const contadorPing = document.getElementById("contador-ping");
+ function atualizarGraficoPing(ping ) {
+    const contadorPing = document.getElementById("chart-ping");
 
     if (contadorPing) {
         contadorPing.innerText = ping + " ms de Latência (Ping)";
@@ -349,14 +394,6 @@ setInterval(() => {
         contadorPing.style.color = ping > 100 ? "#E74C3C" : "#2ECC71"; // Vermelho se > 100, Verde se <= 100
     }
 }
-
-// Atualização contínua a cada 2 segundos com dados reais
-setInterval( () => {
-    const ping = [0];;// Você precisa adaptar esta função com os dados da API
-    atualizarGraficoPing()
-}, 2000);
-
-// Renderizar o contador de ping no lugar do gráfico
 document.addEventListener('DOMContentLoaded', function () {
     const monitoramentoPacotes = document.getElementById("chart-ping");
     monitoramentoPacotes.innerHTML = `
@@ -366,6 +403,9 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
     `;
 });
+setInterval( // Substitua por sua função real
+    atualizarGraficoPing()
+, 2000);
 
 document.addEventListener("DOMContentLoaded", () => {
     listarServidor();

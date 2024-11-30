@@ -14,7 +14,7 @@ async function obterDados(fkEquipamento) {
     FROM dado
     WHERE fkEquipamento = ${fkEquipamentoNum}
     ORDER BY dtHora DESC 
-    LIMIT 20;
+    LIMIT 10;
   `;
 
   try {
