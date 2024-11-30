@@ -704,12 +704,12 @@
                     }
 
                     // Define o estado como "Sobrecarga" após 4 leituras consecutivas acima de 80%
-                    if (contadorConsecutivoSobrecarga >= 4) {
+                    if (contadorConsecutivoSobrecarga >= 2) {
                         estadoAtual = "Sobrecarga";
                     }
 
                     // Define o estado como "Normal" após 4 leituras consecutivas abaixo de 80%
-                    if (contadorConsecutivoNormal >= 4) {
+                    if (contadorConsecutivoNormal >= 2) {
                         estadoAtual = "Normal";
                         contadorUltrapassagens = 0; // Zera as ultrapassagens quando volta para "Normal"
                     }
@@ -773,11 +773,11 @@
                         contadorConsecutivoSobrecarga = 0;
                     }
 
-                    if (contadorConsecutivoSobrecarga >= 4) {
+                    if (contadorConsecutivoSobrecarga >= 2) {
                         estadoAtual = "Sobrecarga";
                     }
 
-                    if (contadorConsecutivoNormal >= 4) {
+                    if (contadorConsecutivoNormal >= 2) {
                         estadoAtual = "Normal";
                         contadorUltrapassagens = 0;
                     }
