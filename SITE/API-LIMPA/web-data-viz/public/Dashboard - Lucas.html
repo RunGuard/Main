@@ -87,6 +87,7 @@
     <div class="fundo">
         <div class="titulo">
             <h1>Monitoramento de Desvio e Demanda</h1>
+            <button class="botaofiltro">Limpar Filtros</button>
                 <div class="select">
                   <select id="selectServidor">
                     <option disabled selected>Selecione um Servidor</option>
@@ -196,119 +197,145 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const selectSemana = document.getElementById("selectPeriodoSemanal");
     const selectMes = document.getElementById("selectPeriodoMensal");
+    let fkEquipamento = null;
+    let intervalId = null;
+    const botaoLimparFiltros = document.querySelector(".botaofiltro");
+
+    botaoLimparFiltros.addEventListener("click", function () {
+    selectSemana.selectedIndex = 0;
+    selectMes.selectedIndex = 0;
+
+    buscarDadosGrafico(fkEquipamento);
+
+    reiniciarIntervalo();
+    });
 
     function buscarDadosPorPeriodo() {
-        const mes = selectMes.value;
-        const semana = selectSemana.value;
-
         if (!fkEquipamento) {
             console.error("Selecione um servidor antes de aplicar o filtro.");
             return;
         }
 
+        const mes = selectMes.value || 0;
+        const semana = selectSemana.value || 0;
+
         if (mes == 0 && semana == 0) {
             buscarDadosGrafico(fkEquipamento);
         } else {
-            buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana || null);
+            buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana);
         }
+
+        reiniciarIntervalo(mes, semana);
+    }
+
+    function reiniciarIntervalo(mes = 0, semana = 0) {
+        if (intervalId) {
+            clearInterval(intervalId);
+        }
+
+        intervalId = setInterval(() => {
+            if (mes == 0 && semana == 0) {
+                buscarDadosGrafico(fkEquipamento);
+            } else {
+                buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana);
+            }
+        }, 10000);
     }
 
     selectSemana.addEventListener("change", buscarDadosPorPeriodo);
     selectMes.addEventListener("change", buscarDadosPorPeriodo);
-});
 
-function buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana) {
-    let url = `/rotaRoque/medidasPorPeriodo/${fkEquipamento}/${mes}`;
-    if (semana) {
-        url += `/${semana}`;
-    }
+    function buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana) {
+        let url = `/rotaRoque/medidasPorPeriodo/${fkEquipamento}/${mes}`;
+        if (semana) {
+            url += `/${semana}`;
+        }
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao buscar dados por período: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (Array.isArray(data)) {
-                console.log(data)
-                atualizarGrafico1(data);
-                atualizarGrafico2(data);
-                atualizarGrafico3(data);
-            } else {
-                console.error('Formato de dados inesperado:', data);
-            }
-        })
-        .catch(error => {
-            console.error("Erro ao buscar dados por período: ", error);
-        });
-}
-
-function buscarDadosGrafico(fkEquipamento) {
-    if (!fkEquipamento) {
-        console.error("fkEquipamento não foi definido. Certifique-se de que o servidor foi selecionado.");
-        return;
-    }
-
-    fetch(`/rotaRoque/ultimaMedida/${fkEquipamento}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao buscar dados: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (Array.isArray(data)) {
-                atualizarGrafico1(data);
-                atualizarGrafico2(data);
-                atualizarGrafico3(data);
-            } else {
-                console.error('Formato de dados inesperado:', data);
-            }
-        })
-        .catch(error => {
-            console.error("Erro ao buscar dados: ", error);
-        });
-}
-
-function carregarServidores() {
-    fetch('/rotaRoque/servidores')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao buscar servidores: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(servidores => {
-            const selectServidor = document.getElementById('selectServidor');
-            
-            selectServidor.innerHTML = '<option disabled selected value="">Selecione um Servidor</option>';
-            
-            servidores.forEach(servidor => {
-                const option = document.createElement('option');
-                option.value = servidor.idEquipamento; 
-                option.textContent = servidor.nomeEquipamento;
-                selectServidor.appendChild(option); 
-            });
-
-            selectServidor.addEventListener('change', function () {
-                fkEquipamento = this.value;
-                if (fkEquipamento) {
-                    console.log(`Servidor selecionado: ${fkEquipamento}`);
-                    buscarDadosGrafico(fkEquipamento); 
-                } else {
-                    console.warn("Nenhum servidor foi selecionado.");
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados por período: ' + response.statusText);
                 }
+                return response.json();
+            })
+            .then(data => {
+                if (Array.isArray(data)) {
+                    atualizarGrafico1(data);
+                    atualizarGrafico2(data);
+                    atualizarGrafico3(data);
+                } else {
+                    console.error('Formato de dados inesperado:', data);
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar dados por período: ", error);
             });
-        })
-        .catch(error => {
-            console.error("Erro ao carregar servidores:", error);
-        });
-}
+    }
 
-document.addEventListener('DOMContentLoaded', function () {
-    carregarServidores();
+    function buscarDadosGrafico(fkEquipamento) {
+        if (!fkEquipamento) {
+            console.error("fkEquipamento não foi definido. Certifique-se de que o servidor foi selecionado.");
+            return;
+        }
+
+        fetch(`/rotaRoque/ultimaMedida/${fkEquipamento}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (Array.isArray(data)) {
+                    atualizarGrafico1(data);
+                    atualizarGrafico2(data);
+                    atualizarGrafico3(data);
+                } else {
+                    console.error('Formato de dados inesperado:', data);
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar dados: ", error);
+            });
+    }
+
+    function carregarServidores() {
+        fetch('/rotaRoque/servidores')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar servidores: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(servidores => {
+                const selectServidor = document.getElementById('selectServidor');
+
+                selectServidor.innerHTML = '<option disabled selected value="">Selecione um Servidor</option>';
+
+                servidores.forEach(servidor => {
+                    const option = document.createElement('option');
+                    option.value = servidor.idEquipamento;
+                    option.textContent = servidor.nomeEquipamento;
+                    selectServidor.appendChild(option);
+                });
+
+                selectServidor.addEventListener('change', function () {
+                    fkEquipamento = this.value;
+
+                    if (fkEquipamento) {
+                        console.log(`Servidor selecionado: ${fkEquipamento}`);
+                        buscarDadosGrafico(fkEquipamento);
+
+                        reiniciarIntervalo();
+                    } else {
+                        console.warn("Nenhum servidor foi selecionado.");
+                    }
+                });
+            })
+            .catch(error => {
+                console.error("Erro ao carregar servidores:", error);
+            });
+    }
 });
 
 var chart = null;

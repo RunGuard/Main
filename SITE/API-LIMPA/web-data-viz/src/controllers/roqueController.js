@@ -17,9 +17,6 @@ function buscarMedidasPorPeriodo(req, res) {
         .then(resultado => {
             res.status(200).json(resultado);
         })
-        .catch(erro => {
-            res.status(500).json({ mensagem: erro.message });
-        });
 }
 
 function buscarServidor(req, res) {
