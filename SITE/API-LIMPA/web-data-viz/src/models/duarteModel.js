@@ -95,7 +95,7 @@ async function buscarServidores() {
         SELECT idEquipamento, nomeEquipamento
         FROM equipamento;
     `;
-    
+
     try {
         const servidores = await database.executar(query);
         return servidores;
@@ -104,11 +104,41 @@ async function buscarServidores() {
     }
 }
 
+function buscarTabelinha() {
+    console.log("Executando a instrução SQL para buscar dados de todos os servidores.");
+    var instrucaoSql = `
+        SELECT 
+            e.nomeEquipamento AS Servidor,
+            d.cpuPercent AS UsoCPU,
+            d.memoriaPercent AS UsoRAM,
+            d.latencia_rede AS Latencia,
+            CASE
+                WHEN d.cpuPercent > 80 OR d.memoriaPercent > 80 THEN 'Sobrecarga'
+                ELSE 'Normal'
+            END AS StatusGeral
+        FROM 
+            dado d
+        JOIN 
+            equipamento e ON d.fkEquipamento = e.idEquipamento
+        WHERE 
+            d.dtHora IN (
+                SELECT MAX(dtHora)
+                FROM dado
+                GROUP BY fkEquipamento
+            )
+        ORDER BY 
+            e.nomeEquipamento;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     puxarPercentualRam,
     puxarPercentualCPU,
     puxarComparacao,
     puxarSobrecargaCPU,
     puxarSobrecargaRAM,
-    buscarServidores
+    buscarServidores,
+    buscarTabelinha
 }

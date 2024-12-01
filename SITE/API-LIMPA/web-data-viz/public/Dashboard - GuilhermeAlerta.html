@@ -124,36 +124,6 @@
                 <h2 style="color: #FFFFFF; text-align: center; margin-bottom: 20px;">Ranking de Servidores com Mais
                     Alertas</h2>
                 <div id="graficoRanking" style="height: 400px; margin-bottom: 20px;"></div>
-                <!-- <table>
-                    <thead>
-                        <tr>
-                            <th>Posição</th>
-                            <th>Servidor</th>
-                            <th>Total de Alertas</th>
-                            <th>Horários de Pico</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Servidor 1</td>
-                            <td>6</td>
-                            <td>09:00, 12:00, 15:00</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Servidor 4</td>
-                            <td>4</td>
-                            <td>10:00, 14:00</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Servidor 3</td>
-                            <td>3</td>
-                            <td>11:00</td>
-                        </tr>
-                    </tbody>
-                </table> -->
             </div>
             <div class="fundo_grafico-tabela">
                 <h2 style="color: #FFFFFF; text-align: center; margin-bottom: 20px;">Estado atual geral dos servidores
@@ -169,34 +139,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <!-- <tr>
                             <td>Servidor 1</td>
-                            <td>90%</td>
-                            <td>78%</td>
-                            <td>185 ms</td>
-                            <td>Normal</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>Servidor 2</td>
-                            <td>23.45%</td>
-                            <td>67.89%</td>
-                            <td>135.67 ms</td>
-                            <td>Normal</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>Servidor 3</td>
-                            <td>58.32%</td>
-                            <td>42.51%</td>
-                            <td>190.11 ms</td>
-                            <td>Sobrecarga</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>Servidor 4</td>
-                            <td>94.15%</td>
-                            <td>56.83%</td>
-                            <td>124.89 ms</td>
-                            <td>Normal</td>
-                        </tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
@@ -219,6 +189,52 @@
 
     // Atualiza a data ao carregar a página
     atualizarData();
+
+    function tabela() {
+        fetch(`/duarte/tabela`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Dados recebidos:", data);
+                if (Array.isArray(data)) {
+                    atualizarTabela(data);
+                } else {
+                    console.error("Formato de dados inesperado:", data);
+                }
+            })
+            .catch(error => console.error("Falha na captura de dados:", error));
+    }
+
+    // Função para atualizar a tabela com os dados recebidos
+    function atualizarTabela(dados) {
+        const tabelaBody = document.querySelector('.tabelinha tbody');
+        tabelaBody.innerHTML = ''; // Limpar dados antigos da tabela
+
+        dados.forEach(servidor => {
+            const row = `
+            <tr>
+                <td>${servidor.Servidor}</td>
+                <td>${servidor.UsoCPU}%</td>
+                <td>${servidor.UsoRAM}%</td>
+                <td>${servidor.Latencia} ms</td>
+                <td>${servidor.StatusGeral}</td>
+            </tr>
+        `;
+            tabelaBody.innerHTML += row;
+        });
+    }
+
+    setInterval(() => {
+        try {
+            console.log("Atualizando a tabela...");
+            tabela();
+        } catch (error) {
+            console.error("Erro ao executar intervalo de atualização da tabela:", error);
+        }
+    }, 10000);
+
+    document.addEventListener('DOMContentLoaded', function () {
+        tabela(); // Chamar a função para atualizar a tabela com os dados de todos os servidores
+    });
 
     // Dados do gráfico
     const dataRanking = {
@@ -310,7 +326,7 @@
 
 
 
-    
+
     function abrirChat() {
         document.getElementById("janelaChat").style.display = "flex";
     }

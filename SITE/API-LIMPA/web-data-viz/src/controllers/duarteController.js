@@ -102,11 +102,24 @@ function buscarServidor(req, res) {
         });
 }
 
+function buscarTabela(req, res) {
+    duarteModel.buscarTabelinha()
+        .then(function (tabela) {
+            res.status(200).json(tabela);
+        })
+        .catch(function (error) {
+            console.error("Erro ao buscar dados da tabela:", error);
+            res.status(500).send("Erro ao buscar dados da tabela");
+        });
+}
+
+
 module.exports = {
     puxarPercentualRam,
     puxarPercentualCPU,
     puxarComparacao,
     puxarSobrecargaCPU,
     puxarSobrecargaRAM,
-    buscarServidor
+    buscarServidor,
+    buscarTabela
 }

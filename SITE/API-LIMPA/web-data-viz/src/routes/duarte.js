@@ -26,4 +26,8 @@ router.get("/kpiSobrecargaRam/:fkEquipamento", function (req, res) {
 router.get("/servidores", function (req, res) {
     duarteController.buscarServidor(req, res);
 });
+
+router.get("/tabela", function (req, res) {
+    duarteController.buscarTabela(req, res);
+});
 module.exports = router;
