@@ -139,34 +139,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <tr>
-                            <td>Servidor 1</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Servidor 2</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Servidor 3</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Servidor 4</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr> -->
+
                     </tbody>
                 </table>
             </div>
@@ -176,6 +149,8 @@
 </html>
 </body>
 <script>
+    let chartRanking;
+
     // Função para obter e formatar a data atual
     function atualizarData() {
         const dataAtual = new Date();
@@ -186,10 +161,9 @@
         // Formata a data no estilo DD/MM/AAAA
         document.getElementById('dataAtual').textContent = `${dia}/${mes}/${ano}`;
     }
-
-    // Atualiza a data ao carregar a página
     atualizarData();
 
+    //Função fetch da tabela
     function tabela() {
         fetch(`/duarte/tabela`, { cache: 'no-store' })
             .then(response => response.json())
@@ -236,76 +210,184 @@
         tabela(); // Chamar a função para atualizar a tabela com os dados de todos os servidores
     });
 
-    // Dados do gráfico
-    const dataRanking = {
-        series: [
-            {
-                name: 'Total de Alertas',
-                data: [6, 4, 3] // Total de alertas por servidor
-            }
-        ],
-        chart: {
-            type: 'bar',
-            height: 250,
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true,
-                barHeight: '50%',
-                distributed: true, // Para cores diferentes
+    //Função fetch do Ranking
+    function ranking() {
+        fetch(`/duarte/ranking`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Dados recebidos:", data);
+                if (Array.isArray(data)) {
+                    atualizarRanking(data);
+                } else {
+                    console.error("Formato de dados inesperado:", data);
+                }
+            })
+            .catch(error => console.error("Falha na captura de dados:", error));
+    }
+
+    // function atualizarRanking(dados) {
+    //     console.log(dados); // Para debugar se os dados estão chegando corretamente
+    //     const nomesServidores = dados.map(item => item.Servidor);
+    //     const totalAlertas = dados.map(item => item.TotalAlertas);
+
+    //     if (!chartRanking) {
+    //         const dataRanking = {
+    //             series: [{
+    //                 name: 'Total de Alertas',
+    //                 data: totalAlertas
+    //             }],
+    //             chart: {
+    //                 type: 'bar',
+    //                 height: 250,
+    //             },
+    //             plotOptions: {
+    //                 bar: {
+    //                     horizontal: true,
+    //                     distributed: true, // Cores distribuídas para cada servidor
+    //                     barHeight: '50%' // Ajuste dependendo de como quer as barras
+    //                 }
+    //             },
+    //             colors: ['#FF4560', '#73B7FF', '#FFDC60'], // Defina cores para as barras
+    //             dataLabels: {
+    //                 enabled: true,
+    //                 style: {
+    //                     colors: ['#fff']
+    //                 },
+    //                 formatter: function (val) {
+    //                     return `${val} alertas`; // Formatando para exibir o número de alertas
+    //                 }
+    //             },
+    //             xaxis: {
+    //                 categories: nomesServidores,
+    //                 labels: {
+    //                     style: {
+    //                         colors: 'white', // Definindo cor das labels
+    //                         fontSize: '12px'
+    //                     }
+    //                 }
+    //             },
+    //             yaxis: {
+    //                 labels: {
+    //                     style: {
+    //                         colors: 'white', // Cor das labels
+    //                         fontSize: '14px'
+    //                     }
+    //                 },
+    //                 title: {
+    //                     style: {
+    //                         color: 'white',
+    //                         fontSize: '12px'
+    //                     }
+    //                 }
+    //             },
+    //             tooltip: {
+    //                 theme: 'dark',
+    //                 y: {
+    //                     formatter: function (val) {
+    //                         return val + ' alertas'; // Adicionando os alertas no tooltip
+    //                     }
+    //                 }
+    //             },
+    //             legend: {
+    //                 labels: {
+    //                     colors: '#fff'
+    //                 },
+    //                 position: 'bottom'
+    //             }
+    //         };
+    //         chartRanking = new ApexCharts(document.querySelector("#graficoRanking"), dataRanking);
+    //         chartRanking.render();
+    //     } else {
+    //         chartRanking.updateSeries([{
+    //             name: 'Total de Alertas',
+    //             data: totalAlertas
+    //         }]);
+    //         chartRanking.updateOptions({
+    //             xaxis: {
+    //                 categories: nomesServidores
+    //             }
+    //         });
+    //     }
+    // }
+    // ranking();
+
+    // //Gráfico de ranking
+    function atualizarRanking(dados) {
+        // Extraindo nomes e totais de alertas dinamicamente dos dados recebidos
+        console.log(dados);
+        const nomesServidores = dados.map(item => item.Servidor);
+        const totalAlertas = dados.map(item => item.TotalAlertas);
+
+        const dataRanking = {
+            series: [
+                {
+                    name: 'Total de Alertas',
+                    data: totalAlertas
+                }
+            ],
+            chart: {
+                type: 'bar',
+                height: 250,
             },
-        },
-        colors: ['#FF4560', '#73B7FF', '#FFDC60'], // Primeiro, segundo e terceiro lugares
-        dataLabels: {
-            enabled: true,
-            style: {
-                colors: ['#fff']
-            },
-            formatter: function (val) {
-                return `${val} alertas`;
-            },
-        },
-        xaxis: {
-            categories: ['Servidor 1', 'Servidor 4', 'Servidor 3'], // Nomes dos servidores
-            labels: {
-                style: {
-                    colors: ['#fff', '#fff', '#fff'], // Cor branca para cada rótulo
-                    fontSize: '12px'
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    barHeight: '50%',
+                    distributed: true, // Para cores diferentes
                 },
             },
-        },
-
-        yaxis: {
-            labels: {
+            colors: ['#FF4560', '#73B7FF', '#FFDC60', '#32D297'],
+            dataLabels: {
+                enabled: true,
                 style: {
-                    colors: ['#ffffff'], // Cor branca para os rótulos do eixo y
-                    fontSize: '14px',
-                }
+                    colors: ['#fff']
+                },
+                formatter: function (val) {
+                    return `${val} alertas`;
+                },
             },
-            title: {
-                style: {
-                    color: '#ffffff', // Cor branca para o título do eixo y
-                    fontSize: '12px',
-                }
+            xaxis: {
+                categories: nomesServidores, // Dados dinâmicos para os nomes dos servidores
+                labels: {
+                    style: {
+                        colors: Array(nomesServidores.length).fill('#fff'), // Cor branca para cada rótulo
+                        fontSize: '12px'
+                    },
+                },
             },
-        },
-        tooltip: {
-            theme: 'dark',
-        },
-        legend: {
-            labels: {
-                colors: '#fff', // Cor branca para os textos da legenda
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: ['#ffffff'], // Cor branca para os rótulos do eixo y
+                        fontSize: '14px',
+                    }
+                },
+                title: {
+                    style: {
+                        color: '#ffffff', // Cor branca para o título do eixo y
+                        fontSize: '12px',
+                    }
+                },
             },
-            markers: {
-                fillColors: ['#FF4560', '#73B7FF', '#FFDC60'], // Cores correspondentes às barras
+            tooltip: {
+                theme: 'dark',
             },
-            position: 'bottom', // Posiciona a legenda na parte inferior
-        },
-    };
+            legend: {
+                labels: {
+                    colors: '#fff', // Cor branca para os textos da legenda
+                },
+                markers: {
+                    fillColors: ['#FF4560', '#73B7FF', '#FFDC60', '#32D297'], // Cores correspondentes às barras
+                },
+                position: 'bottom', // Posiciona a legenda na parte inferior
+            },
+        };
 
-    // Renderização do gráfico
-    const graficoRanking = new ApexCharts(document.querySelector("#graficoRanking"), dataRanking);
-    graficoRanking.render();
+        // Renderização do gráfico
+        const graficoRanking = new ApexCharts(document.querySelector("#graficoRanking"), dataRanking);
+        graficoRanking.render();
+    }
+    ranking();
 
 
     // Selecione todas as células da tabela

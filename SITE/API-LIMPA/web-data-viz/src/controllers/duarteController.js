@@ -113,6 +113,16 @@ function buscarTabela(req, res) {
         });
 }
 
+function buscarRanking(req, res) {
+    duarteModel.buscarRankings()
+        .then(function (ranking) {
+            res.status(200).json(ranking);
+        })
+        .catch(function (error) {
+            console.error("Erro ao buscar dados do ranking:", error);
+            res.status(500).send("Erro ao buscar dados do ranking");
+        });
+}
 
 module.exports = {
     puxarPercentualRam,
@@ -121,5 +131,6 @@ module.exports = {
     puxarSobrecargaCPU,
     puxarSobrecargaRAM,
     buscarServidor,
-    buscarTabela
+    buscarTabela,
+    buscarRanking
 }

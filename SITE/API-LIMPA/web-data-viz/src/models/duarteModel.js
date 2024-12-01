@@ -133,6 +133,42 @@ function buscarTabelinha() {
     return database.executar(instrucaoSql);
 }
 
+
+async function buscarServidores() {
+    const query = `
+        SELECT idEquipamento, nomeEquipamento
+        FROM equipamento;
+    `;
+
+    try {
+        const servidores = await database.executar(query);
+        return servidores;
+    } catch (error) {
+        throw new Error("Erro ao buscar servidores no banco: " + error.message);
+    }
+}
+
+function buscarRankings() {
+    console.log("Executando a instrução SQL para buscar dados de todos os servidores.");
+    var instrucaoSql = `
+        SELECT 
+        e.nomeEquipamento AS Servidor,
+        COUNT(*) AS TotalAlertas
+            FROM 
+                dado d
+            JOIN 
+                equipamento e ON d.fkEquipamento = e.idEquipamento
+            WHERE 
+                d.cpuPercent > 80 OR d.memoriaPercent > 80
+        GROUP BY 
+            e.nomeEquipamento
+        ORDER BY 
+            TotalAlertas DESC;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     puxarPercentualRam,
     puxarPercentualCPU,
@@ -140,5 +176,6 @@ module.exports = {
     puxarSobrecargaCPU,
     puxarSobrecargaRAM,
     buscarServidores,
-    buscarTabelinha
+    buscarTabelinha,
+    buscarRankings
 }

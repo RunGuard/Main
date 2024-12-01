@@ -30,4 +30,8 @@ router.get("/servidores", function (req, res) {
 router.get("/tabela", function (req, res) {
     duarteController.buscarTabela(req, res);
 });
+
+router.get("/ranking", function (req, res) {
+    duarteController.buscarRanking(req, res);
+});
 module.exports = router;
