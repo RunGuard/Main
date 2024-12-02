@@ -54,48 +54,56 @@
             <li><a href="#" class="sair"><i class="fas fa-sign-out-alt"></i><span class="nav-item">Sair</span></a></li>
         </ul>
     </nav>
-    <div class="charts-container" style="margin-left: 200px;">
+
+    <div class="charts-container kpi-cards-container" style="margin-left: 200px;">
         <!-- Coluna esquerda: Pacotes e Bytes empilhados -->
         <div class="chart-column">
-            <div class="chart" id="chart-packets">
+            <div class="chart kpi-card" id="chart-packets">
                 <!-- Conteúdo do gráfico de Pacotes -->
+                
             </div>
-            <div class="chart" id="chart-bytes">
+            <div class="chart kpi-card" id="chart-bytes">
                 <!-- Conteúdo do gráfico de Bytes -->
+                
             </div>
         </div>
     
         <!-- Coluna direita: Ping e CPU empilhados -->
         <div class="chart-column">
-            <div class="chart" id="chart-ping">
-                <!-- Conteúdo do gráfico de Ping -->
+            <div class="chart kpi-card card" id="chart-ping">
+                <h2 style="color: #fff; text-align: center;">Monitoramento de Latência (Ping)</h2>
+                
             </div>
-            <div class="chart" id="chart-cpu">
-                <!-- Conteúdo do gráfico de CPU -->
+            <div class="chart kpi-card" id="chart-cpu">
+                <h2 style="color: #fff; text-align: center;">Monitoramento de Uso da CPU</h2>
             </div>
         </div>
     </div>
-    
+
     <!-- Alertas de Monitoramento -->
     <div class="alert-container">
-        <div class="alert-content">
+        <div class="alert-content ">
             <h2>Alertas de Monitoramento</h2>
             <p><strong>Perda na Última Hora:</strong></p>
             <p>Pacotes em risco: <span id="perdaPacotes" class="highlight"></span></p>
             <p>Bytes em risco: <br><span id="perdaBytes" class="highlight"></span></p>
             <p><strong>Eventos de Latência Alta:</strong></p>
             <p>Latência alta: <span id="pingAlerta" class="highlight"></span></p>
+            <p><strong>Eventos de Uso Alto CPU:</strong></p>
+            <p>CPU alta:  <span id="cpuAlerta" style="display:none;"></span></p>
+            
+        </div>
+        <div class="selecao-servidor-container">
+            <h1>Selecione um Servidor</h1>
+            <select id="selectServidor">
+                <option value="">Carregando...</option>
+            </select>
+            <button onclick="listarServidor()" class="botao-atualizar">Atualizar Servidores</button>
         </div>
     </div>
+
     
     <!-- Seleção de Servidor abaixo dos alertas -->
-    <div class="selecao-servidor-container">
-        <h1>Selecione um Servidor</h1>
-        <select id="selectServidor">
-            <option value="">Carregando...</option>
-        </select>
-        <button onclick="listarServidor()" class="botao-atualizar">Atualizar Servidores</button>
-    </div>
     
 <script>
 //     function obterFkEquipamento() {
@@ -105,7 +113,49 @@
 
 //    va fkEquipamento = 5;
    
-   
+ function buscarDadosAlerta(fkEquipamento) {
+    try {
+        console.log(`Buscando dados para fkEquipamento: ${fkEquipamento}`);
+        const response =  fetch(`/ale/dadosHora/${fkEquipamento}`);
+        console.log(`Resposta da API: ${response.status}`);
+
+        if (!response.ok) {
+            throw new Error('Erro ao buscar dados: ' + response.statusText);
+        }
+
+        const data =  response.json();
+        console.log("Dados recebidos:", data);
+
+        if (Array.isArray(data) && data.length > 0) {
+            console.log(item);
+            const bytesEnviadosA = data.map(item => item.bytes_enviados !== undefined ? item.bytes_enviados : null);
+            const bytesRecebidosA = data.map(item => item.bytes_recebidos !== undefined ? item.bytes_recebidos : null);
+            const pacotesRecebidosA = data.map(item => item.pacotes_recebidos !== undefined ? item.pacotes_recebidos : null);
+            const pacotesEnviadosA = data.map(item => item.pacotes_enviados !== undefined ? item.pacotes_enviados : null);
+            const pingA = data.map(item => item.ping !== undefined && item.ping !== null ? item.ping : 0);
+            const usoDoCPUA = data.map(item => item.usoCPU !== undefined ? item.usoCPU : 0);
+
+            // Passar todos os dados necessários para a função monitorarDados
+            monitorarDados(bytesEnviadosA, bytesRecebidosA, pacotesEnviadosA, pacotesRecebidosA, pingA, usoDoCPUA);
+
+            // Log para verificar os dados extraídos
+            console.log("Dados extraídos:", {
+                bytesEnviadosA,
+                bytesRecebidosA,
+                pacotesEnviadosA,
+                pacotesRecebidosA,
+                pingA,
+                usoDoCPUA
+            });
+
+        } else {
+            console.error('Formato de dados inesperado ou dados vazios:', data);
+        }
+    } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+    }
+}
+
 
 // Busca os dados e atualiza os gráficos
 async function buscarDadosGrafico(fkEquipamento) {
@@ -128,7 +178,7 @@ async function buscarDadosGrafico(fkEquipamento) {
 
         if (Array.isArray(data) && data.length > 0) {
             const bytesEnviados = data.map(item => {
-                console.log(item); // Log para verificar a estrutura
+                // console.log(item); // Log para verificar a estrutura
                 return item.bytes_enviados !== undefined ? item.bytes_enviados : null; // Retorna null se não existir
             });
             const ultimoDado = data[data.length - 1];
@@ -144,13 +194,13 @@ async function buscarDadosGrafico(fkEquipamento) {
             // console.log("Uso da CPU:", usoCPU);
 
             // Log para verificar os dados extraídos
-            console.log("Bytes Enviados:", bytesEnviados);
-            console.log("Bytes Recebidos:", bytesRecebidos);
-            console.log("Pacotes Enviados:", pacotesEnviados);
-            console.log("Pacotes Recebidos:", pacotesRecebidos);
-            console.log("Ping:", ping);
-            console.log("Uso do CPU:", usoDoCPU);
-            console.log("Horário:", horario);
+            // console.log("Bytes Enviados:", bytesEnviados);
+            // console.log("Bytes Recebidos:", bytesRecebidos);
+            // console.log("Pacotes Enviados:", pacotesEnviados);
+            // console.log("Pacotes Recebidos:", pacotesRecebidos);
+            // console.log("Ping:", ping);
+            // console.log("Uso do CPU:", usoDoCPU);
+            // console.log("Horário:", horario);
 
             // Atualize os gráficos
             atualizarGraficoBytes(bytesEnviados,bytesRecebidos,horario);
@@ -233,37 +283,44 @@ function atualizarGraficoBytes(bytesEnviados, bytesRecebidos, horarios) {
 });
     if (!chartBytes) {
         // Configuração inicial do gráfico
-        const options = {
-            chart: {
-                type: 'line',
-                height: 350,
-                toolbar: { show: false }
-            },
-            series: [
-                {
-                    name: 'Bytes Enviados',
-                    data: bytesEnviadosF,
-                    name: ''
-                },
-                {
-                    name: 'Bytes Recebidos',
-                    data: bytesRecebidosF
-                }
-            ],
-            xaxis: {
-                categories: horarios, // Eixo X com os horários
-                title: { text: 'Horário' }
-            },
-            yaxis: {
-            
-                title: { text: 'Bytes' },
-                min: 0
-            },
-            colors: ['#FFD700', '#1E90FF'], // Amarelo e Azul
-            stroke: { curve: 'smooth' },
-            markers: { size: 4 },
-            tooltip: { shared: true, intersect: false }
-        };
+        const options = { 
+    chart: {
+        type: 'line',
+        height: 350,
+        toolbar: { show: false }
+    },
+    title: {
+            text: 'Monitoramento de Bytes',
+            align: 'center',
+            style: { fontSize: '18px', color: '#FFFFFF' },
+        },
+    series: [
+        {
+            name: 'Bytes Enviados',
+            data: bytesEnviadosF
+        },
+        {
+            name: 'Bytes Recebidos',
+            data: bytesRecebidosF
+        }
+    ],
+    xaxis: {
+        categories: horarios, // Eixo X com os horários
+        title: { text: 'Horário', style: { color: '#FFFFFF' } }, // Cor branca
+        labels: { style: { colors: '#FFFFFF' } } // Cor dos rótulos do eixo X
+    },
+    yaxis: {
+        title: { text: 'Bytes', style: { color: '#FFFFFF' } }, // Cor branca
+        labels: { style: { colors: '#FFFFFF' } } // Cor dos rótulos do eixo Y
+    },
+    legend: {
+        labels: { colors: '#FFFFFF' } // Cor branca para a legenda
+    },
+    colors: ['#FFD700', '#1E90FF'], // Amarelo e Azul
+    stroke: { curve: 'smooth' },
+    markers: { size: 4 },
+    tooltip: { shared: true, intersect: false }
+};
 
         // Inicializa o gráfico
         chartBytes = new ApexCharts(document.querySelector("#chart-bytes"), options);
@@ -324,6 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
 let chartCPU; // Variável global para armazenar a instância do gráfico
 
 function atualizarGraficoCPU(usoDoCPU) {
@@ -337,35 +395,45 @@ function atualizarGraficoCPU(usoDoCPU) {
     // Se o gráfico ainda não foi criado, inicialize-o
     if (!chartCPU) {
         const options = {
-            chart: {
-                type: 'radialBar',
-                height: 350
+    chart: {
+        type: 'radialBar',
+        height: 350
+    },
+    series: [usoDoCPU], // Valor inicial do uso da CPU
+    labels: ['Uso da CPU'], // Nome do indicador
+    colors: ['#1E90FF'], // Azul
+    plotOptions: {
+        radialBar: {
+            hollow: {
+                size: '60%' // Define o tamanho do círculo central
             },
-            series: [usoDoCPU], // Valor inicial do uso da CPU
-            labels: ['Uso da CPU'], // Nome do indicador
-            colors: ['#1E90FF'], // Azul
-            plotOptions: {
-                radialBar: {
-                    hollow: {
-                        size: '60%' // Define o tamanho do círculo central
-                    },
-                    dataLabels: {
-                        name: {
-                            fontSize: '18px',
-                            fontWeight: 'bold',
-                            color: '#333'
-                        },
-                        value: {
-                            fontSize: '16px',
-                            fontWeight: 'bold',
-                            formatter: function (val) {
-                                return `${val}%`; // Exibe o valor como porcentagem
-                            }
-                        }
+            dataLabels: {
+                name: {
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    color: '#FFFFFF' // Cor branca para o nome do indicador
+                },
+                title: {
+            text: 'Uso da CPU',
+            align: 'center',
+            style: { fontSize: '18px', color: '#FFFFFF' },
+        },
+                value: {
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    color: '#FFFFFF', // Cor branca para o valor
+                    formatter: function (val) {
+                        return `${val}%`; // Exibe o valor como porcentagem
                     }
                 }
             }
-        };
+        }
+    },
+    legend: {
+        labels: { colors: '#FFFFFF' } // Cor branca para a legenda
+    }
+};
+
 
         // Inicializa o gráfico radial
         chartCPU = new ApexCharts(document.querySelector("#chart-cpu"), options);
@@ -376,6 +444,16 @@ function atualizarGraficoCPU(usoDoCPU) {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const monitoramentoCPU = document.querySelector("#chart-cpu");
+
+    if (!monitoramentoCPU) {
+        console.error("Elemento com ID 'chart-cpu' não encontrado no DOM.");
+    } else {
+        // Define o HTML inicial do container (se necessário)
+        monitoramentoCPU.innerHTML = `<h2 style="color: #fff; text-align: center;">Monitoramento de CPU</h2>`;
+    }
+});
 // Simulação de valores dinâmicos para teste
 setInterval(// Gera valores aleatórios de 0 a// Gera um valor aleatório entre 0 e 100
     atualizarGraficoCPU()
@@ -384,92 +462,108 @@ setInterval(// Gera valores aleatórios de 0 a// Gera um valor aleatório entre 
 
 
 
- function atualizarGraficoPing(ping ) {
-    const contadorPing = document.getElementById("chart-ping");
+ function atualizarGraficoPing(ping) {
+    const contadorPing = document.getElementById("contador-ping");
 
     if (contadorPing) {
-        contadorPing.innerText = ping + " ms de Latência (Ping)";
+        contadorPing.innerText = `${ping} ms de Latência (Ping)`;
 
         // Alterar a cor com base no valor do ping
-        contadorPing.style.color = ping > 100 ? "#E74C3C" : "#2ECC71"; // Vermelho se > 100, Verde se <= 100
+        contadorPing.style.color = ping > 100 ? "#E74C3C" : "#2ECC71"; // Amarelo se > 100, Verde se <= 100
     }
 }
+
 document.addEventListener('DOMContentLoaded', function () {
-    const monitoramentoPacotes = document.getElementById("chart-ping");
-    monitoramentoPacotes.innerHTML = `
-        <div>
-            <h2 style="color: #fff;">Monitoramento de Latência (Ping)</h2>
-            <p id="contador-ping" style="color: #2ECC71; font-size: 1.5rem;">0 ms de Latência (Ping)</p>
-        </div>
-    `;
+    const monitoramentoPing = document.getElementById("chart-ping");
+
+    if (monitoramentoPing) {
+        monitoramentoPing.innerHTML = `
+            <div>
+                <h2 style="color: #fff; text-align: center;">Monitoramento de Latência</h2>
+                <p id="contador-ping" style="color: #FFC300; font-size: 1.5rem;">0 ms de Latência (Ping)</p>
+            </div>
+        `;
+    } else {
+        console.error("Elemento com ID 'chart-ping' não encontrado no DOM.");
+    }
 });
+
+// Simulação de ping e atualização
+
+
 setInterval( // Substitua por sua função real
     atualizarGraficoPing()
 , 2000);
 
 document.addEventListener("DOMContentLoaded", () => {
     listarServidor();
+    atualizarGraficoBytes([0], [0], ["00:00"]);
+    atualizarGraficoCPU(0);
+    
 });
 
 
 
 
+function monitorarDados(bytesEnviadosA, bytesRecebidosA, pacotesEnviadosA, pacotesRecebidosA, pingA, usoDoCPUA) {
+    const minBytes = 1024 * 1024; // 1 MB em bytes
+    const minPacotes = 10;
+    const maxPing = 100; // Latência máxima permitida
+    const maxCPU = 80; // Uso máximo de CPU permitido
+
+    let contadorBytesEnviados = 0;
+    let contadorBytesRecebidos = 0;
+    let contadorPacotesEnviados = 0;
+    let contadorPacotesRecebidos = 0;
+    let contadorPing = 0;
+    let contadorUsoCPU = 0;
+
+    // Contagem de ocorrências
+    bytesEnviadosA.forEach(bytes => {
+        if (bytes < minBytes) contadorBytesEnviados++;
+    });
+    bytesRecebidosA.forEach(bytes => {
+        if (bytes < minBytes) contadorBytesRecebidos++;
+    });
+    pacotesEnviadosA.forEach(pacotes => {
+        if (pacotes < minPacotes) contadorPacotesEnviados++;
+    });
+    pacotesRecebidosA.forEach(pacotes => {
+        if (pacotes < minPacotes) contadorPacotesRecebidos++;
+    });
+    pingA.forEach(ping => {
+        if (ping > maxPing) contadorPing++;
+    });
+    usoDoCPUA.forEach(cpu => {
+        if (cpu > maxCPU) contadorUsoCPU++;
+    });
+
+    // Atualizar os valores no alerta
+    const perdaBytesMsg = [
+        contadorBytesEnviados > 0 ? `${contadorBytesEnviados} alertas de Bytes Enviados abaixo de 1 MB` : null,
+        contadorBytesRecebidos > 0 ? `${contadorBytesRecebidos} alertas de Bytes Recebidos abaixo de 1 MB` : null
+    ].filter(Boolean).join("<br>");
+
+    const perdaPacotesMsg = [
+        contadorPacotesEnviados > 0 ? `${contadorPacotesEnviados} alertas de Pacotes Enviados abaixo de 10` : null,
+        contadorPacotesRecebidos > 0 ? `${contadorPacotesRecebidos} alertas de Pacotes Recebidos abaixo de 10` : null
+    ].filter(Boolean).join("<br>");
+
+    const pingMsg = contadorPing > 0 ? `${contadorPing} alertas de Latência acima de 100 ms` : "Latência dentro do limite";
+    const cpuMsg = contadorUsoCPU > 0 ? `${contadorUsoCPU} alertas de CPU acima de 80%` : "Uso de CPU dentro do limite";
+
+    // Atualizar elementos no DOM
+    document.getElementById("perdaBytes").innerHTML = perdaBytesMsg || "Nenhum alerta de Bytes";
+    document.getElementById("perdaPacotes").innerHTML = perdaPacotesMsg || "Nenhum alerta de Pacotes";
+    document.getElementById("pingAlerta").innerHTML = pingMsg;
+    document.getElementById("cpuAlerta").style.display = contadorUsoCPU > 0 ? "inline" : "none";
+    document.getElementById("cpuAlerta").innerHTML = cpuMsg;
+
+    console.log("Alertas atualizados no DOM");
+}
 
 
 
-
-
-
-
-
-
-// Atualiza os dados a cada 5 minutos
-
-// Função para monitorar dados
-function monitorarDados() {
-        const minBytes = 1024 * 1024; // 1 MB em bytes
-        const minPacotes = 10;
-        const maxPing = 100; // Latência máxima permitida
-    
-        // Dados fictícios para teste
-        const dados = {
-            ping: 993,
-            bytesEnviados: 500000,
-            bytesRecebidos: 920000,
-            pacotesEnviados: 5,
-            pacotesRecebidos: 8,
-        };
-    
-        const { ping, bytesEnviados, bytesRecebidos, pacotesEnviados, pacotesRecebidos } = dados;
-    
-        const bytesEnviadosMB = (bytesEnviados / minBytes).toFixed(2);
-        const bytesRecebidosMB = (bytesRecebidos / minBytes).toFixed(2);
-    
-        const perdaBytesMsg = [
-            bytesEnviados < minBytes && `${bytesEnviadosMB} MB enviados (Abaixo de 1 MB)`,
-            bytesRecebidos < minBytes && `${bytesRecebidosMB} MB recebidos (Abaixo de 1 MB)`
-        ].filter(Boolean).join("<br>");
-    
-        const perdaPacotesMsg = [
-            pacotesEnviados < minPacotes && `${pacotesEnviados} pacotes enviados (Abaixo de 10)`,
-            pacotesRecebidos < minPacotes && `${pacotesRecebidos} pacotes recebidos (Abaixo de 10)`
-        ].filter(Boolean).join("<br>");
-    
-        const pingMsg = ping > maxPing ? `${ping} ms (Latência acima de 100 ms)` : "";
-    
-        atualizarTextoElemento("perdaBytes", perdaBytesMsg || "Nenhum alerta", perdaBytesMsg ? "#E74C3C" : "lightgreen");
-        atualizarTextoElemento("perdaPacotes", perdaPacotesMsg || "Nenhum alerta", perdaPacotesMsg ? "#E74C3C" : "lightgreen");
-        atualizarTextoElemento("pingAlerta", pingMsg || "Nenhum alerta", pingMsg ? "#E74C3C" : "lightgreen");
-    }
-    
-    // Função auxiliar para atualizar elementos HTML
-    function atualizarTextoElemento(id, texto, cor) {
-        const elemento = document.getElementById(id);
-        if (elemento) {
-            elemento.innerHTML = texto;
-            elemento.style.color = cor;
-        }
-    }
     
 
 </script>

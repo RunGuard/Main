@@ -25,6 +25,7 @@ async function obterDados(fkEquipamento) {
 }
 }
 
+
 async function buscarServidor() {
     const query = `
         SELECT idEquipamento, nomeEquipamento
@@ -39,7 +40,35 @@ async function buscarServidor() {
     }
 }
 
+async function dadosHora(fkEquipamento) {
+    const fkEquipamentoA = fkEquipamento;
+  const sql = `
+    SELECT 
+    bytes_recebidos, 
+    bytes_enviados, 
+    pacotes_recebidos, 
+    pacotes_enviados, 
+    cpuPercent AS usoCPU, 
+    ping
+FROM dado
+WHERE fkEquipamento = ${fkEquipamentoA}
+ORDER BY dtHora DESC 
+LIMIT 12;
+
+  `;
+
+  try {
+    const resultadosA = await database.executar(sql);
+    return resultadosA;
+    
+} catch (error) {
+    throw new Error(`Erro ao buscar dados para fkEquipamento ${fkEquipamento}: ${error.message}`);
+
+}
+}
+
 module.exports = {
   obterDados,
-  buscarServidor
+  buscarServidor,
+  dadosHora
 };

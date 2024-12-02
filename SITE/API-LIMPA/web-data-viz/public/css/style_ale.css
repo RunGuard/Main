@@ -1,22 +1,29 @@
 /* Container geral dos gráficos */
 #charts-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between; /* Distribui os gráficos uniformemente */
-    align-items: flex-start;
+    gap: 65px;
+    justify-content: center;
     padding: 20px;
-    margin-left: 220px; /* Mantém afastamento da navbar */
-    gap: 15px;
-    margin-right: 30px; /* Espaçamento entre gráficos */
+/* Espaçamento entre gráficos */
 }
 
 /* Estilo padrão dos gráficos */
 .chart {
-    background: #292930; /* Fundo uniforme */
-    padding: 15px;
+    position: relative;
+    width: 250px;
+    height: 150px;
+    background: #3B3B45;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 15px;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    text-align: center;
+
 }
 
 .chart:hover {
@@ -25,7 +32,7 @@
 }
 
 /* Tamanho dos gráficos específicos */
-#chart-CPU, #chart-Bytes, #chart-Packages, #chart-Ping {
+#chart-CPU, #chart-Packages, #chart-Ping {
     width: 100%;
     max-width: 500px; /* Limita o tamanho máximo dos gráficos */
     height: 350px; /* Altura consistente para todos os gráficos */
@@ -130,7 +137,7 @@
 
 /* Estilos para o botão de atualizar */
 .botao-atualizar {
-    background-color: #4CAF50; /* Cor de fundo verde */
+    background-color: #FFC300; /* Cor de fundo verde */
     color: white; /* Cor do texto branca */
     padding: 6px 15px; /* Espaçamento interno reduzido */
     border: none; /* Remove a borda */
@@ -202,7 +209,7 @@
 .botao-atualizar {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4CAF50;
+    background-color: #FFC300;
     color: white;
     border: none;
     border-radius: 5px;
@@ -274,7 +281,7 @@
 /* Botão atualizar */
 .botao-atualizar {
     padding: 10px 15px;
-    background-color: #4CAF50;
+    background-color: #FFC300;
     color: white;
     border: none;
     border-radius: 5px;
@@ -330,7 +337,7 @@
 /* Botão atualizar */
 .botao-atualizar {
     padding: 10px 15px;
-    background-color: #4CAF50;
+    background-color: #FFC300;
     color: white;
     border: none;
     border-radius: 5px;
@@ -409,7 +416,7 @@
 
 .selecao-servidor-container button {
     padding: 10px 20px;
-    background-color: #4CAF50; /* Cor verde para o botão */
+    background-color: #FFC300; /* Cor verde para o botão */
     color: white; /* Texto branco */
     border: none;
     border-radius: 5px;
@@ -496,7 +503,7 @@
 
 /* Estilo do container do seletor de servidor */
 .selecao-servidor-container {
-    width: 50%;
+    width: 100%;
     margin: 10px auto; /* Reduzido de 20px para 10px para diminuir a margem */
     padding: 20px;
     /* border: 1px solid #ccc; */
@@ -504,3 +511,185 @@
     border-radius: 5px;
     text-align: center;
 }
+.card,
+.kpi-card {
+    position: relative;
+    width: 250px;
+    height: 150px;
+    background: #3B3B45;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    text-align: center;
+}
+
+.card-title{
+font-size: 16px;
+font-weight: bold;
+color: yellow;
+margin-bottom: 10px;
+
+}
+
+#chart-CPU, #chart-Bytes, #chart-Packages, #chart-Ping{
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+
+}
+#chart-bytes{
+    height: 20px;
+
+}
+
+.kpi-cards-container {
+    display: flex;
+    gap: 65px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.kpi-description {
+    font-size: 14px;
+    color: #d1d1d1;
+}
+
+.card {
+    position: relative;
+    width: 250px;
+    height: 150px;
+    background: #3B3B45;
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: yellow;
+    margin-bottom: 10px;
+}
+
+#desviopadraocpu {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#desviopadraoram {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#iodisco {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#downtimetempo{
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.kpi-cards-container {
+    display: flex;
+    gap: 65px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.kpi-card {
+    background-color: #3B3B45;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    height: 40vh;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.kpi-card h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#kpi-value {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
+#estabilidade {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
+#eficiencia {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+.alert-content{
+    margin-top: 27px;
+    margin-left: 100px;
+}
+.selecao-servidor-container{
+    margin-left: 90px;
+}
+
+
+#taxaup {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
+.kpi-description {
+    font-size: 14px;
+    color: #d1d1d1;
+}
+#chart-bytes {
+    max-width: 300px; /* Diminui a largura máxima */
+   max-height: 100px; /* Ajusta a altura */
+    margin: 0 auto; /* Centraliza */
+}
+
+#charts-container {
+    flex-wrap: wrap; /* Permite quebra de linha */
+    gap: 10px; /* Diminui o espaçamento entre gráficos */
+    justify-content: center; /* Centraliza todos os gráficos */
+}
+#selecao-servidor-container {
+    width: 100%; /* Ajuste inicial */
+    max-width: 400px; /* Defina a mesma largura máxima do alerta-container */
+    margin: 0 auto; /* Centralize, se necessário */
+}
+
+
+
