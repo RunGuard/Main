@@ -103,7 +103,7 @@
                 </div>
                 <div class="mediaAlerta media">
                     <p>Servidor em Estado crítico:</p>
-                    <span id="servidorDowtime" style="color: #ff7272;">Servidor 1</span>
+                    <span id="servidorDowtime" style="color: #ff7272;"></span>
                     <p>
                         <a href="Dashboard%20-%20Guilherme.html" style="color: #ff4500; font: bold;">
                             Para acessar o servidor, clique aqui.
@@ -150,6 +150,7 @@
 </body>
 <script>
     let chartRanking;
+    let graficoRanking = null;
 
     // Função para obter e formatar a data atual
     function atualizarData() {
@@ -218,13 +219,13 @@
                 console.log("Dados recebidos:", data);
                 if (Array.isArray(data)) {
                     atualizarRanking(data);
+                    atualizarKpiAlerta(data);
                 } else {
                     console.error("Formato de dados inesperado:", data);
                 }
             })
             .catch(error => console.error("Falha na captura de dados:", error));
     }
-
     // function atualizarRanking(dados) {
     //     console.log(dados); // Para debugar se os dados estão chegando corretamente
     //     const nomesServidores = dados.map(item => item.Servidor);
@@ -383,12 +384,41 @@
             },
         };
 
-        // Renderização do gráfico
-        const graficoRanking = new ApexCharts(document.querySelector("#graficoRanking"), dataRanking);
+        // Verifica se o gráfico já foi criado e destrói antes de criar um novo
+        if (graficoRanking) {
+            graficoRanking.destroy();
+        }
+
+        // Cria e renderiza um novo gráfico
+        graficoRanking = new ApexCharts(document.querySelector("#graficoRanking"), dataRanking);
         graficoRanking.render();
     }
-    ranking();
+    // ranking();
+    function atualizarKpiAlerta(data) {
+        console.log(data)
+        var primeiroServidor = data[0]
+        console.log(primeiroServidor)
+        servidorDowtime.innerHTML = primeiroServidor.Servidor
+    }
+    // Atualização periódica do gráfico a cada 10 segundos
+    setInterval(() => {
+        console.log("Atualizando o ranking...");
+        ranking(); // Chamar a função para atualizar os dados do gráfico
+    }, 10000);
 
+    // Chamar a função ao carregar a página
+    document.addEventListener('DOMContentLoaded', function () {
+        ranking(); // Atualizar o ranking com os dados iniciais
+    });
+    // setInterval(() => {
+    //     try {
+    //         console.log("Atualizando a tabela...");
+
+    //         ranking();
+    //     } catch (error) {
+    //         console.error("Erro ao executar intervalo de atualização do ranking:", error);
+    //     }
+    // }, 10000);
 
     // Selecione todas as células da tabela
     const tds = document.querySelectorAll('.fundo_grafico-tabela td');
