@@ -36,8 +36,8 @@ idDado int primary key auto_increment,
 cpuPercent double,
 memoriaPercent double,
 memoriaUsada double,
-bytes_recebidos double,
-bytes_enviados double,
+bytes_recebidos Bigint,
+bytes_enviados Bigint,
 pacotes_recebidos double,
 pacotes_enviados double,
 ping int,
@@ -45,7 +45,35 @@ dtHora datetime default current_timestamp,
 fkEquipamento int,
     constraint fkEquipamentoDados foreign key (fkEquipamento) references equipamento (idEquipamento)
 );
+INSERT INTO dado (
+    cpuPercent, 
+    memoriaPercent, 
+    memoriaUsada, 
+    bytes_recebidos, 
+    bytes_enviados, 
+    pacotes_recebidos, 
+    pacotes_enviados, 
+    ping, 
+    fkEquipamento
+)
+VALUES 
+(85.5, 95.0, 1, 5, 5, 9, 9, 150, 5); -- Exemplo de registro fora dos limites
 
+
+
+select * from dado whereS fkEquipamento = 5	;
+SELECT 
+            bytes_recebidos, 
+            bytes_enviados, 
+            pacotes_recebidos, 
+            pacotes_enviados, 
+            cpuPercent AS usoCPU, 
+            ping, 
+            DATE_FORMAT(dtHora, '%H:%i:%s') AS horario
+        FROM dado
+        WHERE fkEquipamento = fkEquipamento
+        ORDER BY dtHora DESC 
+        LIMIT 50;
 CREATE TABLE alerta (
 idAlerta int primary key auto_increment,
 resumo varchar(256),
@@ -80,10 +108,10 @@ SELECT
     CONCAT(d.cpuPercent, "%") AS "Porcentagem CPU",
     CONCAT(d.memoriaPercent, "%") AS "Porcentagem Memoria",
     CONCAT(d.memoriaUsada, "GB") AS "Memoria usada",
-    CONCAT(d.bytes_recebidos, "GB") AS "Bytes recebidos",
-    CONCAT(d.bytes_enviados, "GB") AS "Bytes enviados",
-    CONCAT(d.pacotes_recebidos, "GB") AS "Pacotes recebidos",
-    CONCAT(d.pacotes_enviados, "GB") AS "Pacotes enviados",
+    CONCAT(d.bytes_recebidos, "") AS "Bytes recebidos",
+    CONCAT(d.bytes_enviados, "") AS "Bytes enviados",
+    CONCAT(d.pacotes_recebidos, "") AS "Pacotes recebidos",
+    CONCAT(d.pacotes_enviados, "") AS "Pacotes enviados",
     CONCAT(d.ping, "ms") AS "Latência",
    
     d.dtHora AS "Data",
@@ -148,4 +176,8 @@ BEGIN
     SET NEW.senha = criptografia(NEW.senha,5);
 END$$
 
-select * from Monitoramento
+SELECT 
+    *
+FROM
+    Monitoramento;
+SELECT * FROM dado WHERE fkEquipamento = 5;

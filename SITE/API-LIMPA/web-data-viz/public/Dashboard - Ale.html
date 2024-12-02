@@ -85,12 +85,12 @@
         <div class="alert-content ">
             <h2>Alertas de Monitoramento</h2>
             <p><strong>Perda na Última Hora:</strong></p>
-            <p>Pacotes em risco: <span id="perdaPacotes" class="highlight"></span></p>
-            <p>Bytes em risco: <br><span id="perdaBytes" class="highlight"></span></p>
+            <p>Pacotes em risco: <span id="perdaPacotes" ></span></p>
+            <p>Bytes em risco: <br><span id="perdaBytes" ></span></p>
             <p><strong>Eventos de Latência Alta:</strong></p>
-            <p>Latência alta: <span id="pingAlerta" class="highlight"></span></p>
+            <p>Latência alta: <span id="pingAlerta" ></span></p>
             <p><strong>Eventos de Uso Alto CPU:</strong></p>
-            <p>CPU alta:  <span id="cpuAlerta" style="display:none;"></span></p>
+            <p>CPU alta:  <span id="cpuAlerta" ></span></p>
             
         </div>
         <div class="selecao-servidor-container">
@@ -177,20 +177,24 @@ async function buscarDadosGrafico(fkEquipamento) {
         // console.log(JSON.stringify(data, null, 2)); // Log detalhado da estrutura
 
         if (Array.isArray(data) && data.length > 0) {
-            const bytesEnviados = data.map(item => {
-                // console.log(item); // Log para verificar a estrutura
-                return item.bytes_enviados !== undefined ? item.bytes_enviados : null; // Retorna null se não existir
-            });
-            const ultimoDado = data[data.length - 1];
-            // const ultimoDado = data[data.length - 1];
-
+            const bytesEnviados = data.map(item => item.bytes_enviados !== undefined ? item.bytes_enviados : null);
             const bytesRecebidos = data.map(item => item.bytes_recebidos !== undefined ? item.bytes_recebidos : null);
-            const pacotesEnviados = ultimoDado.pacotes_enviados || null;
-            const pacotesRecebidos = ultimoDado.pacotes_recebidos || null;
-            const ping = ultimoDado?.ping || 0;  // Definir como 0 se for undefined ou null
-            const usoDoCPU= ultimoDado.usoCPU || 0;
-            const horario = data.map(item => item.horario !== undefined ? item.horario : null); // Pega o último valor de uso da CPU
+            const pacotesEnviados = data.map(item => item.pacotes_enviados !== undefined ? item.pacotes_enviados : null);
+            const pacotesRecebidos = data.map(item => item.pacotes_recebidos !== undefined ? item.pacotes_recebidos : null);
+            const ping = data.map(item => item.ping !== undefined ? item.ping : 0); // Definir 0 se não existir
+            const usoDoCPU = data.map(item => item.usoCPU !== undefined ? item.usoCPU : 0);
+            const horario = data.map(item => item.horario !== undefined ? item.horario : null);
 
+            // Criar novas constantes para os últimos dados para alertas
+            const ultimoDado = data[data.length - 1]; // Último dado da resposta
+
+            // Novas variáveis para os últimos dados, específicas para alertas
+            const ultimoBytesEnviados = ultimoDado.bytes_enviados || 0;
+            const ultimoBytesRecebidos = ultimoDado.bytes_recebidos || 0;
+            const ultimoPacotesEnviados = ultimoDado.pacotes_enviados || 0;
+            const ultimoPacotesRecebidos = ultimoDado.pacotes_recebidos || 0;
+            const ultimoPing = ultimoDado.ping || 0;
+            const ultimoUsoCPU = ultimoDado.usoCPU || 0;
             // console.log("Uso da CPU:", usoCPU);
 
             // Log para verificar os dados extraídos
@@ -203,10 +207,11 @@ async function buscarDadosGrafico(fkEquipamento) {
             // console.log("Horário:", horario);
 
             // Atualize os gráficos
+            monitorarDados(bytesEnviados, bytesRecebidos, pacotesEnviados, pacotesRecebidos, ping, usoDoCPU);
             atualizarGraficoBytes(bytesEnviados,bytesRecebidos,horario);
-            atualizarGraficoCPU(usoDoCPU);
-            atualizarGraficoPackets(pacotesRecebidos,pacotesEnviados);
-            atualizarGraficoPing(ping);
+            atualizarGraficoCPU(ultimoUsoCPU);
+            atualizarGraficoPackets(ultimoPacotesRecebidos,ultimoPacotesEnviados);
+            atualizarGraficoPing(ultimoPing);
         } else {
             console.error('Formato de dados inesperado ou dados vazios:', data);
         }
@@ -337,7 +342,7 @@ function atualizarGraficoBytes(bytesEnviados, bytesRecebidos, horarios) {
     }
 }
 
-function atualizarGraficoPackets(pacotesEnviados = 0, pacotesRecebidos = 0) {
+function atualizarGraficoPackets(ultimoPacotesEnviados = 0, ultimoPacotesRecebidos = 0) {
     const contadorEnviados = document.getElementById("contador-enviados");
     const contadorRecebidos = document.getElementById("contador-recebidos");
     function formatarPacotes(pacotes) {
@@ -352,12 +357,12 @@ function atualizarGraficoPackets(pacotesEnviados = 0, pacotesRecebidos = 0) {
 
     if (contadorEnviados && contadorRecebidos) {
         // Usa a função de formatação para atualizar os textos
-        contadorEnviados.innerText = formatarPacotes(pacotesEnviados) + " Enviados";
-        contadorRecebidos.innerText = formatarPacotes(pacotesRecebidos) + " Recebidos";
+        contadorEnviados.innerText = formatarPacotes(ultimoPacotesEnviados) + " Enviados";
+        contadorRecebidos.innerText = formatarPacotes(ultimoPacotesRecebidos) + " Recebidos";
 
         // Alterar a cor com base nos valores
-        contadorEnviados.style.color = pacotesEnviados < 10 ? "#E74C3C" : "#FFC300"; // Vermelho ou Amarelo
-        contadorRecebidos.style.color = pacotesRecebidos < 10 ? "#E74C3C" : "#3498DB"; // Vermelho ou Azul
+        contadorEnviados.style.color = ultimoPacotesEnviados < 10 ? "#E74C3C" : "#FFC300"; // Vermelho ou Amarelo
+        contadorRecebidos.style.color = ultimoPacotesRecebidos < 10 ? "#E74C3C" : "#3498DB"; // Vermelho ou Azul
     }
     }
 
@@ -384,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 let chartCPU; // Variável global para armazenar a instância do gráfico
 
-function atualizarGraficoCPU(usoDoCPU) {
+function atualizarGraficoCPU(ultimoUsoCPU) {
     const chartElement = document.querySelector("#chart-cpu");
 
     if (!chartElement) {
@@ -399,7 +404,7 @@ function atualizarGraficoCPU(usoDoCPU) {
         type: 'radialBar',
         height: 350
     },
-    series: [usoDoCPU], // Valor inicial do uso da CPU
+    series: [ultimoUsoCPU], // Valor inicial do uso da CPU
     labels: ['Uso da CPU'], // Nome do indicador
     colors: ['#1E90FF'], // Azul
     plotOptions: {
@@ -440,7 +445,7 @@ function atualizarGraficoCPU(usoDoCPU) {
         chartCPU.render();
     } else {
         // Atualiza o valor do gráfico radial
-        chartCPU.updateSeries([usoDoCPU]);
+        chartCPU.updateSeries([ultimoUsoCPU]);
     }
 }
 
@@ -462,14 +467,14 @@ setInterval(// Gera valores aleatórios de 0 a// Gera um valor aleatório entre 
 
 
 
- function atualizarGraficoPing(ping) {
+ function atualizarGraficoPing(ultimoPing) {
     const contadorPing = document.getElementById("contador-ping");
 
     if (contadorPing) {
-        contadorPing.innerText = `${ping} ms de Latência (Ping)`;
+        contadorPing.innerText = `${ultimoPing} ms de Latência (Ping)`;
 
         // Alterar a cor com base no valor do ping
-        contadorPing.style.color = ping > 100 ? "#E74C3C" : "#2ECC71"; // Amarelo se > 100, Verde se <= 100
+        contadorPing.style.color = ultimoPing > 100 ? "#E74C3C" : "#2ECC71"; // Amarelo se > 100, Verde se <= 100
     }
 }
 
@@ -503,64 +508,69 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
-
-function monitorarDados(bytesEnviadosA, bytesRecebidosA, pacotesEnviadosA, pacotesRecebidosA, pingA, usoDoCPUA) {
+function monitorarDados(bytesEnviados, bytesRecebidos, pacotesEnviados, pacotesRecebidos, ping, usoDoCPU) {
     const minBytes = 1024 * 1024; // 1 MB em bytes
     const minPacotes = 10;
     const maxPing = 100; // Latência máxima permitida
     const maxCPU = 80; // Uso máximo de CPU permitido
 
-    let contadorBytesEnviados = 0;
-    let contadorBytesRecebidos = 0;
-    let contadorPacotesEnviados = 0;
-    let contadorPacotesRecebidos = 0;
-    let contadorPing = 0;
-    let contadorUsoCPU = 0;
+    // Função para validar e contar alertas
+    const validar = (valores, limite, comparador) => {
+        if (!Array.isArray(valores)) {
+            valores = [valores]; // Garante que valores sejam sempre um array
+        }
+        return valores.slice(-12).reduce((contador, v) => {
+            if ((comparador === "<" && v < limite) || (comparador === ">" && v > limite)) {
+                return contador + 1;
+            }
+            return contador;
+        }, 0);
+    };
 
-    // Contagem de ocorrências
-    bytesEnviadosA.forEach(bytes => {
-        if (bytes < minBytes) contadorBytesEnviados++;
-    });
-    bytesRecebidosA.forEach(bytes => {
-        if (bytes < minBytes) contadorBytesRecebidos++;
-    });
-    pacotesEnviadosA.forEach(pacotes => {
-        if (pacotes < minPacotes) contadorPacotesEnviados++;
-    });
-    pacotesRecebidosA.forEach(pacotes => {
-        if (pacotes < minPacotes) contadorPacotesRecebidos++;
-    });
-    pingA.forEach(ping => {
-        if (ping > maxPing) contadorPing++;
-    });
-    usoDoCPUA.forEach(cpu => {
-        if (cpu > maxCPU) contadorUsoCPU++;
-    });
+    // Contagem de ocorrências nos últimos 12 valores
+    const contadorBytesEnviados = validar(bytesEnviados, minBytes, "<");
+    const contadorBytesRecebidos = validar(bytesRecebidos, minBytes, "<");
+    const contadorPacotesEnviados = validar(pacotesEnviados, minPacotes, "<");
+    const contadorPacotesRecebidos = validar(pacotesRecebidos, minPacotes, "<");
+    const contadorPing = validar(ping, maxPing, ">");
+    const contadorUsoCPU = validar(usoDoCPU, maxCPU, ">");
 
-    // Atualizar os valores no alerta
-    const perdaBytesMsg = [
-        contadorBytesEnviados > 0 ? `${contadorBytesEnviados} alertas de Bytes Enviados abaixo de 1 MB` : null,
-        contadorBytesRecebidos > 0 ? `${contadorBytesRecebidos} alertas de Bytes Recebidos abaixo de 1 MB` : null
-    ].filter(Boolean).join("<br>");
+    const verde = "#2ECC71"; // Cor verde para dentro dos limites
+    const vermelho = "#E74C3C"; // Cor vermelha para fora dos limites
 
-    const perdaPacotesMsg = [
-        contadorPacotesEnviados > 0 ? `${contadorPacotesEnviados} alertas de Pacotes Enviados abaixo de 10` : null,
-        contadorPacotesRecebidos > 0 ? `${contadorPacotesRecebidos} alertas de Pacotes Recebidos abaixo de 10` : null
-    ].filter(Boolean).join("<br>");
+    // Atualizar elementos no DOM com texto reduzido
+    atualizarElemento("perdaBytes", contadorBytesEnviados || contadorBytesRecebidos, 
+        `${contadorBytesEnviados} alertas de Bytes abaixo de 1 MB<br>${contadorBytesRecebidos} alertas de Bytes recebidos abaixo de 1 MB`, 
+        "Sem alertas de Bytes", vermelho, verde);
 
-    const pingMsg = contadorPing > 0 ? `${contadorPing} alertas de Latência acima de 100 ms` : "Latência dentro do limite";
-    const cpuMsg = contadorUsoCPU > 0 ? `${contadorUsoCPU} alertas de CPU acima de 80%` : "Uso de CPU dentro do limite";
+    atualizarElemento("perdaPacotes", contadorPacotesEnviados || contadorPacotesRecebidos, 
+        `${contadorPacotesEnviados} alertas de Pacotes enviados abaixo de 10<br>${contadorPacotesRecebidos} alertas de Pacotes recebidos abaixo de 10`, 
+        "Sem alertas de Pacotes", vermelho, verde);
 
-    // Atualizar elementos no DOM
-    document.getElementById("perdaBytes").innerHTML = perdaBytesMsg || "Nenhum alerta de Bytes";
-    document.getElementById("perdaPacotes").innerHTML = perdaPacotesMsg || "Nenhum alerta de Pacotes";
-    document.getElementById("pingAlerta").innerHTML = pingMsg;
-    document.getElementById("cpuAlerta").style.display = contadorUsoCPU > 0 ? "inline" : "none";
-    document.getElementById("cpuAlerta").innerHTML = cpuMsg;
+    atualizarElemento("pingAlerta", contadorPing, 
+        `${contadorPing} alertas de Latência acima de 100 ms`, 
+        "Latência dentro do limite", vermelho, verde);
 
-    console.log("Alertas atualizados no DOM");
+    atualizarElemento("cpuAlerta", contadorUsoCPU, 
+        `${contadorUsoCPU} alertas de CPU acima de 80%`, 
+        "Uso de CPU dentro do limite", vermelho, verde);
 }
+
+// Função para atualizar o elemento e aplicar cor
+function atualizarElemento(id, contador, msgAlerta, msgOk, corAlerta, corOk) {
+    const elemento = document.getElementById(id);
+    if (contador > 0) {
+        elemento.innerHTML = msgAlerta; // Mensagem de alerta
+        elemento.style.color = corAlerta; // Cor de alerta
+    } else {
+        elemento.innerHTML = msgOk; // Mensagem de sucesso
+        elemento.style.color = corOk; // Cor de sucesso
+    }
+    elemento.style.display = "inline"; // Garante que o elemento esteja visível
+}
+
+
+
 
 
 
