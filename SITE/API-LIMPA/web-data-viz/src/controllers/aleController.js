@@ -28,17 +28,10 @@ function buscarServidor(req, res) {
         .catch((erro) => enviarErro(res, erro, "Erro ao buscar servidores"));
 }
 
-function dadosHora(req, res) {
-    const fkEquipamento = req.params.fkEquipamento;
-    console.log("Puxando os dados do equipamento:", fkEquipamento);
 
-    aleModel.dadosHora(fkEquipamento)
-        .then((resultado) => enviarResposta(res, resultado, "Erro ao obter dados"))
-        .catch((erro) => enviarErro(res, erro, "Erro ao obter dados"));
-}
 
 module.exports = {
     obterDados,
     buscarServidor,
-    dadosHora
+    
 };

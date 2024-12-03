@@ -1,9 +1,9 @@
 /* Container geral dos gráficos */
 #charts-container {
     display: flex;
-    gap: 65px;
+    /* gap: 65px; */
     justify-content: center;
-    padding: 20px;
+    /* padding: 20px; */
 /* Espaçamento entre gráficos */
 }
 
@@ -232,10 +232,10 @@
 }
 .charts-container {
     display: flex;
-    justify-content: space-around;
+    /* justify-content: space-around; */
     align-items: center;
     /* padding: 20px; */
-    gap: 20px;
+    /* gap: 20px; */
 }
 
 /* Estilo das colunas dos gráficos */
@@ -294,10 +294,10 @@
 }
 .charts-container {
     display: flex;
-    justify-content: space-around;
+    /* justify-content: space-around; */
     align-items: flex-start;
-    padding: 20px;
-    gap: 20px;
+    /* padding: 20px;
+    gap: 20px; */
 }
 
 /* Estilo das colunas dos gráficos */
@@ -306,7 +306,8 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    /* gap: 20px; */
+    padding-right: 60px;
 }
 
 /* Centralizar o seletor de servidores */
@@ -335,7 +336,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 200px;
+    max-width: 400px;
     height: 200px;
 }
 
@@ -352,13 +353,13 @@
 #charts-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Distribui os gráficos uniformemente */
+    /* justify-content: space-between; Distribui os gráficos uniformemente */
     align-items: flex-start;
-    padding: 20px;
-    margin-left: 260px; /* Afastamento da navbar */
-    margin-top: 80px; /* Espaçamento para evitar sobreposição da navbar */
+    /* padding: 20px; */
+    margin-left: 200px; /* Afastamento da navbar */
+    /* margin-top: 80px; Espaçamento para evitar sobreposição da navbar */
     margin-right: 30px; /* Espaçamento lateral */
-    gap: 15px; /* Espaçamento entre os gráficos */
+    /* gap: 15px; Espaçamento entre os gráficos */
 }
 /* Estilo da navbar */
 .navbar {
@@ -375,13 +376,13 @@
 #charts-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: flex-start;
-    padding: 20px;
-    margin-left: 260px; /* Afastamento lateral */
-    margin-top: 80px; /* Garante espaço abaixo da navbar */
+    /* padding: 20px; */
+    /* margin-left: 260px; Afastamento lateral */
+    /* margin-top: 80px; Garante espaço abaixo da navbar */
     margin-right: 30px;
-    gap: 15px;
+    /* gap: 15px; */
 }
 /* Adicionar espaço ao corpo da página para acomodar a navbar */
 .selecao-servidor-container {
@@ -523,14 +524,14 @@
     height: 150px;
     background: #3B3B45;
     border-radius: 10px;
-    padding: 20px;
+    /* padding: 20px; */
     color: white;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 20px;
+    /* margin: 20px; */
     text-align: center;
 }
 
@@ -614,7 +615,7 @@ margin-bottom: 10px;
 
 .kpi-cards-container {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     /* padding: 20px; */
 }
@@ -681,7 +682,7 @@ margin-bottom: 10px;
 
 #charts-container {
     flex-wrap: wrap; /* Permite quebra de linha */
-    gap: 10px; /* Diminui o espaçamento entre gráficos */
+    /* gap: 10px; Diminui o espaçamento entre gráficos */
     justify-content: center; /* Centraliza todos os gráficos */
 }
 #selecao-servidor-container {
@@ -705,10 +706,10 @@ body, html {
     display: flex;
     /* flex-wrap: wrap; */
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     /* padding: 20px; */
     width: 100%;
-    max-width: 1200px; /* Define uma largura máxima para o container */
+    /* max-width: 1600px; Define uma largura máxima para o container */
 }
 
 .chart-column {
@@ -729,7 +730,7 @@ body, html {
     margin: 5px; /* Reduz a margem dos gráficos */
     color: #fff;
     width: 100%;
-    max-width: 300px; /* Define uma largura máxima para cada gráfico */
+    max-width: 350px; /* Define uma largura máxima para cada gráfico */
 }
 
 h2 {
@@ -741,19 +742,19 @@ h2 {
 #charts-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Distribui os gráficos uniformemente */
+    /* justify-content: space-between; Distribui os gráficos uniformemente */
     align-items: flex-start;
-    padding: 20px;
-    margin-left: 260px; /* Afastamento da navbar */
-    margin-top: 80px; /* Espaçamento para evitar sobreposição da navbar */
+    /* padding: 20px; */
+    margin-left: 200px; /* Afastamento da navbar */
+    /* margin-top: 80px; Espaçamento para evitar sobreposição da navbar */
     margin-right: 30px; /* Espaçamento lateral */
-    gap: 40px; /* Aumenta o espaçamento entre os gráficos */
+    /* gap: 40px; Aumenta o espaçamento entre os gráficos */
 }
 
 /* Estilo padrão dos gráficos */
 .chart {
     position: relative;
-    width: 250px;
+    width: 300px;
     height: 250px;
     background: #3B3B45;
     border-radius: 10px;
@@ -809,15 +810,51 @@ h2 {
     /* padding: 20px; */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    height: 550px;
+    height: 550px;animation: moveGlow 3s linear infinite;
 }
-
+@keyframes moveGlow {
+    0% {
+        box-shadow: 0 -10px 20px rgba(255, 0, 0, 0.8), 
+                    10px 0 20px rgba(255, 0, 0, 0.6), 
+                    0 0 0 rgba(255, 0, 0, 0);
+    }
+    25% {
+        box-shadow: 10px 0 20px rgba(255, 0, 0, 0.8), 
+                    0 10px 20px rgba(255, 0, 0, 0.6), 
+                    0 0 0 rgba(255, 0, 0, 0);
+    }
+    50% {
+        box-shadow: 0 10px 20px rgba(255, 0, 0, 0.8), 
+                    -10px 0 20px rgba(255, 0, 0, 0.6), 
+                    0 0 0 rgba(255, 0, 0, 0);
+    }
+    75% {
+        box-shadow: -10px 0 20px rgba(255, 0, 0, 0.8), 
+                    0 -10px 20px rgba(255, 0, 0, 0.6), 
+                    0 0 0 rgba(255, 0, 0, 0);
+    }
+    100% {
+        box-shadow: 0 -10px 20px rgba(255, 0, 0, 0.8), 
+                    10px 0 20px rgba(255, 0, 0, 0.6), 
+                    0 0 0 rgba(255, 0, 0, 0);
+    }
+}
 .alert-content h2 {
-    font-size: 24px;
-    /* margin-bottom: 20px;; */
+    font-size: 24px;color: red;
 }
 
 .alert-content p {
     font-size: 18px;
     /* margin: 10px 0; */
+}
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0.8);
+    }
+    50% {
+        box-shadow: 0 0 30px 10px rgba(255, 0, 0, 0.6);
+    }
+    100% {
+        box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0.8);
+    }
 }

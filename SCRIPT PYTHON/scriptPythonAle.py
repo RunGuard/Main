@@ -114,7 +114,7 @@ while True:
         )
         mydb.commit()
 
-        print(f"Dados inseridos para {nomeMaquina}: CPU {cpu}%, Memória {memoria.percent}%")
+        print(f"Dados inseridos para {nomeMaquina}: CPU {cpu}%, Memória {memoria.percent}%, Bytes enviados {bytes_sent},Bytes Recebidos { bytes_recv}, Pacotes enviado {net_io.packets_sent}, Pacotes recebidos {net_io.packets_recv}, ping {ping} ")
         time.sleep(tempo)
     except KeyboardInterrupt:
         print("Monitoramento interrompido.")
