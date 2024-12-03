@@ -1,0 +1,404 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    overflow: hidden;
+}
+
+.fantasma {
+    width: 90px;
+    height: 110vh;
+}
+
+body {
+    background-color: #292930eb;
+    display: flex;
+    flex-direction: row;
+    overflow-y: hidden;
+}
+
+nav {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    height: 110vh;
+    left: 0;
+    background-color: #fff;
+    width: 90px;
+    overflow: hidden;
+    transition: width 0.2s linear;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+}
+
+.logo {
+    text-align: center;
+    display: flex;
+    transition: all 0.5s ease;
+    margin: 10px 0 0 10px;
+}
+
+.logo img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.logo span {
+    font-weight: bold;
+    padding-left: 15px;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+a {
+    position: relative;
+    color: rgb(85, 83, 83);
+    font-size: 14px;
+    display: table;
+    width: 300px;
+    padding: 10px;
+}
+
+.fas {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    top: 14px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.nav-item {
+    position: relative;
+    top: 12px;
+    margin-left: 10px;
+}
+
+a:hover {
+    background: #eee;
+}
+
+nav:hover {
+    width: 280px;
+    transition: all 0.5s ease;
+}
+
+.sair {
+    position: absolute;
+    bottom: 100;
+}
+
+.medias {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    gap: 2%;
+}
+
+.media {
+    background-color: #292930;
+    width: 16vw;
+    border-radius: 0 13px 0 13px;
+    height: 18vh;
+    color: white;
+    padding: 7px;
+    border: 2px solid #ffff;
+}   
+
+.media span {
+    color: #ffdc60;
+    font-weight: 700;
+}
+
+.media1:hover {
+    background-color: #262836;
+    transform: scale(1.1); 
+}
+
+.media:hover {
+    background-color: #262836;
+    transform: scale(1.1); 
+}
+
+.medias .info-medida {
+    font-size: 0.8em;
+    color: #fff;
+    font-weight: 300;
+}
+
+.fundo{
+    width: 100%;
+    height: 100vh;
+}
+
+.titulo{
+    display: flex;
+    width: 100%;
+    font-size: 12px;
+    margin-left: 15px;
+    margin-top: 10px;
+    justify-content: space-around;
+    color: white;
+}
+.alinhamento{
+    display: flex;
+    margin-top: 25px;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 40vh;
+}
+
+.fundografico{
+    background: #292930;
+    width: 28%;
+    height: 37vh;
+    border-radius: 10px;
+}
+
+.alinhamento2{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    height: 50vh;
+}
+
+
+.alinhamento3{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    height: 50vh;
+}
+
+.alinharcards{
+    display: inline;
+    width: 100%;
+}
+
+.card {
+    position: relative;
+    width: 250px;
+    height: 150px;
+    background: #3B3B45;
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: yellow;
+    margin-bottom: 10px;
+}
+
+#desviopadraocpu {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#desviopadraoram {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#iodisco {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#downtimetempo{
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.kpi-cards-container {
+    display: flex;
+    gap: 65px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.kpi-card {
+    background-color: #3B3B45;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    height: 40vh;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.kpi-card h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#kpi-value {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
+#estabilidade {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
+#eficiencia {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
+#taxaup {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
+.kpi-description {
+    font-size: 14px;
+    color: #d1d1d1;
+}
+
+select {
+    appearance: none;
+    border: 0;
+    box-shadow: none;
+    /* Personalize */
+    flex: 1;
+    padding: 0 1em;
+    color: #fff;
+    background: #292930;
+    background-image: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  select::-ms-expand {
+    display: none;
+  }
+  .select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #3B3B45;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1em;
+    background-color: #292930;
+    transition: .25s all ease;
+    pointer-events: none;
+  }
+  .select:hover::after {
+    color:yellow;
+  }
+
+  .botaofiltro {
+    cursor: pointer;
+    position: relative;
+    padding: 10px 24px;
+    font-size: 12px;
+    color:yellow;
+    border: 2px solid yellow;
+    border-radius: 34px;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    overflow: hidden;
+  }
+  
+  .botaofiltro::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 50px;
+    height: 120px;
+    border-radius: inherit;
+    scale: 0;
+    z-index: -1;
+    background-color: yellow;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+  }
+  
+  .botaofiltro:hover::before {
+    scale: 3;
+  }
+  
+  .botaofiltro:hover {
+    color: #212121;
+    scale: 1.1;
+    box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
+  }
+  
+  .botaofiltro:active {
+    scale: 1;
+  }  
+ 
+  #grafico1 p{
+    width: 100%;
+    height: 38vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+
+  #grafico2 p{
+    width: 100%;
+    height: 38vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+
+  #grafico3 p{
+    width: 100%;
+    height: 38vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+  }
+
