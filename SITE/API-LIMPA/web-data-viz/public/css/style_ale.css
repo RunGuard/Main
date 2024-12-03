@@ -10,7 +10,7 @@
 /* Estilo padrão dos gráficos */
 .chart {
     position: relative;
-    width: 250px;
+    width: 200px;
     height: 150px;
     background: #3B3B45;
     border-radius: 10px;
@@ -34,7 +34,7 @@
 /* Tamanho dos gráficos específicos */
 #chart-CPU, #chart-Packages, #chart-Ping {
     width: 100%;
-    max-width: 500px; /* Limita o tamanho máximo dos gráficos */
+    max-width: 400px; /* Limita o tamanho máximo dos gráficos */
     height: 350px; /* Altura consistente para todos os gráficos */
     margin: 0 auto;
 }
@@ -95,8 +95,12 @@
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Sombra marcante */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     padding: 15px;
-    margin-top: 20px;
+    margin-top: 50px;
     margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 /* Hover efeito nos alertas */
@@ -174,7 +178,7 @@
 /* Centralizar e estilizar a seleção de servidores */
 .selecao-servidor-container {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
     justify-content: center;
     background: #292930;
@@ -183,7 +187,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 100%;
     max-width: 500px;
-    margin: 20px auto; /* Centraliza horizontalmente */
+    margin: 20px auto;
+    margin-left: 20px; /* Centraliza horizontalmente */
     gap: 10px;
 }
 
@@ -229,13 +234,13 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 20px;
+    /* padding: 20px; */
     gap: 20px;
 }
 
 /* Estilo das colunas dos gráficos */
 .chart-column {
-    flex: 1;
+    /* flex: 1; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -330,7 +335,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 100%;
-    max-width: 400px;
+    max-width: 200px;
     height: 200px;
 }
 
@@ -498,14 +503,14 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     /* color: white; */
-    margin: 10px auto; /* Reduzido de 20px para 10px para diminuir a margem */
+    margin: 20px auto; /* Reduzido de 20px para 10px para diminuir a margem */
 }
 
 /* Estilo do container do seletor de servidor */
 .selecao-servidor-container {
     width: 100%;
     margin: 10px auto; /* Reduzido de 20px para 10px para diminuir a margem */
-    padding: 20px;
+    /* padding: 20px; */
     /* border: 1px solid #ccc; */
     background-color: #292930;
     border-radius: 5px;
@@ -514,7 +519,7 @@
 .card,
 .kpi-card {
     position: relative;
-    width: 250px;
+    width: 300px;
     height: 150px;
     background: #3B3B45;
     border-radius: 10px;
@@ -525,7 +530,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 10px;
+    margin: 20px;
     text-align: center;
 }
 
@@ -550,9 +555,8 @@ margin-bottom: 10px;
 
 .kpi-cards-container {
     display: flex;
-    gap: 65px;
     justify-content: center;
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 .kpi-description {
@@ -566,7 +570,7 @@ margin-bottom: 10px;
     height: 150px;
     background: #3B3B45;
     border-radius: 10px;
-    padding: 15px;
+    /* padding: 15px; */
     color: white;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
     display: flex;
@@ -610,15 +614,15 @@ margin-bottom: 10px;
 
 .kpi-cards-container {
     display: flex;
-    gap: 65px;
     justify-content: center;
-    padding: 20px;
+    align-items: center;
+    /* padding: 20px; */
 }
 
 .kpi-card {
     background-color: #3B3B45;
     border-radius: 10px;
-    padding: 20px;
+    /* padding: 20px; */
     width: 300px;
     height: 40vh;
     color: white;
@@ -654,13 +658,8 @@ margin-bottom: 10px;
     color: yellow;
     margin: 10px 0;
 }
-.alert-content{
-    margin-top: 27px;
-    margin-left: 100px;
-}
-.selecao-servidor-container{
-    margin-left: 90px;
-}
+
+
 
 
 #taxaup {
@@ -676,7 +675,7 @@ margin-bottom: 10px;
 }
 #chart-bytes {
     max-width: 300px; /* Diminui a largura máxima */
-   max-height: 100px; /* Ajusta a altura */
+   /* max-height: 20px; Ajusta a altura */
     margin: 0 auto; /* Centraliza */
 }
 
@@ -691,5 +690,134 @@ margin-bottom: 10px;
     margin: 0 auto; /* Centralize, se necessário */
 }
 
+/* Estilos globais */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.charts-container {
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: center;
+    align-items: center;
+    /* padding: 20px; */
+    width: 100%;
+    max-width: 1200px; /* Define uma largura máxima para o container */
+}
 
+.chart-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    margin: 5px; /* Reduz a margem entre as colunas */
+    min-width: 300px; /* Define uma largura mínima para cada coluna */
+}
+
+.chart {
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* padding: 10px; Reduz o padding dos gráficos */
+    margin: 5px; /* Reduz a margem dos gráficos */
+    color: #fff;
+    width: 100%;
+    max-width: 300px; /* Define uma largura máxima para cada gráfico */
+}
+
+h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+/* Container geral dos gráficos */
+#charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Distribui os gráficos uniformemente */
+    align-items: flex-start;
+    padding: 20px;
+    margin-left: 260px; /* Afastamento da navbar */
+    margin-top: 80px; /* Espaçamento para evitar sobreposição da navbar */
+    margin-right: 30px; /* Espaçamento lateral */
+    gap: 40px; /* Aumenta o espaçamento entre os gráficos */
+}
+
+/* Estilo padrão dos gráficos */
+.chart {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    background: #3B3B45;
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    text-align: center;
+}
+
+.chart:hover {
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Tamanho dos gráficos específicos */
+#chart-CPU, #chart-Packages, #chart-Ping {
+    width: 100%;
+    max-width: 400px; /* Limita o tamanho máximo dos gráficos */
+    height: 350px; /* Altura consistente para todos os gráficos */
+    margin: 0 auto;
+}
+
+/* Diminuir padding do gráfico de bytes */
+#chart-bytes {
+    padding: 5px; /* Diminuindo o padding do gráfico de bytes */
+    height: 200px; /* Ajuste de altura caso necessário */
+}
+
+.titulo-monitoramento {
+    text-align: center;
+    font-size: 2.5em;
+    color: #fff;
+    margin-bottom: 30px; /* Espaço abaixo do título */
+}
+
+/* Estilo do seletor de horas */
+#seletorHoras {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Estilo para a seção de alertas */
+.alert-content {
+    background-color: #292930;
+    /* padding: 20px; */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 550px;
+}
+
+.alert-content h2 {
+    font-size: 24px;
+    /* margin-bottom: 20px;; */
+}
+
+.alert-content p {
+    font-size: 18px;
+    /* margin: 10px 0; */
+}

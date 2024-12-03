@@ -12,7 +12,6 @@
 </head>
 <body>
     <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
-
     <div id="janelaChat" class="janela-chat">
         <div class="cabecalho-chat">
             <div style="display: flex; align-items: center;">
@@ -54,8 +53,7 @@
             <li><a href="#" class="sair"><i class="fas fa-sign-out-alt"></i><span class="nav-item">Sair</span></a></li>
         </ul>
     </nav>
-    <h1 style="justify-content: center; align-items: center;display: flex;height: 100vh; width: 15vw; margin-left: 110px;">Histórico de alertas</h1>
-
+   
     <div class="charts-container kpi-cards-container">
         <!-- Coluna esquerda: Pacotes e Bytes empilhados -->
         <div class="chart-column">
@@ -68,9 +66,10 @@
                 
             </div>
         </div>
-    
+        
         <!-- Coluna direita: Ping e CPU empilhados -->
         <div class="chart-column">
+            <h1 style="size: 20px;color: #fff;">Monitoramento de Rede e CPU</h1>
             <div class="chart kpi-card card" id="chart-ping">
                 <h2 style="color: #fff; text-align: center;">Monitoramento de Latência (Ping)</h2>
                 
@@ -84,22 +83,23 @@
     <!-- Alertas de Monitoramento -->
     <div class="alert-container">
         <div class="alert-content ">
-            <h2>Alertas de Monitoramento</h2>
-            <p><strong>Perda na Última Hora:</strong></p>
-            <p>Pacotes em risco: <span id="perdaPacotes" ></span></p>
-            <p>Bytes em risco: <br><span id="perdaBytes" ></span></p>
+            <h2>Alertas de Monitoramento - Última hora</h2>
+            <p><strong>Quantidade de Alertas de Pacotes:</strong></p>
+            <p> <strong> <span id="perdaPacotes" ></span></strong></p>
+            <p><strong>Quantidade de Alertas:</strong></p>
+            <p> <strong><span id="perdaBytes" ></span></strong></p>
             <p><strong>Eventos de Latência Alta:</strong></p>
-            <p>Latência alta: <span id="pingAlerta" ></span></p>
+            <p> <strong> <span id="pingAlerta" ></span></strong></p>
             <p><strong>Eventos de Uso Alto CPU:</strong></p>
-            <p>CPU alta:  <span id="cpuAlerta" ></span></p>
+            <p> <strong> <span id="cpuAlerta" ></span></strong></p>
             
         </div>
+           
         <div class="selecao-servidor-container">
             <h1>Selecione um Servidor</h1>
             <select id="selectServidor">
                 <option value="">Carregando...</option>
             </select>
-            <button onclick="listarServidor()" class="botao-atualizar">Atualizar Servidores</button>
         </div>
     </div>
 
@@ -113,51 +113,22 @@
 // }
 
 //    va fkEquipamento = 5;
-   
- function buscarDadosAlerta(fkEquipamento) {
-    try {
-        console.log(`Buscando dados para fkEquipamento: ${fkEquipamento}`);
-        const response =  fetch(`/ale/dadosHora/${fkEquipamento}`);
-        console.log(`Resposta da API: ${response.status}`);
 
-        if (!response.ok) {
-            throw new Error('Erro ao buscar dados: ' + response.statusText);
-        }
-
-        const data =  response.json();
-        console.log("Dados recebidos:", data);
-
-        if (Array.isArray(data) && data.length > 0) {
-            console.log(item);
-            const bytesEnviadosA = data.map(item => item.bytes_enviados !== undefined ? item.bytes_enviados : null);
-            const bytesRecebidosA = data.map(item => item.bytes_recebidos !== undefined ? item.bytes_recebidos : null);
-            const pacotesRecebidosA = data.map(item => item.pacotes_recebidos !== undefined ? item.pacotes_recebidos : null);
-            const pacotesEnviadosA = data.map(item => item.pacotes_enviados !== undefined ? item.pacotes_enviados : null);
-            const pingA = data.map(item => item.ping !== undefined && item.ping !== null ? item.ping : 0);
-            const usoDoCPUA = data.map(item => item.usoCPU !== undefined ? item.usoCPU : 0);
-
-            // Passar todos os dados necessários para a função monitorarDados
-            monitorarDados(bytesEnviadosA, bytesRecebidosA, pacotesEnviadosA, pacotesRecebidosA, pingA, usoDoCPUA);
-
-            // Log para verificar os dados extraídos
-            console.log("Dados extraídos:", {
-                bytesEnviadosA,
-                bytesRecebidosA,
-                pacotesEnviadosA,
-                pacotesRecebidosA,
-                pingA,
-                usoDoCPUA
-            });
-
-        } else {
-            console.error('Formato de dados inesperado ou dados vazios:', data);
-        }
-    } catch (error) {
-        console.error("Erro ao buscar dados:", error);
-    }
-}
-
-
+        let bytesEnviados = [];
+        let bytesRecebidos = [];
+        let pacotesEnviados = [];
+        let pacotesRecebidos = [];
+        let ping = [];
+        let usoDoCPU = [];
+        
+        let totalAlertasBytesEnviados = 0;
+        let totalAlertasBytesRecebidos = 0;
+        let totalAlertasPacotesEnviados = 0;
+        let totalAlertasPacotesRecebidos = 0;
+        let totalAlertasPing = 0;
+        let totalAlertasUsoCPU = 0;
+        let intervaloHoras = 1; // Padrão: últimas 1 hora
+let dadosOriginais = [];
 // Busca os dados e atualiza os gráficos
 async function buscarDadosGrafico(fkEquipamento) {
     fetch(`/ale/obterDados/${fkEquipamento}`)
@@ -187,16 +158,22 @@ async function buscarDadosGrafico(fkEquipamento) {
             const horario = data.map(item => item.horario !== undefined ? item.horario : null);
 
             // Criar novas constantes para os últimos dados para alertas
-            const ultimoDado = data[data.length - 1]; // Último dado da resposta
+            const ultimoDado = data[data.length - 1]; 
+            const ultimos12DadosByte = Array.isArray(data.slice(-12)) ? data.slice(-12) : [];// Último dado da resposta
 
             // Novas variáveis para os últimos dados, específicas para alertas
-            const ultimoBytesEnviados = ultimoDado.bytes_enviados || 0;
-            const ultimoBytesRecebidos = ultimoDado.bytes_recebidos || 0;
+            
+            const ultimoBytesEnviados = Array.isArray(ultimos12DadosByte)
+    ? ultimos12DadosByte.map(item => item?.bytes_enviados || 0)
+    : [];
+    const ultimoBytesRecebidos = ultimos12DadosByte.map(item => item.bytes_recebidos || 0);
             const ultimoPacotesEnviados = ultimoDado.pacotes_enviados || 0;
             const ultimoPacotesRecebidos = ultimoDado.pacotes_recebidos || 0;
             const ultimoPing = ultimoDado.ping || 0;
             const ultimoUsoCPU = ultimoDado.usoCPU || 0;
             // console.log("Uso da CPU:", usoCPU);
+            console.log('ultimos12DadosByte:', ultimos12DadosByte);
+console.log('ultimoBytesEnviados:', ultimoBytesEnviados);
 
             // Log para verificar os dados extraídos
             // console.log("Bytes Enviados:", bytesEnviados);
@@ -209,7 +186,7 @@ async function buscarDadosGrafico(fkEquipamento) {
 
             // Atualize os gráficos
             monitorarDados(bytesEnviados, bytesRecebidos, pacotesEnviados, pacotesRecebidos, ping, usoDoCPU);
-            atualizarGraficoBytes(bytesEnviados,bytesRecebidos,horario);
+            atualizarGraficoBytes(ultimoBytesEnviados,ultimoBytesRecebidos,horario.slice(-24));
             atualizarGraficoCPU(ultimoUsoCPU);
             atualizarGraficoPackets(ultimoPacotesRecebidos,ultimoPacotesEnviados);
             atualizarGraficoPing(ultimoPing);
@@ -221,7 +198,7 @@ async function buscarDadosGrafico(fkEquipamento) {
     }
 //     setInterval(() => {
 //     buscarDadosGrafico(fkEquipamento); // Atualiza `ping` continuamente
-// }, 2000);
+// }, 1200);
 
 }
 
@@ -279,10 +256,11 @@ function formatarBytes(bytes_valor) {
     return `${bytes_valor.toFixed(2)} B`;
 }// Variável global para armazenar a instância do gráfico
 
-function atualizarGraficoBytes(bytesEnviados, bytesRecebidos, horarios) {
+function atualizarGraficoBytes(ultimoBytesEnviados, ultimoBytesRecebidos, horarios) {
+  
 
-    const bytesEnviadosF = bytesEnviados.map(formatarBytes);
-    const bytesRecebidosF = bytesRecebidos.map(formatarBytes);
+    const bytesEnviadosF = ultimoBytesEnviados.map(formatarBytes);
+    const bytesRecebidosF = ultimoBytesRecebidos.map(formatarBytes);
 
     document.addEventListener("DOMContentLoaded", () => {
     listarServidor(); // Inicializa a listagem de servidores após o DOM estar pronto
@@ -511,7 +489,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function monitorarDados(bytesEnviados, bytesRecebidos, pacotesEnviados, pacotesRecebidos, ping, usoDoCPU) {
     const minBytes = 1024 * 1024; // 1 MB em bytes
-    const minPacotes = 10;
+    const minPacotes = 1000;
     const maxPing = 100; // Latência máxima permitida
     const maxCPU = 80; // Uso máximo de CPU permitido
 
@@ -545,7 +523,7 @@ function monitorarDados(bytesEnviados, bytesRecebidos, pacotesEnviados, pacotesR
         "Sem alertas de Bytes", vermelho, verde);
 
     atualizarElemento("perdaPacotes", contadorPacotesEnviados || contadorPacotesRecebidos, 
-        `${contadorPacotesEnviados} alertas de Pacotes enviados abaixo de 10<br>${contadorPacotesRecebidos} alertas de Pacotes recebidos abaixo de 10`, 
+        `${contadorPacotesEnviados} alertas de Pacotes enviados abaixo de 1000<br>${contadorPacotesRecebidos} alertas de Pacotes recebidos abaixo de 1000`, 
         "Sem alertas de Pacotes", vermelho, verde);
 
     atualizarElemento("pingAlerta", contadorPing, 
@@ -571,8 +549,13 @@ function atualizarElemento(id, contador, msgAlerta, msgOk, corAlerta, corOk) {
 }
 
 
+setInterval(() => {
+    buscarDadosGrafico(fkEquipamento);
+}, 5000);
 
-
+// setInterval(() => {
+//     atualizarGraficoPackets('chart-packets');
+// }, 5000);
 
 
     
