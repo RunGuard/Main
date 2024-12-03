@@ -23,6 +23,7 @@ var medidasRouter = require("./src/routes/medidas");
 var empresasRouter = require("./src/routes/empresas");
 var dashboardRouter = require("./src/routes/dashboard");
 var dashboardDiegoRouter = require("./src/routes/dashboard-Diego");
+var dashboardAnneRouter = require("./src/routes/dashboard-Anne");
 var dashboardAleRouter = require("./src/routes/ale")
 
 app.use(express.json());
@@ -42,7 +43,6 @@ app.use("/medidas", medidasRouter);
 app.use("/empresas", empresasRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/dashboard-Diego", dashboardDiegoRouter);
-app.use("/ale",dashboardAleRouter)
 
 app.listen(PORTA_APP, function () {
     console.log(`

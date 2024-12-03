@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="css/style_diego.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="js/graficos-Diego.js"></script>
+    <script src="js/bobia.js"></script>
 </head>
 
 <body onload="atualizarGrafico()">
@@ -61,7 +63,7 @@
                 </a></li>
             <li><a href="Dashboard - Diego.html">
                     <i class="fas fa-chart-pie"></i>
-                    <span class="nav-item">Dashboard 3</span>
+                    <span class="nav-item">Histórico de alertas</span>
                 </a></li>
             <li><a href="Dashboard - Guilherme.html">
                     <i class="fas fa-chart-column"></i>
@@ -87,99 +89,164 @@
     </nav>
     <div class="fantasma">a</div>
 
-    <div class="content d-flex column jc-space-between">
-        <div class="d-flex row content2 jc-space-between">
-            <div class="d-flex column ai-center padding filtro">
-                <h2>Selecione o intervalo entre os meses para monitorar</h2>
-                <div class="range-container">
-                    <div class="output">
-                        <span id="minValue">1</span>
-                        <span id="maxValue">12</span>
-                    </div>
+    <div class="content d-flex row jc-center">
 
-                    <div class="range-background"></div>
-                    <div class="range-fill" id="rangeFill"></div>
-
-                    <!-- Range esquerdo -->
-                    <input type="range" min="1" max="12" value="1" id="rangeMin"
-                        oninput="updateRange(), atualizarGrafico()">
-                    <!-- Range direito -->
-                    <input type="range" min="1" max="12" value="12" id="rangeMax"
-                        oninput="updateRange(), atualizarGrafico()">
-
-                    <div class="tickmarks">
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                        <span>|</span>
-                    </div>
-                </div>
-            </div>
-            <div class="previsto ai-center d-flex column jc-space-around">
-                <p><span>Próxima</span> quantidade de alertas prevista:</p>
-                <h1 id="previsao"> </h1>
-            </div>
-        </div>
-
-        <div class="medias pad font-media">
-            <div class="ultima-medida media">
-                <p><span>Quantidade </span>de alertas no<span> período selecionado</span></p>
+        <div class="padding font-media d-flex column jc-space-around ai-center">
+            <div class="total-alertas media">
+                <p class="font-media"><span style="color: #1e8cfa;">Quantidade </span>total de alertas no<span
+                        style="color: #1e8cfa;"> último ano</span></p>
                 <hr>
-                <p class="alerta-info">24</p>
+                <p id="alerta-total" class="alerta-info">Sem dados</p>
             </div>
-            <div class="d-flex column ai-center media">
-                <p><span>Quantidade </span>total de alertas no<span> último ano</span></p>
+
+            <div class="media ai-center padding d-flex column jc-space-around">
+                <p class="font-media"><span>Quantidade</span> de alertas <span>prevista</span>: <i
+                        onmouseover="abrirR2()" class="fa-regular fa-circle-question"
+                        style="color: #ffffff; cursor: pointer;"></i></p>
                 <hr>
-                <p class="alerta-info">100</p>
+                <p class="alerta-info" id="previsao"> </p>
             </div>
-            <div class="media as-center">
+            <div class="media">
+                <p><span style="color: #1e8cfa;">Quantidade </span>de alertas no<span style="color: #1e8cfa;"> período
+                        selecionado</span></p>
+                <hr>
+                <p id="alerta-info" class="alerta-info">XX</p>
+            </div>
+            <div class="media">
                 <p><span>Servidor</span> com mais alerta no <span>período selecionado</span></p>
                 <hr>
-                <p class="alerta-info">S1 <span style="color: #fff; font-size: 0.6em;">/ 20</span><span
-                        style="font-size: 0.6em;"> alertas</span></p>
+                <p id="servidor-alerta" class="alerta-info as-center" style="font-size: 1.4em !important;">XX</p>
+            </div>
+
+        </div>
+
+        <div class="padding d-flex column ai-center jc-space-around">
+
+            <h1>Histórico de alertas</h1>
+
+            <div class="d-flex row ai-center width">
+                <div class="d-flex column ai-center padding filtro">
+                    <h3>Selecione o intervalo entre os meses para monitorar</h3>
+                    <div class="range-container">
+                        <div class="output">
+                            <span id="minValue">1</span>
+                            <span id="maxValue">12</span>
+                        </div>
+
+                        <div class="range-background"></div>
+                        <div class="range-fill" id="rangeFill"></div>
+
+                        <!-- Range esquerdo -->
+                        <input type="range" min="1" max="12" value="1" id="rangeMin" oninput="updateRange()">
+                        <!-- Range direito -->
+                        <input type="range" min="1" max="12" value="12" id="rangeMax" oninput="updateRange()">
+
+                        <div class="tickmarks">
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                        </div>
+                    </div>
+                    <button class="padding" onclick="atualizarGrafico()">Filtrar</button>
+                </div>
+
+                <a class="visao-detalhada d-flex column font-media" onclick="abrirModal()">Alertas a cada mês:
+                    <br><span>Clique para visualizar ⟶</span>
+                </a>
+
+            </div>
+
+            <div class="d-flex row width jc-space-evenly">
+
+                <div class="grafico d-flex ai-center as-center">
+                    <div id="chart"></div>
+                </div>
+
+                <div class="ranking js-center as-center">
+                    <table class="font-media">
+                        <caption>Ranking dos 3 servidores com <span style="color: #1e8cfa;">mais alertas</span>
+                        </caption>
+                        <thead>
+                            <tr style="color: #1e8cfa;">
+                                <th>Ranking</th>
+                                <th>Servidor</th>
+                                <th>Total alertas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1°</td>
+                                <td id="ranking-primeiro">Sem dados</td>
+                                <td id="ranking-primeiro-qtd">Sem dados</td>
+                            </tr>
+                            <tr>
+                                <td>2°</td>
+                                <td id="ranking-segundo">Sem dados</td>
+                                <td id="ranking-segundo-qtd">Sem dados</td>
+                            </tr>
+                            <tr>
+                                <td>3°</td>
+                                <td id="ranking-terceiro">Sem dados</td>
+                                <td id="ranking-terceiro-qtd">Sem dados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="r2" class="r2 d-flex column padding">
+        <i onclick="fecharR2()" class="as-end fa-regular fa-circle-xmark" style="color: #636363; cursor: pointer;"></i>
+        <p>A partir dos dados expostos no gráfico, é possível calcular a porcentagem da previsão para o próximo mês
+            (<span id="mesPrevisto"></span>)
+            estar correta (também
+            chamada de R²):</p>
+        <b> <span id="explicacaor2"></span></b>
+    </div>
+
+    <div id="modal-background" onclick="fecharModal()" class="modal-background">a</div>
+
+    <div id="modal" class="modal padding d-flex column ai-center jc-space-evenly">
+        <i onclick="fecharModal()" class="as-end fa-regular fa-circle-xmark"
+            style="color: #f7f7f7; cursor: pointer;"></i>
+        <h1>Visão detalhada</h1>
+        <span>Selecione o mês que você deseja monitorar:</span>
+
+        <select onchange="graficoDetails()" id="slc_mes">
+            <option value="0" disabled selected>Selecione um mês</option>
+            <option value="1">Janeiro</option>
+            <option value="2">Fevereiro</option>
+            <option value="3">Março</option>
+            <option value="4">Abril</option>
+            <option value="5">Maio</option>
+            <option value="6">Junho</option>
+            <option value="7">Julho</option>
+            <option value="8">Agosto</option>
+            <option value="9">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+        </select>
+
+        <div class="graficoDetalhe d-flex ai-center jc-center padding">
+            <div id="chartDetails">
+                <h2>Selecione um mês</h2>
             </div>
         </div>
-        
-        
-        
-        <div class="d-flex row jc-space-between pad">
-            <div class="grafico as-center">
-                <div id="chart"></div>
-            </div>
-            <div class="ranking as-center">
-                <table class="font-media">
-                    <caption>Ranking de servidores com mais alertas</caption>
-                    <tr style="color: #ffdc60;">
-                        <th>Ranking</th>
-                        <th>Servidor</th>
-                        <th>Total alertas</th>
-                    </tr>
-                    <tr>
-                        <td>1°</td>
-                        <td>S1</td>
-                        <td>30</td>
-                    </tr>
-                    <tr>
-                        <td>2°</td>
-                        <td>S2</td>
-                        <td>14</td>
-                    </tr>
-                    <tr>
-                        <td>3°</td>
-                        <td>S3</td>
-                        <td>6</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+
     </div>
 
 </html>
@@ -193,6 +260,8 @@
         const maxRange = document.getElementById('rangeMax');
         const minValue = parseInt(minRange.value);
         const maxValue = parseInt(maxRange.value);
+        sessionStorage.MINVALUE = minValue;
+        sessionStorage.MAXVALUE = maxValue;
         const rangeFill = document.getElementById('rangeFill');
 
         if (minValue >= maxValue) {
@@ -210,246 +279,34 @@
         rangeFill.style.left = minPercent - 3.5 + '%';
         rangeFill.style.width = (maxPercent - minPercent) + '%';
     }
+
     updateRange();
 
-    function multiplicar(x, y) {
-    var ret = [];
-    for ( var i = 0 ; i < x.length ; i++ )
-        ret.push(x[i] * y[i]);
-    return ret;
-    }
+    function abrirR2() {
+        document.getElementById("r2").style.display = "flex"
 
-    function quadrado(x) {
-    var ret = [];
-    for ( var i = 0 ; i < x.length ; i++ )
-        ret.push(x[i] * x[i]);
-    return ret;
-    }
-
-    function somar(x) {
-    var ret = 0;
-    for ( var i = 0 ; i < x.length ; i++ )
-        ret += x[i];
-    return ret;
-    }
-
-    function media(x) { 
-        return somar(x) / x.length; 
-    }
-
-    function calcularR2(x, y) {
-        const n = x.length;
-        const mediaX = media(x);
-        const mediaY = media(y);
-
-        let numerador = somar(multiplicar(
-            x.map(xi => xi - mediaX),
-            y.map(yi => yi - mediaY)
-        ));
-
-        let somaQuadradoX = somar(quadrado(x.map(xi => xi - mediaX)));
-        let somaQuadradoY = somar(quadrado(y.map(yi => yi - mediaY)));
-        const denominador = Math.sqrt(somaQuadradoX * somaQuadradoY);
-
-        const r = numerador / denominador;
-
-        const r2 = Math.pow(r,2)
-        return r2;
-    }
-
-    async function atualizarGrafico() {
-
-        fetch("/dashboard-Diego/atualizarGrafico", { 
-            cache: 'no-store',
-            method: "GET",
-         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro na requisição');
-            }
-            return response.json();
-        })
-        .then(dado => {
-            console.log(dado)
-        })
-        
-        var data = [22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44]
-        var categoria = []
-        var categoriaNum = []
-        const minRange = document.getElementById('rangeMin');
-        const maxRange = document.getElementById('rangeMax');
-        const minValue = parseInt(minRange.value);
-        const maxValue = parseInt(maxRange.value);
-
-        for (var i = minValue - 1; i < maxValue; i++) {
-            categoria.push(meses[i])
-            categoriaNum.push(i+1)
-        }
-
-        console.log(categoria)
-        console.log(categoriaNum)
-
-        var x = categoriaNum;
-        var y = data;
-
-        var m = (somar(multiplicar(x, y)) - (somar(x) * somar(y)) / x.length) / 
-        (somar(quadrado(x)) - (somar(x) * somar(x)) / x.length);
-        var b = media(y) - m * media(x);
-
-        var r2 = (calcularR2(x, y) * 100).toFixed()
-
-        document.getElementById("previsao").innerHTML = `${(m*13 + b).toFixed()}<span id="rquadrado"></span>`
-        document.getElementById("rquadrado").innerHTML = `  Precisão: ${r2}%`
-
-        document.getElementById("chart").innerHTML = ""
-        var options = {
-            series: [{
-                name: 'Alertas',
-                data: data
-            }],
-            chart: {
-                type: 'bar',
-                height: 400,
-                width: 600,
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '55%',
-                    endingShape: 'rounded'
-                },
-            },
-            colors: ['#ffdc60'],
-            title: {
-                text: 'Quantidade de alertas no período selecionado',
-                align: 'center',
-                style: {
-                    color: 'white'
-                }
-            },
-            dataLabels: {
-                enabled: true,
-                style: {
-                    color: '#000'
-                }
-            },
-            stroke: {
-                show: false,
-                width: 2,
-                colors: ['transparent']
-            },
-            xaxis: {
-                categories: categoria,
-                labels: {
-                    style: {
-                        colors: Array(categoria.length).fill('white'),
-                        weight: 400
-                    }
-                },
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        colors: Array(categoria.length).fill('#696969')
-                    },
-                },
-                min: 0,
-            },
-            fill: {
-                opacity: 1
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return val + " alertas"
-                    },
-                    title: {
-                        formatter: function (seriesName) {
-                            return seriesName + ':';
-                        },
-                        style: {
-                            color: '#fff'
-                        }
-                    }
-                },
-                style: {
-                    fontSize: '14px',
-                    fontFamily: 'Arial, sans-serif',
-                    color: '#fff'
-                },
-                theme: 'dark'
-            }
-        };
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-        chart.render();
-    }
-
-    function abrirChat() {
-        document.getElementById("janelaChat").style.display = "flex";
-    }
-
-    function fecharChat() {
-        document.getElementById("janelaChat").style.display = "none";
-    }
-
-    function obterHoraAtual() {
-        const options = {
-            timeZone: 'America/Sao_Paulo',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        };
-        const agora = new Date();
-        return agora.toLocaleTimeString('pt-BR', options);
-    }
-
-    async function gerarResposta() {
-        const pergunta = document.getElementById('entradaUsuario').value;
-
-        var entrada = document.getElementById("entradaUsuario");
-        var mensagem = entrada.value.trim();
-
-        const response = await fetch('/perguntar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ pergunta })
-        });
-
-        const data = await response.json();
-
-        conversa.push(mensagem)
-        conversa.push(data.resultado)
-
-        if (mensagem !== "") {
-            var mensagemUsuario = document.createElement("div");
-            mensagemUsuario.classList.add("mensagem", "usuario");
-            mensagemUsuario.innerText = mensagem;
-            document.getElementById("corpoChat").appendChild(mensagemUsuario);
-
-            var horaUsuario = document.createElement("div");
-            horaUsuario.classList.add("hora-mensagem");
-            horaUsuario.innerText = obterHoraAtual();
-            document.getElementById("corpoChat").appendChild(horaUsuario);
-
-            entrada.value = "";
-
-            setTimeout(function () {
-                var mensagemAssistente = document.createElement("div");
-                mensagemAssistente.classList.add("mensagem", "assistente");
-                mensagemAssistente.innerText = data.resultado;
-                document.getElementById("corpoChat").appendChild(mensagemAssistente);
-
-                var horaAssistente = document.createElement("div");
-                horaAssistente.classList.add("hora-mensagem", "assistente");
-                horaAssistente.innerText = obterHoraAtual();
-                document.getElementById("corpoChat").appendChild(horaAssistente);
-
-                document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
-            }, 1000);
-
-            document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+        r2 = sessionStorage.r2;
+        if (r2 <= 0.25) {
+            document.getElementById("explicacaor2").innerHTML = "Quando abaixo de 25%, os dados são imprecisos e muito difíceis de prever."
+        } else if (r2 <= 0.75) {
+            document.getElementById("explicacaor2").innerHTML = "Entre 25% e 75%, os dados indicam uma certa imprecisão com poucas chances de acerto."
+        } else if (r2 > 0.75) {
+            document.getElementById("explicacaor2").innerHTML = "Quando acima de 75%, os dados são precisos sendo fáceis de prever."
         }
     }
+
+    function fecharR2() {
+        document.getElementById("r2").style.display = "none"
+    }
+
+    function abrirModal() {
+        document.getElementById("modal").style.display = "flex"
+        document.getElementById("modal-background").style.display = "block"
+    }
+
+    function fecharModal() {
+        document.getElementById("modal").style.display = "none"
+        document.getElementById("modal-background").style.display = "none"
+    }
+
 </script>

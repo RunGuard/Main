@@ -6,12 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DASHBOARD-Anne | RunGuard</title>
     <link rel="stylesheet" href="css/chat.css">
-    <link rel="stylesheet" href="css/dashstyle.css">
+    <link rel="stylesheet" href="css/style_anne.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 
-<body>
+<body
+    onload="buscarMinimoRAM(), buscarMaximoRAM(), buscarMinimoCPU(), buscarMaximoCPU(), buscarServidorMinimoRAM(), buscarServidorMaximoRAM(), buscarServidorMinimoCPU(), buscarServidorMaximoCPU(), carregarServidoresCPU(), atualizarGraficoVarioCPU(), servidorComparacao1Select(), atualizarGraficoComp1(), servidorComparacao2Select(), atualizarGraficoComp2(), buscarServidorMinimoTempoRAM(), buscarServidorMaximoTempoRAM(), buscarServidorMinimoTempoCPU(), buscarServidorMaximoTempoCPU()">
     <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
 
     <div id="janelaChat" class="janela-chat">
@@ -75,15 +76,77 @@
                     <span class="nav-item">Dashboard 6</span>
                 </a></li>
             <li> <a href="insights-run-guard.pdf" download>
-                    <i class="fas fa-file-pdf"></i> 
+                    <i class="fas fa-file-pdf"></i>
                     <span class="nav-item">Baixe seus relatórios!</span>
-            </a></li>
+                </a></li>
             <li><a href="#" class="sair">
                     <i class="fas fa-sign-out-alt"></i>
                     <span class="nav-item">Sair</span>
                 </a></li>
         </ul>
     </nav>
+
+    <div class="geral">
+        <div class="informacoes">
+            <div class="info-1 info">
+                <div class="info1">
+                    <span>Mínimo de RAM:</span>
+                    <p id="minimoRAMCapturado">Nada capturado </p>
+                    <p id="nomeServidor">Nada capturado</p>
+                    <p id="tempoEstado">Nada capturado</p>
+                </div>
+                <div class="info2">
+                    <span>Máximo de RAM:</span>
+                    <p id="maximoRAMCapturado">Nada capturado</p>
+                    <p id="nomeServidor1">Nada capturado</p>
+                    <p id="tempoEstado1">Nada capturado</p>
+                </div>
+            </div>
+            <div class="info-2 info">
+                <div class="info3">
+                    <span>Mínimo de CPU:</span>
+                    <p id="minimoCPUCapturado">Nada capturado </p>
+                    <p id="nomeServidor2">Nada capturado</p>
+                    <p id="tempoEstado2">Nada capturado</p>
+                </div>
+                <div class="info4">
+                    <span>Máximo de CPU: </span>
+                    <p id="maximoCPUCapturado">Nada capturado </p>
+                    <p id="nomeServidor3">Nada capturado</p>
+                    <p id="tempoEstado3">Nada capturado</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="graficoslinha">
+            <div class="comparacao">
+                <span>Comparar Servidores</span>
+                <div class="graficos">
+                    <div class="comp1">
+                        <select id="servidorComparacao1Select">
+                            <option value="">Selecione o servidor</option>
+                        </select>
+                        <div id="graficoServidorComparacao1"></div>
+                    </div>
+                    <div class="comp2">
+                        <select id="servidorComparacao2Select">
+                            <option value="">Selecione o servidor</option>
+                        </select>
+                        <div id="graficoServidorComparacao2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="variacaoCPU">
+                <span>Servidor: </span>
+                <select id="servidoresSelect">
+                    <option value="">Selecione um servidor</option>
+                </select>
+                <div class="graf3"></div>
+            </div>
+        </div>
+    </div>
+
 </html>
 </body>
 <script>
@@ -105,25 +168,25 @@
         const agora = new Date();
         return agora.toLocaleTimeString('pt-BR', options);
     }
-        
+
     async function gerarResposta() {
-      const pergunta = document.getElementById('entradaUsuario').value;
+        const pergunta = document.getElementById('entradaUsuario').value;
 
-      var entrada = document.getElementById("entradaUsuario");
-      var mensagem = entrada.value.trim();
+        var entrada = document.getElementById("entradaUsuario");
+        var mensagem = entrada.value.trim();
 
-      const response = await fetch('/perguntar', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ pergunta })
+        const response = await fetch('/perguntar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ pergunta })
         });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      conversa.push(mensagem)
-      conversa.push(data.resultado)
+        conversa.push(mensagem)
+        conversa.push(data.resultado)
 
         if (mensagem !== "") {
             var mensagemUsuario = document.createElement("div");
@@ -138,7 +201,7 @@
 
             entrada.value = "";
 
-            setTimeout(function() {
+            setTimeout(function () {
                 var mensagemAssistente = document.createElement("div");
                 mensagemAssistente.classList.add("mensagem", "assistente");
                 mensagemAssistente.innerText = data.resultado;
@@ -155,4 +218,521 @@
             document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
         }
     }
+
+    async function buscarMinimoRAM() {
+        try {
+            const response = await fetch('dashboard-Anne/minimoRAM');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('minimoRAMCapturado').innerText = dados[0]["Menor Percentual de Uso de Memória RAM (%)"] + '%';
+            } else {
+                document.getElementById('minimoRAMCapturado').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o mínimo de RAM:', error);
+            document.getElementById('minimoRAMCapturado').innerText = 'Erro ao capturar dados';
+        }
+    }
+
+    async function buscarServidorMinimoRAM() {
+        try {
+            const response = await fetch('dashboard-Anne/servidorMinimoRAM');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('nomeServidor').innerText = dados[0]["Servidor"];
+            } else {
+                document.getElementById('nomeServidor').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o mínimo de RAM:', error);
+            document.getElementById('nomeServidor').innerText = 'Erro ao capturar dados';
+        }
+    }
+
+    async function buscarServidorMinimoTempoRAM() {
+    try {
+        const response = await fetch('dashboard-Anne/servidorMinimoTempoRAM'); 
+        if (response.status === 200) {
+            const dados = await response.json();
+            document.getElementById('tempoEstado').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
+        } else {
+            document.getElementById('tempoEstado').innerText = 'Nada capturado';
+        }
+    } catch (error) {
+        console.error('Erro ao buscar o tempo mínimo de RAM:', error);
+        document.getElementById('tempoEstado').innerText = 'Erro ao capturar dados';
+    }
+}
+
+    async function buscarMaximoRAM() {
+        try {
+            const response = await fetch('dashboard-Anne/maximoRAM');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('maximoRAMCapturado').innerText = dados[0]["Maior Percentual de Uso de Memória RAM (%)"] + '%';
+            } else {
+                document.getElementById('maximoRAMCapturado').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o máximo de RAM:', error);
+            document.getElementById('maximoRAMCapturado').innerText = 'Erro ao capturar dados';
+        }
+    }
+
+    async function buscarServidorMaximoRAM() {
+        try {
+            const response = await fetch('dashboard-Anne/servidorMaximoRAM');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('nomeServidor1').innerText = dados[0]["Servidor"];
+            } else {
+                document.getElementById('nomeServidor1').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o mínimo de RAM:', error);
+            document.getElementById('nomeServidor1').innerText = 'Erro ao capturar dados';
+        }
+    }
+
+    async function buscarServidorMaximoTempoRAM() {
+    try {
+        const response = await fetch('dashboard-Anne/servidorMaximoTempoRAM'); 
+        if (response.status === 200) {
+            const dados = await response.json();
+            document.getElementById('tempoEstado1').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
+        } else {
+            document.getElementById('tempoEstado1').innerText = 'Nada capturado';
+        }
+    } catch (error) {
+        console.error('Erro ao buscar o tempo mínimo de RAM:', error);
+        document.getElementById('tempoEstado1').innerText = 'Erro ao capturar dados';
+    }
+}
+
+    async function buscarMinimoCPU() {
+        try {
+            const response = await fetch('dashboard-Anne/minimoCPU');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('minimoCPUCapturado').innerText = dados[0]["Menor Percentual de Uso de CPU (%)"] + '%';
+            } else {
+                document.getElementById('minimoCPUCapturado').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o mínimo de CPU:', error);
+            document.getElementById('minimoCPUCapturado').innerText = 'Erro ao capturar dados';
+        }
+    }
+
+    async function buscarServidorMinimoCPU() {
+        try {
+            const response = await fetch('dashboard-Anne/servidorMinimoCPU');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('nomeServidor2').innerText = dados[0]["Servidor"];
+            } else {
+                document.getElementById('nomeServidor2').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o mínimo de RAM:', error);
+            document.getElementById('nomeServidor2').innerText = 'Erro ao capturar dados';
+        }
+    }
+
+    async function buscarServidorMinimoTempoCPU() {
+    try {
+        const response = await fetch('dashboard-Anne/servidorMinimoTempoCPU'); 
+        if (response.status === 200) {
+            const dados = await response.json();
+            document.getElementById('tempoEstado2').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
+        } else {
+            document.getElementById('tempoEstado2').innerText = 'Nada capturado';
+        }
+    } catch (error) {
+        console.error('Erro ao buscar o tempo mínimo de CPU:', error);
+        document.getElementById('tempoEstado2').innerText = 'Erro ao capturar dados';
+    }
+}
+
+    async function buscarMaximoCPU() {
+        try {
+            const response = await fetch('dashboard-Anne/maximoCPU');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('maximoCPUCapturado').innerText = dados[0]["Maior Percentual de Uso de CPU (%)"] + '%';
+            } else {
+                document.getElementById('maximoCPUCapturado').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o mínimo de CPU:', error);
+            document.getElementById('maximoCPUCapturado').innerText = 'Erro ao capturar dados';
+        }
+    }
+
+    async function buscarServidorMaximoCPU() {
+        try {
+            const response = await fetch('dashboard-Anne/servidorMaximoCPU');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('nomeServidor3').innerText = dados[0]["Servidor"];
+            } else {
+                document.getElementById('nomeServidor3').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o mínimo de RAM:', error);
+            document.getElementById('nomeServidor3').innerText = 'Erro ao capturar dados';
+        }
+    }
+
+    async function buscarServidorMaximoTempoCPU() {
+    try {
+        const response = await fetch('dashboard-Anne/servidorMaximoTempoCPU'); 
+        if (response.status === 200) {
+            const dados = await response.json();
+            document.getElementById('tempoEstado3').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
+        } else {
+            document.getElementById('tempoEstado3').innerText = 'Nada capturado';
+        }
+    } catch (error) {
+        console.error('Erro ao buscar o tempo mínimo de CPU:', error);
+        document.getElementById('tempoEstado3').innerText = 'Erro ao capturar dados';
+    }
+}
+
+    async function carregarServidoresCPU() {
+        const selectElement = document.getElementById('servidoresSelect');
+
+        try {
+            const response = await fetch('/dashboard-Anne/servidores');
+            if (response.ok) {
+                const servidores = await response.json();
+                servidores.forEach(servidor => {
+                    const option = document.createElement('option');
+                    option.value = servidor.idEquipamento;
+                    option.innerText = servidor.nomeEquipamento;
+                    selectElement.appendChild(option);
+                });
+            } else {
+                console.error('Erro ao carregar servidores.');
+            }
+        } catch (error) {
+            console.error('Erro ao carregar servidores:', error);
+        }
+    }
+
+    document.getElementById('servidoresSelect').addEventListener('change', atualizarGraficoVarioCPU);
+
+    async function atualizarGraficoVarioCPU() {
+        const servidorId = document.getElementById('servidoresSelect').value;
+
+        try {
+            const response = await fetch(`dashboard-Anne/servidores/${servidorId}`);
+            if (response.status === 200) {
+                const dados = await response.json();
+
+                const seriesData = dados.map(item => ({
+                    x: new Date(item.timestamp).getTime(),
+                    y: item.cpu_percent
+                }));
+
+                const optionsGrafico = {
+                    series: [{ name: "CPU", data: seriesData }],
+                    chart: {
+                        type: 'line',
+                        height: 300,
+                        width: 500,
+                        zoom: { enabled: true }
+                    },
+                    colors: ['#ffdc60'],
+                    dataLabels: { enabled: false },
+                    stroke: { curve: 'smooth', colors: ['#ffdc60'] },
+                    fill: { opacity: 0.3, colors: ['#ffdc60'] },
+                    title: {
+                        text: `Variação da CPU - Servidor ${servidorId}`,
+                        align: 'left',
+                        style: { color: 'white' }
+                    },
+                    xaxis: {
+                        type: 'datetime',
+                        labels: {
+                            style: { colors: 'white', fontSize: '12px' }
+                        }
+                    },
+                    yaxis: {
+                        opposite: true,
+                        labels: {
+                            style: { colors: 'white', fontSize: '12px' }
+                        },
+                        max: 100,
+                        min: 0
+                    },
+                    tooltip: { theme: 'dark' }
+                };
+
+                const chartContainer = document.querySelector(".graf3");
+                chartContainer.innerHTML = '';
+                const chart = new ApexCharts(chartContainer, optionsGrafico);
+                chart.render();
+            } else {
+                console.error('Erro ao buscar dados de CPU');
+            }
+        } catch (error) {
+            console.error('Erro ao atualizar gráfico de CPU:', error);
+        }
+    }
+
+    async function servidorComparacao1Select() {
+        const selectElement = document.getElementById('servidorComparacao1Select');
+
+        try {
+            const response = await fetch('/dashboard-Anne/comparacao1');
+            if (response.ok) {
+                const servidores = await response.json();
+                servidores.forEach(servidor => {
+                    const option = document.createElement('option');
+                    option.value = servidor.idEquipamento;
+                    option.innerText = servidor.nomeEquipamento;
+                    selectElement.appendChild(option);
+                });
+            } else {
+                console.error('Erro ao carregar servidores.');
+            }
+        } catch (error) {
+            console.error('Erro ao carregar servidores:', error);
+        }
+    }
+
+    let chart = null;
+
+    async function atualizarGraficoComp1() {
+        const idEquipamento = document.getElementById('servidorComparacao1Select').value;
+
+        try {
+            const response = await fetch(`/dashboard-Anne/dadosComparacao1/${idEquipamento}`);
+            if (response.ok) {
+                const dados = await response.json();
+                const datas = dados.map(item => item.data);
+                const cpuData = dados.map(item => item.cpuPercent);
+                const memoriaData = dados.map(item => item.memoriaPercent);
+
+                const options = {
+                    chart: {
+                        type: 'bar',
+                        height: 350,
+                        foreColor: '#ffffff'
+                    },
+                    series: [
+                        {
+                            name: 'CPU',
+                            data: cpuData
+                        },
+                        {
+                            name: 'RAM',
+                            data: memoriaData
+                        }
+                    ],
+                    xaxis: {
+                        categories: datas,
+                        labels: {
+                            style: {
+                                colors: '#ffffff',
+                                fontSize: '12px'
+                            }
+                        },
+                        axisBorder: {
+                            color: '#ffffff'
+                        },
+                        axisTicks: {
+                            color: '#ffffff'
+                        }
+                    },
+                    yaxis: {
+                        title: {
+                            text: 'Percentual',
+                            style: {
+                                color: '#ffffff',
+                                fontSize: '14px'
+                            }
+                        },
+                        labels: {
+                            style: {
+                                colors: '#ffffff',
+                                fontSize: '12px'
+                            }
+                        },
+                        axisBorder: {
+                            color: '#ffffff'
+                        },
+                        axisTicks: {
+                            color: '#ffffff'
+                        }
+                    },
+                    title: {
+                        text: 'Comparação entre CPU e RAM',
+                        style: {
+                            color: '#ffffff',
+                            fontSize: '16px'
+                        }
+                    },
+                    colors: ['#ffdc60', '#0066cc'],
+                    grid: {
+                        borderColor: '#ffffff',
+                        strokeDashArray: 3
+                    },
+                    tooltip: {
+                        theme: 'dark'
+                    }
+                };
+
+
+                if (chart) {
+                    chart.destroy();
+                }
+
+                chart = new ApexCharts(document.querySelector('#graficoServidorComparacao1'), options);
+                chart.render();
+            } else {
+                console.error('Erro ao buscar dados para o gráfico.');
+            }
+        } catch (error) {
+            console.error('Erro ao atualizar gráfico:', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectElement = document.getElementById('servidorComparacao1Select');
+        if (selectElement) {
+            selectElement.addEventListener('change', atualizarGraficoComp1);
+        } else {
+            console.error('Elemento do select não encontrado');
+        }
+    });
+
+    document.getElementById('servidorComparacao1Select').addEventListener('change', atualizarGraficoComp1);
+
+    async function servidorComparacao2Select() {
+        const selectElement = document.getElementById('servidorComparacao2Select');
+
+        try {
+            const response = await fetch('/dashboard-Anne/comparacao2');
+            if (response.ok) {
+                const servidores = await response.json();
+                servidores.forEach(servidor => {
+                    const option = document.createElement('option');
+                    option.value = servidor.idEquipamento;
+                    option.innerText = servidor.nomeEquipamento;
+                    selectElement.appendChild(option);
+                });
+            } else {
+                console.error('Erro ao carregar servidores.');
+            }
+        } catch (error) {
+            console.error('Erro ao carregar servidores:', error);
+        }
+    }
+
+    let chart2 = null;
+
+    async function atualizarGraficoComp2() {
+        const idEquipamento = document.getElementById('servidorComparacao2Select').value;
+
+        try {
+            const response = await fetch(`/dashboard-Anne/dadosComparacao2/${idEquipamento}`);
+            if (response.ok) {
+                const dados = await response.json();
+                const datas = dados.map(item => item.data);
+                const cpuData = dados.map(item => item.cpuPercent);
+                const memoriaData = dados.map(item => item.memoriaPercent);
+
+                const options = {
+                    chart: {
+                        type: 'bar',
+                        height: 350,
+                        foreColor: '#ffffff'
+                    },
+                    series: [
+                        {
+                            name: 'CPU',
+                            data: cpuData
+                        },
+                        {
+                            name: 'RAM',
+                            data: memoriaData
+                        }
+                    ],
+                    xaxis: {
+                        categories: datas,
+                        labels: {
+                            style: {
+                                colors: '#ffffff',
+                                fontSize: '12px'
+                            }
+                        },
+                        axisBorder: {
+                            color: '#ffffff'
+                        },
+                        axisTicks: {
+                            color: '#ffffff'
+                        }
+                    },
+                    yaxis: {
+                        title: {
+                            text: 'Percentual',
+                            style: {
+                                color: '#ffffff',
+                                fontSize: '14px'
+                            }
+                        },
+                        labels: {
+                            style: {
+                                colors: '#ffffff',
+                                fontSize: '12px'
+                            }
+                        },
+                        axisBorder: {
+                            color: '#ffffff'
+                        },
+                        axisTicks: {
+                            color: '#ffffff'
+                        }
+                    },
+                    title: {
+                        text: 'Comparação entre CPU e RAM',
+                        style: {
+                            color: '#ffffff',
+                            fontSize: '16px'
+                        }
+                    },
+                    colors: ['#ffdc60', '#0066cc'],
+                    grid: {
+                        borderColor: '#ffffff',
+                        strokeDashArray: 3,
+                    },
+                    tooltip: {
+                        theme: 'dark'
+                    }
+                };
+
+                if (chart2) {
+                    chart2.destroy();
+                }
+
+                chart2 = new ApexCharts(document.querySelector('#graficoServidorComparacao2'), options);
+                chart2.render();
+            } else {
+                console.error('Erro ao buscar dados para o gráfico.');
+            }
+        } catch (error) {
+            console.error('Erro ao atualizar gráfico:', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectElement = document.getElementById('servidorComparacao2Select');
+        if (selectElement) {
+            selectElement.addEventListener('change', atualizarGraficoComp2);
+        } else {
+            console.error('Elemento do select não encontrado');
+        }
+    });
 </script>

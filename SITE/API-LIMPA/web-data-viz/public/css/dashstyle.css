@@ -146,12 +146,12 @@ nav:hover {
 
 .media {
     background-color: #292930;
-    width: 16vw;
-    border-radius: 0 13px 0 13px;
-    height: 18vh;
+    width: 14vw;
+    border-radius: 7px;
+    height: 16vh;
     color: white;
     padding: 7px;
-    border: 2px solid #ffff;
+    border: 1px solid #ffff;
 }   
 
 .media span {
