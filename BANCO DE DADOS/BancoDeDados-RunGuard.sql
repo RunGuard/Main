@@ -24,7 +24,7 @@ fkEmpresa int,
 CREATE TABLE equipamento (
 idEquipamento int primary key auto_increment,
 nomeEquipamento varchar(45),
-cpuVersao varchar(45),
+cpuVersao varchar(255),
 memoriaRam varchar(45),
 SistemaOperacional varchar(45),
 fkEmpresa int,
@@ -40,10 +40,7 @@ bytes_recebidos double,
 bytes_enviados double,
 pacotes_recebidos double,
 pacotes_enviados double,
-erros_envio double,
-erros_recebidos double,
-pacotes_descartados_env double,
-pacotes_descartados_rec double,
+ping int,
 dtHora datetime default current_timestamp,
 fkEquipamento int,
     constraint fkEquipamentoDados foreign key (fkEquipamento) references equipamento (idEquipamento)
@@ -143,14 +140,11 @@ SELECT
     CONCAT(d.cpuPercent, "%") AS "Porcentagem CPU",
     CONCAT(d.memoriaPercent, "%") AS "Porcentagem Memoria",
     CONCAT(d.memoriaUsada, "GB") AS "Memoria usada",
-    CONCAT(d.bytes_recebidos, "GB") AS "Bytes recebidos",
-    CONCAT(d.bytes_enviados, "GB") AS "Bytes enviados",
-    CONCAT(d.pacotes_recebidos, "GB") AS "Pacotes recebidos",
-    CONCAT(d.pacotes_enviados, "GB") AS "Pacotes enviados",
-    CONCAT(d.erros_envio, "GB") AS "Erros no envio",
-    CONCAT(d.erros_recebidos, "GB") AS "Erros na recepção",
-    CONCAT(d.pacotes_descartados_env, "GB") AS "Pacotes de envio descartados",
-    CONCAT(d.pacotes_descartados_rec, "GB") AS "Pacotes de recebimento descartados",
+    CONCAT(d.bytes_recebidos, "") AS "Bytes recebidos",
+    CONCAT(d.bytes_enviados, "") AS "Bytes enviados",
+    CONCAT(d.pacotes_recebidos, "") AS "Pacotes recebidos",
+    CONCAT(d.pacotes_enviados, "") AS "Pacotes enviados",
+  CONCAT(d.ping, "ms") AS "Latência",
     d.dtHora AS "Data",
     e.nomeEquipamento AS Equipamento
 FROM 
@@ -212,3 +206,5 @@ BEGIN
     -- CRIPTOGRAFA A SENHA ANTES DE ATUALIZAR O NOVO REGISTRO
     SET NEW.senha = criptografia(NEW.senha,5);
 END$$
+
+select * from Monitoramento;
