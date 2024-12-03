@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/styleFormulario.css">
+    <link rel="shortcut icon" type="imagex/png" href="imagens/logo.png">
+    <title>Cadastros</title>
+</head>
+
+<body onload="listar()">
+   
+
+    <div class="container">
+        <div class="signin-signup">
+
+            <form onsubmit="submitForm(event)" class="sign-in-form">
+                <h2 class="title">Cadastro de Empresa</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Razão Social" id="input_razaosocial">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="text" placeholder="CNPJ" id="input_cnpj">
+                </div>
+                <button onclick="cadastrarEmpresa()" class="btn">Cadastrar</button>
+                <p class="account-text">Don't have an account? <a href="#" id="sign-up-btn2">Sign up</a></p>
+
+            </form>
+            <form onsubmit="submitForm(event)" class="sign-up-form">
+                <h2 class="title">Cadastro de Equipamento</h2>
+                <div class="input-field">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="input_nomeEquipamento" placeholder="Nome do Equipamento">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="text" id="input_cpuVersao" placeholder="Versão CPU">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="text" id="input_memoriaRam" placeholder="Memória RAM">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <input type="text" id="input_sistemaOperacional" placeholder="Sistema Operacional">
+                </div>
+                <div class="input-field">
+                    <i class="fas fa-lock"></i>
+                    <select id="select_empresa">
+                        <option value="0" selected disabled>Empresa</option>
+                    </select>
+                </div>
+                <button onclick="cadastrarEquipamento()" class="btn">Cadastrar</button>
+
+            </form>
+        </div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+
+                    <a style="color: aliceblue;" href="index.html"><-Home</a>
+                    <h3>Não possue uma Empresa Cadastrada?</h3>
+                    <p>Se redirecione para o outro formuário clicando no botão abaixo para cadastrar uma empresa!</p>
+                    <button class="btn" id="sign-in-btn">Clique aqui</button>
+                </div>
+                <img src="imagens/logo.png" alt="" class="image">
+            </div>
+            <div class="panel right-panel">
+                <div class="content">
+                    <a style="color: aliceblue;" href="index.html"><-Home</a>
+                    <h3>Empresa cadastrada?</h3>
+                    <p>Se redirecione para o outro formuário clicando no botão abaixo para cadastrar um Equipamento da
+                        empresa!</p>
+                    <button class="btn" id="sign-up-btn">Clique aqui</button>
+                </div>
+                <img src="imagens/logo.png" alt="" class="image">
+            </div>
+        </div>
+    </div>
+
+    <script src="js/animacao.js"></script>
+
+    <script>
+
+        function submitForm(event) {
+            event.preventDefault();
+        }
+
+        // Array para armazenar empresas cadastradas para validação de código de ativação 
+        let listaEmpresasCadastradas = [];
+
+        function cadastrarEmpresa() {
+            var razaoSocial = input_razaosocial.value;
+            var cnpj = input_cnpj.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+
+            if (razaoSocial === "" || cnpj === "") {
+                // Mensagem de erro para campos vazios
+                console.log("Todos os campos devem ser preenchidos.");
+                return;
+            }
+
+            if (cnpj.length !== 14) {
+                // Mensagem de erro para comprimento incorreto
+                console.log("CNPJ inválido! Deve conter exatamente 14 números.");
+                return;
+            }
+
+            // CNPJ contém apenas números
+            if (/^\d+$/.test(cnpj)) {
+                console.log("CNPJ válido.");
+                // Continue com o cadastro
+            } else {
+                console.log("CNPJ inválido! Deve conter apenas números.");
+            }
+
+            fetch("/empresas/cadastrarEmpresa", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    razaoSocialServer: razaoSocial,
+                    cnpjServer: cnpj,
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+                    if (resposta.ok) {
+
+                        mensagem_erro.innerHTML =
+                            "Cadastro realizado com sucesso! Redirecionando para a tela de Login...";
+
+                        limparFormulario();
+                    } else {
+                        throw new Error("Houve um erro ao tentar realizar o cadastro!");
+                    }
+                })
+                .catch(function (erro) {
+                    console.log(`#ERRO: ${erro}`);
+                });
+
+
+            return false;
+        }
+
+        function cadastrarEquipamento() {
+            var nomeEquipamento = input_nomeEquipamento.value;
+            var cpuVersao = input_cpuVersao.value;
+            var memoriaRam = input_memoriaRam.value;
+            var sistemaOperacional = input_sistemaOperacional.value;
+            var fkEmpresa= select_empresa.value;
+
+            // if (
+            //     nomeEquipamento == "" ||
+            //     cpuVersao == "" ||
+            //     memoriaRam == "" ||
+            //     discoTotal == "" ||
+            //     sistemaOperacional == ""
+            // ) {
+            //     cardErro.style.display = "block";
+            //     mensagem_erro.innerHTML =
+            //         "(Preencha todos os campos)";
+
+            //     finalizarAguardar();
+            //     return false;
+            // }
+            // } else if (nomeEquipamento.length <= 1) {
+            //     cardErro.style.display = "block";
+            //     mensagem_erro.innerHTML =
+            //         "Insira um nome com mais de um caracter";
+
+            //     finalizarAguardar();
+            //     return false;
+            // } else if ((discoTotal.indexOf('@') < 0) || emailVar.indexOf('.') < 0) {
+            //     cardErro.style.display = "block";
+            //     mensagem_erro.innerHTML =
+            //         "Insira um email com '@' e '.'";
+
+            //     finalizarAguardar();
+            //     return false;
+            // } else if (cpfVar.length !== 11) {
+            //     cardErro.style.display = "block";
+            //     mensagem_erro.innerHTML =
+            //         "Insira um CPF válido";
+
+            //     finalizarAguardar();
+            //     return false;
+            // } else if (senhaVar.length <= 6) {
+            //     cardErro.style.display = "block";
+            //     mensagem_erro.innerHTML =
+            //         "Sua senha deve ter mais de 6 dígitos";
+
+            //     finalizarAguardar();
+            //     return false;
+            // } else if (senhaVar != confirmacaoSenhaVar) {
+            //     cardErro.style.display = "block";
+            //     mensagem_erro.innerHTML =
+            //         "As senhas devem ser iguais";
+
+            //     finalizarAguardar();
+            //     return false;
+            // } else {
+            //     setInterval(sumirMensagem, 5000);
+            // }
+
+            // if (emailVar.indexOf('@') < 0) {
+            //     cardErro.style.display = "block";
+            //     mensagem_erro.innerHTML =
+            //         "(Mensagem de erro para todos os campos em branco)";
+
+            //     finalizarAguardar();
+            //     return false;
+            // }
+
+            // Enviando o valor da nova input
+            fetch("/empresas/cadastrarEquipamento", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    // crie um atributo que recebe o valor recuperado aqui
+                    // Agora vá para o arquivo routes/usuario.js
+                    nomeEquipamentoServer: nomeEquipamento,
+                    cpuVersaoServer: cpuVersao,
+                    memoriaRamServer: memoriaRam,
+                    sistemaOperacionalServer: sistemaOperacional,
+                    fkEmpresaServer: fkEmpresa
+                }),
+            })
+                .then(function (resposta) {
+                    console.log("resposta: ", resposta);
+
+
+                    } else {
+                        throw "Houve um erro ao tentar realizar o cadastro!";
+                    }
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                    finalizarAguardar();
+                });
+
+            return false;
+        }
+
+        function listar() {
+            fetch("/empresas/listar", {
+                method: "GET",
+            })
+                .then(function (resposta) {
+                    resposta.json().then((empresas) => {
+                        empresas.forEach((empresa) => {
+                            listaEmpresasCadastradas.push(empresa);
+                            select_empresa.innerHTML += `<option value='${empresa.idEmpresa}'>${empresa.razaoSocial}</option>`
+                            console.log("listaEmpresasCadastradas")
+                            // console.log(listaEmpresasCadastradas[0].codigo_ativacao)
+                        });
+                    });
+                })
+                .catch(function (resposta) {
+                    console.log(`#ERRO: ${resposta}`);
+                });
+        }
+    </script>
+</body>
+
+</html>

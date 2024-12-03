@@ -1,73 +1,154 @@
 -- CRIAÇÃO DE DATABASE
-drop database if exists runguard;
-create database runguard;
-use runguard;
-
-
+DROP DATABASE IF EXISTS runguard;
+CREATE DATABASE runguard;
+USE runguard;
 
 -- CRIAÇÃO DE TABELAS
-create table empresa (
+CREATE TABLE empresa (
 idEmpresa int primary key auto_increment,
-nome_empresa varchar(45)
+razaoSocial varchar(45),
+cnpj char(18)
 );
 
-create table usuario (
+CREATE TABLE usuario (
 idUsuario int primary key auto_increment,
-nome_usuario varchar(45),
-email_usuario varchar(45) unique,
-senha_usuario varchar(45),
-codigo int,
-fkEmpresa_usuario int,
-    constraint fkEmpresaUsuario foreign key (fkEmpresa_usuario) references empresa (idEmpresa)
+nome varchar(45),
+email varchar(45) unique,
+senha varchar(45),
+cpf varchar(14),
+cargo varchar(45),
+fkEmpresa int,
+    constraint fkEmpresaUsuario foreign key (fkEmpresa) references empresa (idEmpresa)
 );
 
-select * from usuario;
-
-create table equipamento (
+CREATE TABLE equipamento (
 idEquipamento int primary key auto_increment,
-nome_equipamento varchar(45),
-fkEmpresa_equipamento int,
-    constraint fkEmpresaEquipamento foreign key (fkEmpresa_equipamento) references empresa (idEmpresa)
+nomeEquipamento varchar(45),
+cpuVersao varchar(45),
+memoriaRam varchar(45),
+SistemaOperacional varchar(45),
+fkEmpresa int,
+    constraint fkEmpresaEquipamento foreign key (fkEmpresa) references empresa (idEmpresa)
 );
 
-create table dados (
-idDados int primary key auto_increment,
-cpu_porcent decimal(20,1),
-memoria_porcent decimal(20,1),
-memoria_usada decimal(20,1),
+CREATE TABLE dado (
+idDado int primary key auto_increment,
+cpuPercent double,
+memoriaPercent double,
+memoriaUsada double,
+bytes_recebidos double,
+bytes_enviados double,
+pacotes_recebidos double,
+pacotes_enviados double,
+erros_envio double,
+erros_recebidos double,
+pacotes_descartados_env double,
+pacotes_descartados_rec double,
 dtHora datetime default current_timestamp,
 fkEquipamento int,
     constraint fkEquipamentoDados foreign key (fkEquipamento) references equipamento (idEquipamento)
 );
 
-insert into empresa values
+CREATE TABLE alerta (
+idAlerta int primary key auto_increment,
+resumo varchar(256),
+descricao varchar(256),
+dtHora datetime default current_timestamp
+);
+
+CREATE TABLE informacaoAlerta (
+idInformacao int auto_increment,
+fkDado int,
+fkAlerta int,
+componenteAlerta varchar(45),
+statusAlerta varchar(45),
+    constraint fkDado foreign key (fkDado) references dado (idDado),
+    constraint fkAlerta foreign key (fkAlerta) references alerta (idAlerta),
+    constraint primaryKey primary key (idInformacao, fkDado, fkAlerta)
+);
+
+INSERT INTO empresa VALUES
 (default, 'Uber'),
 (default, '99 Táxi');
 
-insert into equipamento values
+INSERT INTO equipamento VALUES
 (default, 'M1', 1),
 (default, 'M2', 1),
 (default, 'M3', 1),
 (default, 'M4', 1);
 
-select * from dados;
-
-CREATE VIEW Monitoramento as
+CREATE VIEW Monitoramento AS
 SELECT 
-    d.idDados AS ID,
-    CONCAT(d.cpu_porcent, "%") AS "Porcentagem CPU",
-    CONCAT(d.memoria_porcent, "%") AS "Porcentagem Memoria",
-    CONCAT(d.memoria_usada, "GB") AS "Memoria usada",
-    CONCAT(d.disco_porcent_usado, "%") AS "Porcentagem de Disco Usada",
+    d.idDado AS ID,
+    CONCAT(d.cpuPercent, "%") AS "Porcentagem CPU",
+    CONCAT(d.memoriaPercent, "%") AS "Porcentagem Memoria",
+    CONCAT(d.memoriaUsada, "GB") AS "Memoria usada",
+    CONCAT(d.bytes_recebidos, "GB") AS "Bytes recebidos",
+    CONCAT(d.bytes_enviados, "GB") AS "Bytes enviados",
+    CONCAT(d.pacotes_recebidos, "GB") AS "Pacotes recebidos",
+    CONCAT(d.pacotes_enviados, "GB") AS "Pacotes enviados",
+    CONCAT(d.erros_envio, "GB") AS "Erros no envio",
+    CONCAT(d.erros_recebidos, "GB") AS "Erros na recepção",
+    CONCAT(d.pacotes_descartados_env, "GB") AS "Pacotes de envio descartados",
+    CONCAT(d.pacotes_descartados_rec, "GB") AS "Pacotes de recebimento descartados",
     d.dtHora AS "Data",
-    e.nome_equipamento AS Equipamento
+    e.nomeEquipamento AS Equipamento
 FROM 
-    dados as d
+    dado AS d
 JOIN 
-    equipamento as e ON d.fkEquipamento = e.idEquipamento;
+    equipamento AS e ON d.fkEquipamento = e.idEquipamento;
 
-SELECT * FROM Monitoramento;
 
-SELECT * FROM dados;
+-- CRIPTOGRAFIA - Explicação de como funciona
+-- MUDA O DELIMITADOR DE ';' PARA '$$', POIS DENTRO DE UMA FUNÇÃO HÁ MUITAS ULTILIZAÇÕES DE ';'
+DELIMITER $$
 
-select * from usuario;
+-- CRIAÇAÕ DA FUNÇÃO 'criptografia' QUE RECEBE UM TEXTO E UMA CHAVE E RETORNA O TEXTO CRIPTOGRAFADO
+CREATE FUNCTION criptografia(texto VARCHAR(255), chave INT)
+RETURNS VARCHAR(255) -- DEFINE OQ A FUNÇÃO RETORNA  (texto de até 255 caracteres)
+DETERMINISTIC -- DEFINE QUE A A FUNÇÃO É DETERMINISTICA  (para mesmas entradas, mesmos resultados)
+BEGIN
+    DECLARE resultado VARCHAR(255) DEFAULT ''; -- VAR PARA ARMAZENAR O RESULTADO
+    DECLARE i INT DEFAULT 1; -- CONT PARA PERCORRER O TEXTO
+    DECLARE caracter_atual CHAR(1); -- VAR PARA ARMAZERNAR O CHAR ATUAL
+    DECLARE trocar_valor INT DEFAULT 0; -- VAR PARA ARMAZERNAR O VALOR DO DESLOCAMENTO (cifra)
+
+    -- INVERTE O TEXTO
+    SET texto = REVERSE(texto);
+
+    -- LOOP PARA PERCORRER CADA CHAR DO TEXTO
+    WHILE i <= LENGTH(texto) DO
+        -- EXTRAI O CHAR ATUAL DO TEXTO
+        SET caracter_atual = SUBSTRING(texto, i, 1); 
+        
+        -- GERA UM VALOR DE DESLCAMENTO BASEADO NA CHAVE E ÍNDICE DO CHAR
+        SET trocar_valor = (ASCII(caracter_atual) + chave + i) % 95;
+
+        -- CONCATENA O CHAR CRIPTOGRAFADO NO RESULTADO
+        SET resultado = CONCAT(resultado, CHAR(32 + trocar_valor));
+        
+        -- INCREMENTA O CONTADOR PARA O PRÓXIMO CHAR
+        SET i = i + 1;
+    END WHILE;
+
+    -- RETORNA O TEXTO CRIPTOGRAFADO
+    RETURN resultado; 
+END$$
+
+-- CRIAÇÃO DE UM TRIGGER QUE CRIPTOGRAFA A SENHA ANTES DO INSERT NA TABELA
+CREATE TRIGGER criptografia_para_insersao
+BEFORE INSERT ON usuario
+FOR EACH ROW
+BEGIN
+    -- CRIPTOGRAFA A SENHA ANTES DE INSERIR O NOVO REGISTRO
+    SET NEW.senha = criptografia(NEW.senha,5);
+END$$
+
+-- CRIAÇÃO DE UM TRIGGER QUE CRIPTOGRAFA A SENHA ANTES DE UM UPDATE NA TABELA
+CREATE TRIGGER criptografia_na_atualizacao
+BEFORE UPDATE ON usuario
+FOR EACH ROW
+BEGIN
+    -- CRIPTOGRAFA A SENHA ANTES DE ATUALIZAR O NOVO REGISTRO
+    SET NEW.senha = criptografia(NEW.senha,5);
+END$$
