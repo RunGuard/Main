@@ -27,6 +27,7 @@ var dashboardAnneRouter = require("./src/routes/dashboard-Anne");
 var dashboardAleRouter = require("./src/routes/ale");
 var rotaRoqueRouter = require("./src/routes/rotaRoque");
 var duarteRouter = require("./src/routes/duarte");
+var dashboardRoutes = require('./src/routes/dashboard-Ilys');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -49,6 +50,7 @@ app.use("/dashboard-Anne", dashboardAnneRouter);
 app.use("/ale", dashboardAleRouter);
 app.use("/rotaRoque", rotaRoqueRouter);
 app.use("/duarte", duarteRouter);
+app.use('/api', dashboardRoutes);
 
 app.listen(PORTA_APP, function () {
     console.log(`
