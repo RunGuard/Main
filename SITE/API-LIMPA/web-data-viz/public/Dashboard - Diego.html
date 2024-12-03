@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASHBOARD-Diego | RunGuard</title>
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/dashstyle.css">
+    <link rel="stylesheet" href="css/style_diego.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="js/graficos-Diego.js"></script>
+    <script src="js/bobia.js"></script>
+</head>
+
+<body onload="atualizarGrafico()">
+    <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
+
+    <div id="janelaChat" class="janela-chat">
+        <div class="cabecalho-chat">
+            <div style="display: flex; align-items: center;">
+                <img style="width: 100%;" src="imagens/robo-branco.png" alt="Perfil do assistente">
+                <span style="font-size: 1.5em;">Guardinha</span>
+            </div>
+            <!-- add imagem de um X -->
+            <button style="background: none; border: none; color: white; cursor: pointer; font-size: 2em;"
+                onclick="fecharChat()">᰽</button>
+        </div>
+        <div id="corpoChat" class="corpo-chat">
+            <div class="mensagem assistente">
+                Olá! <br>
+                Me chamo Guardinha e sou a assistente virtual da RunGuard. <br>
+                <b>Como posso ajudar?</b>
+            </div>
+            <div class="hora-mensagem assistente" id="horaDeAbertura"></div> <!-- add pelo id a hora -->
+        </div>
+        <div class="rodape-chat">
+            <input type="text" id="entradaUsuario" placeholder="Escreva sua mensagem..." />
+            <button onclick="gerarResposta()">⟹</button>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="index.html" class="logo">
+                    <img src="imagens/logo.png" alt="Logo RunGuard">
+                    <span class="nav-item">RUNGUARD</span>
+                </a>
+            </li>
+            <li><a href="index.html">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-item">Home</span>
+                </a></li>
+            <li><a href="Dashboard - Ale.html">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-item">Dashboard 1</span>
+                </a></li>
+            <li><a href="Dashboard - Anne.html">
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="nav-item">Dashboard 2</span>
+                </a></li>
+            <li><a href="Dashboard - Diego.html">
+                    <i class="fas fa-chart-pie"></i>
+                    <span class="nav-item">Histórico de alertas</span>
+                </a></li>
+            <li><a href="Dashboard - Guilherme.html">
+                    <i class="fas fa-chart-column"></i>
+                    <span class="nav-item">Dashboard 4</span>
+                </a></li>
+            <li><a href="Dashboard - Ilys.html">
+                    <i class="fas fa-chart-simple"></i>
+                    <span class="nav-item">Dashboard 5</span>
+                </a></li>
+            <li><a href="Dashboard - Lucas.html">
+                    <i class="fas fa-chart-area"></i>
+                    <span class="nav-item">Dashboard 6</span>
+                </a></li>
+            <li> <a href="insights-run-guard.pdf" download>
+                    <i class="fas fa-file-pdf"></i>
+                    <span class="nav-item">Baixe seus relatórios!</span>
+                </a></li>
+            <li><a href="#" class="sair">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-item">Sair</span>
+                </a></li>
+        </ul>
+    </nav>
+    <div class="fantasma">a</div>
+
+    <div class="content d-flex row jc-center">
+
+        <div class="padding font-media d-flex column jc-space-around ai-center">
+            <div class="total-alertas media">
+                <p class="font-media"><span style="color: #1e8cfa;">Quantidade </span>total de alertas no<span
+                        style="color: #1e8cfa;"> último ano</span></p>
+                <hr>
+                <p id="alerta-total" class="alerta-info">Sem dados</p>
+            </div>
+
+            <div class="media ai-center padding d-flex column jc-space-around">
+                <p class="font-media"><span>Quantidade</span> de alertas <span>prevista</span>: <i
+                        onmouseover="abrirR2()" class="fa-regular fa-circle-question"
+                        style="color: #ffffff; cursor: pointer;"></i></p>
+                <hr>
+                <p class="alerta-info" id="previsao"> </p>
+            </div>
+            <div class="media">
+                <p><span style="color: #1e8cfa;">Quantidade </span>de alertas no<span style="color: #1e8cfa;"> período
+                        selecionado</span></p>
+                <hr>
+                <p id="alerta-info" class="alerta-info">XX</p>
+            </div>
+            <div class="media">
+                <p><span>Servidor</span> com mais alerta no <span>período selecionado</span></p>
+                <hr>
+                <p id="servidor-alerta" class="alerta-info as-center" style="font-size: 1.4em !important;">XX</p>
+            </div>
+
+        </div>
+
+        <div class="padding d-flex column ai-center jc-space-around">
+
+            <h1>Histórico de alertas</h1>
+
+            <div class="d-flex row ai-center width">
+                <div class="d-flex column ai-center padding filtro">
+                    <h3>Selecione o intervalo entre os meses para monitorar</h3>
+                    <div class="range-container">
+                        <div class="output">
+                            <span id="minValue">1</span>
+                            <span id="maxValue">12</span>
+                        </div>
+
+                        <div class="range-background"></div>
+                        <div class="range-fill" id="rangeFill"></div>
+
+                        <!-- Range esquerdo -->
+                        <input type="range" min="1" max="12" value="1" id="rangeMin" oninput="updateRange()">
+                        <!-- Range direito -->
+                        <input type="range" min="1" max="12" value="12" id="rangeMax" oninput="updateRange()">
+
+                        <div class="tickmarks">
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                            <span>|</span>
+                        </div>
+                    </div>
+                    <button class="padding" onclick="atualizarGrafico()">Filtrar</button>
+                </div>
+
+                <a class="visao-detalhada d-flex column font-media" onclick="abrirModal()">Alertas a cada mês:
+                    <br><span>Clique para visualizar ⟶</span>
+                </a>
+
+            </div>
+
+            <div class="d-flex row width jc-space-evenly">
+
+                <div class="grafico d-flex ai-center as-center">
+                    <div id="chart"></div>
+                </div>
+
+                <div class="ranking js-center as-center">
+                    <table class="font-media">
+                        <caption>Ranking dos 3 servidores com <span style="color: #1e8cfa;">mais alertas</span>
+                        </caption>
+                        <thead>
+                            <tr style="color: #1e8cfa;">
+                                <th>Ranking</th>
+                                <th>Servidor</th>
+                                <th>Total alertas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1°</td>
+                                <td id="ranking-primeiro">Sem dados</td>
+                                <td id="ranking-primeiro-qtd">Sem dados</td>
+                            </tr>
+                            <tr>
+                                <td>2°</td>
+                                <td id="ranking-segundo">Sem dados</td>
+                                <td id="ranking-segundo-qtd">Sem dados</td>
+                            </tr>
+                            <tr>
+                                <td>3°</td>
+                                <td id="ranking-terceiro">Sem dados</td>
+                                <td id="ranking-terceiro-qtd">Sem dados</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="r2" class="r2 d-flex column padding">
+        <i onclick="fecharR2()" class="as-end fa-regular fa-circle-xmark" style="color: #636363; cursor: pointer;"></i>
+        <p>A partir dos dados expostos no gráfico, é possível calcular a porcentagem da previsão para o próximo mês
+            (<span id="mesPrevisto"></span>)
+            estar correta (também
+            chamada de R²):</p>
+        <b> <span id="explicacaor2"></span></b>
+    </div>
+
+    <div id="modal-background" onclick="fecharModal()" class="modal-background">a</div>
+
+    <div id="modal" class="modal padding d-flex column ai-center jc-space-evenly">
+        <i onclick="fecharModal()" class="as-end fa-regular fa-circle-xmark"
+            style="color: #f7f7f7; cursor: pointer;"></i>
+        <h1>Visão detalhada</h1>
+        <span>Selecione o mês que você deseja monitorar:</span>
+
+        <select onchange="graficoDetails()" id="slc_mes">
+            <option value="0" disabled selected>Selecione um mês</option>
+            <option value="1">Janeiro</option>
+            <option value="2">Fevereiro</option>
+            <option value="3">Março</option>
+            <option value="4">Abril</option>
+            <option value="5">Maio</option>
+            <option value="6">Junho</option>
+            <option value="7">Julho</option>
+            <option value="8">Agosto</option>
+            <option value="9">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+        </select>
+
+        <div class="graficoDetalhe d-flex ai-center jc-center padding">
+            <div id="chartDetails">
+                <h2>Selecione um mês</h2>
+            </div>
+        </div>
+
+    </div>
+
+</html>
+</body>
+
+<script>
+    meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+
+    function updateRange() {
+        const minRange = document.getElementById('rangeMin');
+        const maxRange = document.getElementById('rangeMax');
+        const minValue = parseInt(minRange.value);
+        const maxValue = parseInt(maxRange.value);
+        sessionStorage.MINVALUE = minValue;
+        sessionStorage.MAXVALUE = maxValue;
+        const rangeFill = document.getElementById('rangeFill');
+
+        if (minValue >= maxValue) {
+            minRange.value = maxValue - 1;
+        }
+        if (maxValue <= minValue) {
+            maxRange.value = minValue + 1;
+        }
+
+        document.getElementById('minValue').textContent = meses[minValue - 1];
+        document.getElementById('maxValue').textContent = meses[maxValue - 1];
+
+        const minPercent = (minRange.value / minRange.max) * 100;
+        const maxPercent = (maxRange.value / maxRange.max) * 100;
+        rangeFill.style.left = minPercent - 3.5 + '%';
+        rangeFill.style.width = (maxPercent - minPercent) + '%';
+    }
+
+    updateRange();
+
+    function abrirR2() {
+        document.getElementById("r2").style.display = "flex"
+
+        r2 = sessionStorage.r2;
+        if (r2 <= 0.25) {
+            document.getElementById("explicacaor2").innerHTML = "Quando abaixo de 25%, os dados são imprecisos e muito difíceis de prever."
+        } else if (r2 <= 0.75) {
+            document.getElementById("explicacaor2").innerHTML = "Entre 25% e 75%, os dados indicam uma certa imprecisão com poucas chances de acerto."
+        } else if (r2 > 0.75) {
+            document.getElementById("explicacaor2").innerHTML = "Quando acima de 75%, os dados são precisos sendo fáceis de prever."
+        }
+    }
+
+    function fecharR2() {
+        document.getElementById("r2").style.display = "none"
+    }
+
+    function abrirModal() {
+        document.getElementById("modal").style.display = "flex"
+        document.getElementById("modal-background").style.display = "block"
+    }
+
+    function fecharModal() {
+        document.getElementById("modal").style.display = "none"
+        document.getElementById("modal-background").style.display = "none"
+    }
+
+</script>

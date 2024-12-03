@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASHBOARD-Ale | RunGuard</title>
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/dashstyle.css">
+    <link rel="stylesheet" href="css/style_ale.css">
+    <link rel="stylesheet" href="css/style_ale.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body>
+    <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
+    <div id="janelaChat" class="janela-chat">
+        <div class="cabecalho-chat">
+            <div style="display: flex; align-items: center;">
+                <img style="width: 100%;" src="imagens/robo-branco.png" alt="Perfil do assistente">
+                <span style="font-size: 1.5em;">Guardinha</span>
+            </div>
+            <button style="background: none; border: none; color: white; cursor: pointer; font-size: 2em;" onclick="fecharChat()">᰽</button>
+        </div>
+        <div id="corpoChat" class="corpo-chat">
+            <div class="mensagem assistente">
+                Olá! <br>
+                Me chamo Guardinha e sou a assistente virtual da RunGuard. <br>
+                <b>Como posso ajudar?</b>
+            </div>
+            <div class="hora-mensagem assistente" id="horaDeAbertura"></div>
+        </div>
+        <div class="rodape-chat">
+            <input type="text" id="entradaUsuario" placeholder="Escreva sua mensagem..." />
+            <button onclick="gerarResposta()">⟹</button>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="index.html" class="logo">
+                    <img src="imagens/logo.png" alt="Logo RunGuard">
+                    <span class="nav-item">RUNGUARD</span>
+                </a>
+            </li>
+            <li><a href="index.html"><i class="fas fa-home"></i><span class="nav-item">Home</span></a></li>
+            <li><a href="Dashboard - Ale.html"><i class="fas fa-chart-line"></i><span class="nav-item">Dashboard 1</span></a></li>
+            <li><a href="Dashboard - Anne.html"><i class="fas fa-chart-bar"></i><span class="nav-item">Dashboard 2</span></a></li>
+            <li><a href="Dashboard - Diego.html"><i class="fas fa-chart-pie"></i><span class="nav-item">Dashboard 3</span></a></li>
+            <li><a href="Dashboard - Guilherme.html"><i class="fas fa-chart-column"></i><span class="nav-item">Dashboard 4</span></a></li>
+            <li><a href="Dashboard - Ilys.html"><i class="fas fa-chart-simple"></i><span class="nav-item">Dashboard 5</span></a></li>
+            <li><a href="Dashboard - Lucas.html"><i class="fas fa-chart-area"></i><span class="nav-item">Dashboard 6</span></a></li>
+            <li><a href="insights-run-guard.pdf" download><i class="fas fa-file-pdf"></i><span class="nav-item">Baixe seus relatórios!</span></a></li>
+            <li><a href="#" class="sair"><i class="fas fa-sign-out-alt"></i><span class="nav-item">Sair</span></a></li>
+        </ul>
+    </nav>
+   
+    <div class="charts-container kpi-cards-container">
+        <!-- Coluna esquerda: Pacotes e Bytes empilhados -->
+        <div class="chart-column">
+            <div class="chart kpi-card" id="chart-packets">
+                <!-- Conteúdo do gráfico de Pacotes -->
+                
+            </div>
+            <div class="chart kpi-card" id="chart-bytes">
+                <!-- Conteúdo do gráfico de Bytes -->
+                
+            </div>
+        </div>
+        
+        <!-- Coluna direita: Ping e CPU empilhados -->
+        <div class="chart-column">
+            <h1 style="size: 20px;color: #fff;">Monitoramento de Rede e CPU</h1>
+            <div class="chart kpi-card card" id="chart-ping">
+                <h2 style="color: #fff; text-align: center;">Monitoramento de Latência (Ping)</h2>
+                
+            </div>
+            <div class="chart kpi-card" id="chart-cpu">
+                <h2 style="color: #fff; text-align: center;">Monitoramento de Uso da CPU</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alertas de Monitoramento -->
+    <div class="alert-container">
+        <div class="alert-content ">
+            <h2>Alertas de Monitoramento - Última hora</h2>
+            <p><strong>Quantidade de Alertas de Pacotes:</strong></p>
+            <p> <strong> <span id="perdaPacotes" ></span></strong></p>
+            <p><strong>Quantidade de Alertas:</strong></p>
+            <p> <strong><span id="perdaBytes" ></span></strong></p>
+            <p><strong>Eventos de Latência Alta:</strong></p>
+            <p> <strong> <span id="pingAlerta" ></span></strong></p>
+            <p><strong>Eventos de Uso Alto CPU:</strong></p>
+            <p> <strong> <span id="cpuAlerta" ></span></strong></p>
+            
+        </div>
+           
+        <div class="selecao-servidor-container">
+            <h1>Selecione um Servidor</h1>
+            <select id="selectServidor">
+                <option value="">Carregando...</option>
+            </select>
+        </div>
+    </div>
+
+    
+    <!-- Seleção de Servidor abaixo dos alertas -->
+    
+<script>
+//     function obterFkEquipamento() {
+//     const selectElement = document.getElementById("equipamentoSelect");
+//     return selectElement ? selectElement.value : null;
+// }
+
+//    va fkEquipamento = 5;
+
+        let bytesEnviados = [];
+        let bytesRecebidos = [];
+        let pacotesEnviados = [];
+        let pacotesRecebidos = [];
+        let ping = [];
+        let usoDoCPU = [];
+        
+        let totalAlertasBytesEnviados = 0;
+        let totalAlertasBytesRecebidos = 0;
+        let totalAlertasPacotesEnviados = 0;
+        let totalAlertasPacotesRecebidos = 0;
+        let totalAlertasPing = 0;
+        let totalAlertasUsoCPU = 0;
+        let intervaloHoras = 1; // Padrão: últimas 1 hora
+let dadosOriginais = [];
+// Busca os dados e atualiza os gráficos
+async function buscarDadosGrafico(fkEquipamento) {
+    fetch(`/ale/obterDados/${fkEquipamento}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados: ' + response.statusText);
+            }
+            return response.json();
+        })
+        try {
+        const response = await fetch(`/ale/obterDados/${fkEquipamento}`);
+        
+        if (!response.ok) {
+            throw new Error('Erro ao buscar dados: ' + response.statusText);
+        }
+
+        const data = await response.json();
+        // console.log(JSON.stringify(data, null, 2)); // Log detalhado da estrutura
+
+        if (Array.isArray(data) && data.length > 0) {
+            const bytesEnviados = data.map(item => item.bytes_enviados !== undefined ? item.bytes_enviados : null);
+            const bytesRecebidos = data.map(item => item.bytes_recebidos !== undefined ? item.bytes_recebidos : null);
+            const pacotesEnviados = data.map(item => item.pacotes_enviados !== undefined ? item.pacotes_enviados : null);
+            const pacotesRecebidos = data.map(item => item.pacotes_recebidos !== undefined ? item.pacotes_recebidos : null);
+            const ping = data.map(item => item.ping !== undefined ? item.ping : 0); // Definir 0 se não existir
+            const usoDoCPU = data.map(item => item.usoCPU !== undefined ? item.usoCPU : 0);
+            const horario = data.map(item => item.horario !== undefined ? item.horario : null);
+
+            // Criar novas constantes para os últimos dados para alertas
+            const ultimoDado = data[data.length - 1]; 
+            const ultimos12DadosByte = Array.isArray(data.slice(-12)) ? data.slice(-12) : [];// Último dado da resposta
+
+            // Novas variáveis para os últimos dados, específicas para alertas
+            
+            const ultimoBytesEnviados = Array.isArray(ultimos12DadosByte)
+    ? ultimos12DadosByte.map(item => item?.bytes_enviados || 0)
+    : [];
+    const ultimoBytesRecebidos = ultimos12DadosByte.map(item => item.bytes_recebidos || 0);
+            const ultimoPacotesEnviados = ultimoDado.pacotes_enviados || 0;
+            const ultimoPacotesRecebidos = ultimoDado.pacotes_recebidos || 0;
+            const ultimoPing = ultimoDado.ping || 0;
+            const ultimoUsoCPU = ultimoDado.usoCPU || 0;
+            // console.log("Uso da CPU:", usoCPU);
+            console.log('ultimos12DadosByte:', ultimos12DadosByte);
+console.log('ultimoBytesEnviados:', ultimoBytesEnviados);
+
+            // Log para verificar os dados extraídos
+            // console.log("Bytes Enviados:", bytesEnviados);
+            // console.log("Bytes Recebidos:", bytesRecebidos);
+            // console.log("Pacotes Enviados:", pacotesEnviados);
+            // console.log("Pacotes Recebidos:", pacotesRecebidos);
+            // console.log("Ping:", ping);
+            // console.log("Uso do CPU:", usoDoCPU);
+            // console.log("Horário:", horario);
+
+            // Atualize os gráficos
+            monitorarDados(bytesEnviados, bytesRecebidos, pacotesEnviados, pacotesRecebidos, ping, usoDoCPU);
+            atualizarGraficoBytes(ultimoBytesEnviados,ultimoBytesRecebidos,horario.slice(-24));
+            atualizarGraficoCPU(ultimoUsoCPU);
+            atualizarGraficoPackets(ultimoPacotesRecebidos,ultimoPacotesEnviados);
+            atualizarGraficoPing(ultimoPing);
+        } else {
+            console.error('Formato de dados inesperado ou dados vazios:', data);
+        }
+    } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+    }
+//     setInterval(() => {
+//     buscarDadosGrafico(fkEquipamento); // Atualiza `ping` continuamente
+// }, 1200);
+
+}
+
+// Lista os servidores e inicializa a seleção
+async function listarServidor() {
+    // const fkEquipamento = obterFkEquipamento(); // Substitua por como você obtém o valor
+    fetch('/ale/buscarServidor')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar servidores: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(servidores => {
+            const selectServidor = document.getElementById('selectServidor');
+            
+            selectServidor.innerHTML = '<option disabled selected value="">Selecione um Servidor</option>';
+            
+            servidores.forEach(servidor => {
+                const option = document.createElement('option');
+                option.value = servidor.idEquipamento; 
+                option.textContent = servidor.nomeEquipamento;
+                selectServidor.appendChild(option); 
+            });
+
+            selectServidor.addEventListener('change', function () {
+                fkEquipamento = this.value;
+                if (fkEquipamento) {
+                    console.log(`Servidor selecionado: ${fkEquipamento}`);
+                    buscarDadosGrafico(fkEquipamento); 
+                } else {
+                    console.warn("Nenhum servidor foi selecionado.");
+                }
+            });
+        })
+        .catch(error => {
+            console.error("Erro ao carregar servidores:", error);
+        });
+}
+
+
+
+
+
+// Atualiza gráficos específicos
+let chartBytes; 
+function formatarBytes(bytes_valor) {
+    if (bytes_valor >= 1_000_000_000) {
+        return `${(bytes_valor / 1_000_000_000).toFixed(2)} GB`;
+    } else if (bytes_valor >= 1_000_000) {
+        return `${(bytes_valor / 1_000_000).toFixed(2)} MB`;
+    } else if (bytes_valor >= 1_000) {
+        return `${(bytes_valor / 1_000).toFixed(2)} KB`;
+    }
+    return `${bytes_valor.toFixed(2)} B`;
+}// Variável global para armazenar a instância do gráfico
+
+function atualizarGraficoBytes(ultimoBytesEnviados, ultimoBytesRecebidos, horarios) {
+  
+
+    const bytesEnviadosF = ultimoBytesEnviados.map(formatarBytes);
+    const bytesRecebidosF = ultimoBytesRecebidos.map(formatarBytes);
+
+    document.addEventListener("DOMContentLoaded", () => {
+    listarServidor(); // Inicializa a listagem de servidores após o DOM estar pronto
+});
+    if (!chartBytes) {
+        // Configuração inicial do gráfico
+        const options = { 
+    chart: {
+        type: 'line',
+        height: 350,
+        toolbar: { show: false }
+    },
+    title: {
+            text: 'Monitoramento de Bytes',
+            align: 'center',
+            style: { fontSize: '18px', color: '#FFFFFF' },
+        },
+    series: [
+        {
+            name: 'Bytes Enviados',
+            data: bytesEnviadosF
+        },
+        {
+            name: 'Bytes Recebidos',
+            data: bytesRecebidosF
+        }
+    ],
+    xaxis: {
+        categories: horarios, // Eixo X com os horários
+        title: { text: 'Horário', style: { color: '#FFFFFF' } }, // Cor branca
+        labels: { style: { colors: '#FFFFFF' } } // Cor dos rótulos do eixo X
+    },
+    yaxis: {
+        title: { text: 'Bytes', style: { color: '#FFFFFF' } }, // Cor branca
+        labels: { style: { colors: '#FFFFFF' } } // Cor dos rótulos do eixo Y
+    },
+    legend: {
+        labels: { colors: '#FFFFFF' } // Cor branca para a legenda
+    },
+    colors: ['#FFD700', '#1E90FF'], // Amarelo e Azul
+    stroke: { curve: 'smooth' },
+    markers: { size: 4 },
+    tooltip: { shared: true, intersect: false,theme: 'dark', // Define o tema como "dark" para começar
+        style: {
+            fontSize: '14px',
+            color: '#FFFFFF'
+        },
+        x: {
+            show: true,
+            formatter: (val) => `Horário: ${val}`
+        },
+        y: {
+            formatter: (value) => `${value} bytes`
+        },
+        fillSeriesColor: false,
+        onDatasetHover: {
+            highlightDataSeries: true
+        },
+        background: '#292930', // Define o fundo como #292930
+        borderColor: '#FFF', // Define a borda
+        shared: true,
+        intersect: false
+    } }
+
+
+    }
+    else {
+        chartBytes.updateOptions({
+            series: [
+                { name: 'Bytes Enviados', data: bytesEnviadosF },
+                { name: 'Bytes Recebidos', data: bytesRecebidosF }
+            ],
+            xaxis: { categories: horarios }
+        });
+    }
+
+}
+function atualizarGraficoPackets(ultimoPacotesEnviados = 0, ultimoPacotesRecebidos = 0) {
+    const contadorEnviados = document.getElementById("contador-enviados");
+    const contadorRecebidos = document.getElementById("contador-recebidos");
+    function formatarPacotes(pacotes) {
+        if (pacotes >= 1000000) {
+            return (pacotes / 1000000).toFixed(2)  + "M"; // Formata para GB
+        } else if (pacotes >= 1000) {
+            return (pacotes / 1000).toFixed(2) + " K"; // Formata para MB
+        } else {
+            return pacotes + " Pacotes"; // Retorna o valor original se menor que 1000
+        }
+    }
+
+    if (contadorEnviados && contadorRecebidos) {
+        // Usa a função de formatação para atualizar os textos
+        contadorEnviados.innerText = formatarPacotes(ultimoPacotesEnviados) + " Enviados";
+        contadorRecebidos.innerText = formatarPacotes(ultimoPacotesRecebidos) + " Recebidos";
+
+        // Alterar a cor com base nos valores
+        contadorEnviados.style.color = ultimoPacotesEnviados < 10 ? "#E74C3C" : "#FFC300"; // Vermelho ou Amarelo
+        contadorRecebidos.style.color = ultimoPacotesRecebidos < 10 ? "#E74C3C" : "#3498DB"; // Vermelho ou Azul
+    }
+    }
+
+
+// Atualização contínua a cada 2 segundos usando dados reais
+setInterval( // Substitua por sua função real
+    atualizarGraficoPackets()
+, 2000);
+
+// Renderizar os contadores no lugar do gráfico de pacotes
+document.addEventListener('DOMContentLoaded', function () {
+    const monitoramentoPacotes = document.getElementById("chart-packets");
+    monitoramentoPacotes.innerHTML = `
+        <div>
+            <h2 style="color: #fff;">Monitoramento de Pacotes</h2>
+            <p id="contador-enviados" style="color: #FFC300; font-size: 1.5rem;">0 Pacotes Enviados</p>
+            <p id="contador-recebidos" style="color: #3498DB; font-size: 1.5rem;">0 Pacotes Recebidos</p>
+        </div>
+    `;
+});
+
+
+
+
+let chartCPU; // Variável global para armazenar a instância do gráfico
+
+function atualizarGraficoCPU(ultimoUsoCPU) {
+    const chartElement = document.querySelector("#chart-cpu");
+
+    if (!chartElement) {
+        console.error("Elemento do gráfico não encontrado no DOM: #chart-cpu");
+        return;
+    }
+
+    // Se o gráfico ainda não foi criado, inicialize-o
+    if (!chartCPU) {
+        const options = {
+    chart: {
+        type: 'radialBar',
+        height: 350
+    },
+    series: [ultimoUsoCPU], // Valor inicial do uso da CPU
+    labels: ['Uso da CPU'], // Nome do indicador
+    colors: ['#1E90FF'], // Azul
+    plotOptions: {
+        radialBar: {
+            hollow: {
+                size: '60%' // Define o tamanho do círculo central
+            },
+            dataLabels: {
+                name: {
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    color: '#FFFFFF' // Cor branca para o nome do indicador
+                },
+                title: {
+            text: 'Uso da CPU',
+            align: 'center',
+            style: { fontSize: '18px', color: '#FFFFFF' },
+        },
+                value: {
+                    fontSize: '16px',
+                    fontWeight: 'bold',
+                    color: '#FFFFFF', // Cor branca para o valor
+                    formatter: function (val) {
+                        return `${val}%`; // Exibe o valor como porcentagem
+                    }
+                }
+            }
+        }
+    },
+    legend: {
+        labels: { colors: '#FFFFFF' } // Cor branca para a legenda
+    }
+};
+
+
+        // Inicializa o gráfico radial
+        chartCPU = new ApexCharts(document.querySelector("#chart-cpu"), options);
+        chartCPU.render();
+    } else {
+        // Atualiza o valor do gráfico radial
+        chartCPU.updateSeries([ultimoUsoCPU]);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const monitoramentoCPU = document.querySelector("#chart-cpu");
+
+    if (!monitoramentoCPU) {
+        console.error("Elemento com ID 'chart-cpu' não encontrado no DOM.");
+    } else {
+        // Define o HTML inicial do container (se necessário)
+        monitoramentoCPU.innerHTML = `<h2 style="color: #fff; text-align: center;">Monitoramento de CPU</h2>`;
+    }
+});
+// Simulação de valores dinâmicos para teste
+setInterval(// Gera valores aleatórios de 0 a// Gera um valor aleatório entre 0 e 100
+    atualizarGraficoCPU()
+, 2000); // Atualiza a cada 2 segundos
+ // Atualiza a cada 2 segundos
+
+
+
+ function atualizarGraficoPing(ultimoPing) {
+    const contadorPing = document.getElementById("contador-ping");
+
+    if (contadorPing) {
+        contadorPing.innerText = `${ultimoPing} ms de Latência (Ping)`;
+
+        // Alterar a cor com base no valor do ping
+        contadorPing.style.color = ultimoPing > 100 ? "#E74C3C" : "#2ECC71"; // Amarelo se > 100, Verde se <= 100
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const monitoramentoPing = document.getElementById("chart-ping");
+
+    if (monitoramentoPing) {
+        monitoramentoPing.innerHTML = `
+            <div>
+                <h2 style="color: #fff; text-align: center;">Monitoramento de Latência</h2>
+                <p id="contador-ping" style="color: #FFC300; font-size: 1.5rem;">0 ms de Latência (Ping)</p>
+            </div>
+        `;
+    } else {
+        console.error("Elemento com ID 'chart-ping' não encontrado no DOM.");
+    }
+});
+
+// Simulação de ping e atualização
+
+
+setInterval( // Substitua por sua função real
+    atualizarGraficoPing()
+, 2000);
+
+document.addEventListener("DOMContentLoaded", () => {
+    listarServidor();
+    atualizarGraficoBytes([0], [0], ["00:00"]);
+    atualizarGraficoCPU(0);
+    
+});
+
+
+function monitorarDados(bytesEnviados, bytesRecebidos, pacotesEnviados, pacotesRecebidos, ping, usoDoCPU) {
+    const minBytes = 1024 * 1024; // 1 MB em bytes
+    const minPacotes = 1000;
+    const maxPing = 100; // Latência máxima permitida
+    const maxCPU = 80; // Uso máximo de CPU permitido
+
+    // Função para validar e contar alertas
+    const validar = (valores, limite, comparador) => {
+        if (!Array.isArray(valores)) {
+            valores = [valores]; // Garante que valores sejam sempre um array
+        }
+        return valores.slice(-12).reduce((contador, v) => {
+            if ((comparador === "<" && v < limite) || (comparador === ">" && v > limite)) {
+                return contador + 1;
+            }
+            return contador;
+        }, 0);
+    };
+
+    // Contagem de ocorrências nos últimos 12 valores
+    const contadorBytesEnviados = validar(bytesEnviados, minBytes, "<");
+    const contadorBytesRecebidos = validar(bytesRecebidos, minBytes, "<");
+    const contadorPacotesEnviados = validar(pacotesEnviados, minPacotes, "<");
+    const contadorPacotesRecebidos = validar(pacotesRecebidos, minPacotes, "<");
+    const contadorPing = validar(ping, maxPing, ">");
+    const contadorUsoCPU = validar(usoDoCPU, maxCPU, ">");
+
+    const verde = "#2ECC71"; // Cor verde para dentro dos limites
+    const vermelho = "#E74C3C"; // Cor vermelha para fora dos limites
+
+    // Atualizar elementos no DOM com texto reduzido
+    atualizarElemento("perdaBytes", contadorBytesEnviados || contadorBytesRecebidos, 
+        `${contadorBytesEnviados} alertas de Bytes abaixo de 1 MB<br>${contadorBytesRecebidos} alertas de Bytes recebidos abaixo de 1 MB`, 
+        "Sem alertas de Bytes", vermelho, verde);
+
+    atualizarElemento("perdaPacotes", contadorPacotesEnviados || contadorPacotesRecebidos, 
+        `${contadorPacotesEnviados} alertas de Pacotes enviados abaixo de 1000<br>${contadorPacotesRecebidos} alertas de Pacotes recebidos abaixo de 1000`, 
+        "Sem alertas de Pacotes", vermelho, verde);
+
+    atualizarElemento("pingAlerta", contadorPing, 
+        `${contadorPing} alertas de Latência acima de 100 ms`, 
+        "Latência dentro do limite", vermelho, verde);
+
+    atualizarElemento("cpuAlerta", contadorUsoCPU, 
+        `${contadorUsoCPU} alertas de CPU acima de 80%`, 
+        "Uso de CPU dentro do limite", vermelho, verde);
+}
+
+// Função para atualizar o elemento e aplicar cor
+function atualizarElemento(id, contador, msgAlerta, msgOk, corAlerta, corOk) {
+    const elemento = document.getElementById(id);
+    if (contador > 0) {
+        elemento.innerHTML = msgAlerta; // Mensagem de alerta
+        elemento.style.color = corAlerta; // Cor de alerta
+    } else {
+        elemento.innerHTML = msgOk; // Mensagem de sucesso
+        elemento.style.color = corOk; // Cor de sucesso
+    }
+    elemento.style.display = "inline"; // Garante que o elemento esteja visível
+}
+
+
+setInterval(() => {
+    buscarDadosGrafico(fkEquipamento);
+}, 5000);
+
+// setInterval(() => {
+//     atualizarGraficoPackets('chart-packets');
+// }, 5000);
+
+
+    
+
+</script>
+
+</body>
+
+</html>

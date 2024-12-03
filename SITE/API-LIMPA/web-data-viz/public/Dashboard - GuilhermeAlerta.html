@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASHBOARD-GUILHERMEALERTA | RunGuard</title>
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/style_duarte.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<body>
+    <button class="botao-chat" onclick="abrirChat()"><img style="width: 6vh;" src="imagens/robo.png" alt=""></button>
+
+    <div id="janelaChat" class="janela-chat">
+        <div class="cabecalho-chat">
+            <div style="display: flex; align-items: center;">
+                <img style="width: 100%;" src="imagens/robo-branco.png" alt="Perfil do assistente">
+                <span style="font-size: 1.5em;">Guardinha</span>
+            </div>
+            <!-- add imagem de um X -->
+            <button style="background: none; border: none; color: white; cursor: pointer; font-size: 2em;"
+                onclick="fecharChat()">᰽</button>
+        </div>
+        <div id="corpoChat" class="corpo-chat">
+            <div class="mensagem assistente">
+                Olá! <br>
+                Me chamo Guardinha e sou a assistente virtual da RunGuard. <br>
+                <b>Como posso ajudar?</b>
+            </div>
+            <div class="hora-mensagem assistente" id="horaDeAbertura"></div> <!-- add pelo id a hora -->
+        </div>
+        <div class="rodape-chat">
+            <input type="text" id="entradaUsuario" placeholder="Escreva sua mensagem..." />
+            <button onclick="gerarResposta()">⟹</button>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="index.html" class="logo">
+                    <img src="imagens/logo.png" alt="Logo RunGuard">
+                    <span class="nav-item">RUNGUARD</span>
+                </a>
+            </li>
+            <li><a href="index.html">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-item">Home</span>
+                </a></li>
+            <li><a href="Dashboard - Ale.html">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-item">Dashboard 1</span>
+                </a></li>
+            <li><a href="Dashboard - Anne.html">
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="nav-item">Dashboard 2</span>
+                </a></li>
+            <li><a href="Dashboard - Diego.html">
+                    <i class="fas fa-chart-pie"></i>
+                    <span class="nav-item">Dashboard 3</span>
+                </a></li>
+            <li><a href="Dashboard - Guilherme.html">
+                    <i class="fas fa-chart-column"></i>
+                    <span class="nav-item">Dashboard 4</span>
+                </a></li>
+            <li><a href="Dashboard - Ilys.html">
+                    <i class="fas fa-chart-simple"></i>
+                    <span class="nav-item">Dashboard 5</span>
+                </a></li>
+            <li><a href="Dashboard - Lucas.html">
+                    <i class="fas fa-chart-area"></i>
+                    <span class="nav-item">Dashboard 6</span>
+                </a></li>
+            <li><a href="Dashboard - GuilhermeAlerta.html">
+                    <i class="fas fa-chart-column"></i>
+                    <span class="nav-item">Dashboard 7</span>
+                </a></li>
+            <li> <a href="insights-run-guard.pdf" download>
+                    <i class="fas fa-file-pdf"></i>
+                    <span class="nav-item">Baixe seus relatórios!</span>
+                </a></li>
+            <li><a href="#" class="sair">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-item">Sair</span>
+                </a></li>
+        </ul>
+    </nav>
+
+    <div class="fundo">
+        <div class="titulo">
+            <h1>Monitoramento Geral dos Servidores em Tempo Real</h1>
+        </div>
+        <div class="medias">
+            <div class="medias">
+                <div class="data-atual media">
+                    <p>Data de hoje:</p>
+                    <span id="dataAtual"></span>
+                </div>
+
+                <div class="medida_cpu media">
+                    <p>Servidor com maior uso de CPU:</p>
+                    <span id="servidorMaiorCPU"></span>
+                </div>
+                <div class="mediaAlerta media">
+                    <p>Servidor em Estado crítico:</p>
+                    <span id="servidorDowtime" style="color: #ff7272;"></span>
+                    <p>
+                        <a href="Dashboard%20-%20Guilherme.html"
+                            style="color: white; font: bold; font-size: 1.3em; border: 2px, solid #ff4500; padding: 5px; border-radius: 5px;">
+                            Para acessar os servidores, clique aqui.
+                        </a>
+                    </p>
+                </div>
+                <div class="qtdAcima80 media">
+                    <p>Servidor com maior uso de RAM:</p>
+                    <span id="servidorMaiorRAM"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="alinhamento2">
+            <!-- Tabela abaixo dos gráficos -->
+            <div class="fundo_grafico-ranking">
+                <h2 style="color: #FFFFFF; text-align: center; margin-bottom: 20px;">Ranking de Servidores com Mais
+                    Alertas</h2>
+                <div id="graficoRanking" style="height: 400px; margin-bottom: 20px;"></div>
+            </div>
+            <div class="fundo_grafico-tabela">
+                <h2 style="color: #FFFFFF; text-align: center; margin-bottom: 20px;">Estado atual geral dos servidores
+                </h2>
+                <table class="tabelinha">
+                    <thead>
+                        <tr>
+                            <th>Servidor</th>
+                            <th>Uso de CPU (%)</th>
+                            <th>Uso de RAM (%)</th>
+                            <th>Latência (ms)</th>
+                            <th>Status Geral</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</html>
+</body>
+<script>
+    let chartRanking;
+    let graficoRanking = null;
+
+    let maiorCpuAtual = 0;
+    let servidorCpuAtual = "";
+    let maiorRamAtual = 0;
+    let servidorRamAtual = "";
+
+    // Função para obter e formatar a data atual
+    function atualizarData() {
+        const dataAtual = new Date();
+        const dia = String(dataAtual.getDate()).padStart(2, '0');
+        const mes = String(dataAtual.getMonth() + 1).padStart(2, '0'); // Janeiro é 0
+        const ano = dataAtual.getFullYear();
+
+        // Formata a data no estilo DD/MM/AAAA
+        document.getElementById('dataAtual').textContent = `${dia}/${mes}/${ano}`;
+    }
+    atualizarData();
+
+    //Função fetch da tabela
+    function tabela() {
+        fetch(`/duarte/tabela`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Dados recebidos:", data);
+                if (Array.isArray(data)) {
+                    atualizarTabela(data);
+                } else {
+                    console.error("Formato de dados inesperado:", data);
+                }
+            })
+            .catch(error => console.error("Falha na captura de dados:", error));
+    }
+
+    // Função para atualizar a tabela com os dados recebidos
+    function atualizarTabela(dados) {
+        const tabelaBody = document.querySelector('.tabelinha tbody');
+        tabelaBody.innerHTML = ''; // Limpar dados antigos da tabela
+
+        dados.forEach(servidor => {
+            const row = `
+            <tr>
+                <td>${servidor.Servidor}</td>
+                <td>${servidor.UsoCPU}%</td>
+                <td>${servidor.UsoRAM}%</td>
+                <td>${servidor.Latencia} ms</td>
+                <td>${servidor.StatusGeral}</td>
+            </tr>
+        `;
+            tabelaBody.innerHTML += row;
+        });
+    }
+
+    setInterval(() => {
+        try {
+            console.log("Atualizando a tabela...");
+            tabela();
+        } catch (error) {
+            console.error("Erro ao executar intervalo de atualização da tabela:", error);
+        }
+    }, 10000);
+
+    document.addEventListener('DOMContentLoaded', function () {
+        tabela(); // Chamar a função para atualizar a tabela com os dados de todos os servidores
+    });
+
+    //Função fetch do Ranking
+    function ranking() {
+        fetch(`/duarte/ranking`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Dados recebidos:", data);
+                if (Array.isArray(data)) {
+                    atualizarRanking(data);
+                    atualizarKpiAlerta(data);
+                } else {
+                    console.error("Formato de dados inesperado:", data);
+                }
+            })
+            .catch(error => console.error("Falha na captura de dados:", error));
+    }
+
+    // //Gráfico de ranking
+    function atualizarRanking(dados) {
+        // Extraindo nomes e totais de alertas dinamicamente dos dados recebidos
+        console.log(dados);
+        const nomesServidores = dados.map(item => item.Servidor);
+        const totalAlertas = dados.map(item => item.TotalAlertas);
+
+        const dataRanking = {
+            series: [
+                {
+                    name: 'Total de Alertas',
+                    data: totalAlertas
+                }
+            ],
+            chart: {
+                type: 'bar',
+                height: 250,
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    barHeight: '50%',
+                    distributed: true, // Para cores diferentes
+                },
+            },
+            colors: ['#FF4560', '#73B7FF', '#FFDC60', '#32D297'],
+            dataLabels: {
+                enabled: true,
+                style: {
+                    colors: ['#fff']
+                },
+                formatter: function (val) {
+                    return `${val} alertas`;
+                },
+            },
+            xaxis: {
+                categories: nomesServidores, // Dados dinâmicos para os nomes dos servidores
+                labels: {
+                    style: {
+                        colors: Array(nomesServidores.length).fill('#fff'),
+                        fontSize: '12px'
+                    },
+                },
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: ['#ffffff'], // Cor branca para os rótulos do eixo y
+                        fontSize: '14px',
+                    }
+                },
+                title: {
+                    style: {
+                        color: '#ffffff', // Cor branca para o título do eixo y
+                        fontSize: '12px',
+                    }
+                },
+            },
+            tooltip: {
+                theme: 'dark',
+            },
+            legend: {
+                labels: {
+                    colors: '#fff', // Cor branca para os textos da legenda
+                },
+                markers: {
+                    fillColors: ['#FF4560', '#73B7FF', '#FFDC60', '#32D297'], // Cores correspondentes às barras
+                },
+                position: 'bottom', // Posiciona a legenda na parte inferior
+            },
+        };
+
+        // Verifica se o gráfico já foi criado e destrói antes de criar um novo
+        if (graficoRanking) {
+            graficoRanking.destroy();
+        }
+
+        // Cria e renderiza um novo gráfico
+        graficoRanking = new ApexCharts(document.querySelector("#graficoRanking"), dataRanking);
+        graficoRanking.render();
+    }
+    // ranking();
+    function atualizarKpiAlerta(data) {
+        console.log(data)
+        var primeiroServidor = data[0]
+        console.log(primeiroServidor)
+        servidorDowtime.innerHTML = primeiroServidor.Servidor
+    }
+    // Atualização periódica do gráfico a cada 10 segundos
+    setInterval(() => {
+        console.log("Atualizando o ranking...");
+        ranking(); // Chamar a função para atualizar os dados do gráfico
+    }, 10000);
+
+    // Chamar a função ao carregar a página
+    document.addEventListener('DOMContentLoaded', function () {
+        ranking(); // Atualizar o ranking com os dados iniciais
+    });
+
+    function maiorCpu() {
+        fetch(`/duarte/maiorCpu`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.maiorCpu > maiorCpuAtual) {
+                    // Atualiza somente se o novo valor for maior
+                    maiorCpuAtual = data.maiorCpu;
+                    servidorCpuAtual = data.servidor;
+                    document.getElementById("servidorMaiorCPU").innerHTML = `
+                    <strong>${servidorCpuAtual}</strong> <span>(${maiorCpuAtual}%)</span>
+                `;
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar maior CPU:", error);
+            });
+    }
+
+    function maiorRam() {
+        fetch(`/duarte/maiorRam`, { cache: 'no-store' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.maiorRam > maiorRamAtual) {
+                    // Atualiza somente se o novo valor for maior
+                    maiorRamAtual = data.maiorRam;
+                    servidorRamAtual = data.servidor;
+                    document.getElementById("servidorMaiorRAM").innerHTML = `
+                    <strong>${servidorRamAtual}</strong>  <span>(${maiorRamAtual}%)</span>
+                `;
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar maior RAM:", error);
+            });
+    }
+
+    setInterval(() => {
+        maiorCpu();
+        maiorRam();
+    }, 10000);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        maiorCpu();
+        maiorRam();
+    });
+
+    // Selecione todas as células da tabela
+    // const tds = document.querySelectorAll('.fundo_grafico-tabela td');
+
+    // // Verifique o conteúdo de cada célula e adicione a classe correspondente
+    // tds.forEach(td => {
+    //     if (td.textContent.includes("Normal")) {
+    //         td.style.color = '#ffffff'; // Altere para a cor desejada
+    //         td.style.fontWeight = 'bold';
+    //     }
+    //     if (td.textContent.includes("Sobrecarga")) {
+    //         td.style.color = '#FF2D00'; // Cor vibrante para sobrecarga
+    //         td.style.fontWeight = 'bold'; // Para dar destaque
+    //     }
+    // });
+
+    function abrirChat() {
+        document.getElementById("janelaChat").style.display = "flex";
+    }
+
+    function fecharChat() {
+        document.getElementById("janelaChat").style.display = "none";
+    }
+
+    function obterHoraAtual() {
+        const options = {
+            timeZone: 'America/Sao_Paulo',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+        const agora = new Date();
+        return agora.toLocaleTimeString('pt-BR', options);
+    }
+
+    async function gerarResposta() {
+        const pergunta = document.getElementById('entradaUsuario').value;
+
+        var entrada = document.getElementById("entradaUsuario");
+        var mensagem = entrada.value.trim();
+
+        const response = await fetch('/perguntar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ pergunta })
+        });
+
+        const data = await response.json();
+
+        conversa.push(mensagem)
+        conversa.push(data.resultado)
+
+        if (mensagem !== "") {
+            var mensagemUsuario = document.createElement("div");
+            mensagemUsuario.classList.add("mensagem", "usuario");
+            mensagemUsuario.innerText = mensagem;
+            document.getElementById("corpoChat").appendChild(mensagemUsuario);
+
+            var horaUsuario = document.createElement("div");
+            horaUsuario.classList.add("hora-mensagem");
+            horaUsuario.innerText = obterHoraAtual();
+            document.getElementById("corpoChat").appendChild(horaUsuario);
+
+            entrada.value = "";
+
+            setTimeout(function () {
+                var mensagemAssistente = document.createElement("div");
+                mensagemAssistente.classList.add("mensagem", "assistente");
+                mensagemAssistente.innerText = data.resultado;
+                document.getElementById("corpoChat").appendChild(mensagemAssistente);
+
+                var horaAssistente = document.createElement("div");
+                horaAssistente.classList.add("hora-mensagem", "assistente");
+                horaAssistente.innerText = obterHoraAtual();
+                document.getElementById("corpoChat").appendChild(horaAssistente);
+
+                document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+            }, 1000);
+
+            document.getElementById("corpoChat").scrollTop = document.getElementById("corpoChat").scrollHeight;
+        }
+    }
+</script>

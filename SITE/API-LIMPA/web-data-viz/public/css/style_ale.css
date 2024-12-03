@@ -1,0 +1,860 @@
+/* Container geral dos gráficos */
+#charts-container {
+    display: flex;
+    /* gap: 65px; */
+    justify-content: center;
+    /* padding: 20px; */
+/* Espaçamento entre gráficos */
+}
+
+/* Estilo padrão dos gráficos */
+.chart {
+    position: relative;
+    width: 200px;
+    height: 150px;
+    background: #3B3B45;
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    text-align: center;
+
+}
+
+.chart:hover {
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Tamanho dos gráficos específicos */
+#chart-CPU, #chart-Packages, #chart-Ping {
+    width: 100%;
+    max-width: 400px; /* Limita o tamanho máximo dos gráficos */
+    height: 350px; /* Altura consistente para todos os gráficos */
+    margin: 0 auto;
+}
+
+/* Ajuste específico para o gráfico de CPU */
+.chart-cpu {
+    width: 100%; /* O gráfico ocupa toda a largura */
+    margin: 0 auto; /* Centraliza o gráfico */
+}
+
+/* Ajuste de cores das legendas e rótulos dos gráficos */
+.chart .legend text,
+.chart .x-axis text,
+.chart .y-axis text {
+    fill: #ffffff; /* Texto branco para legendas e rótulos */
+    font-size: 14px; /* Melhora a legibilidade */
+}
+
+/* Estilo do container de alertas */
+.alerts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%; /* Define a largura do container */
+    max-width: 600px;
+    background: #292930; /* Mesmo fundo dos gráficos */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+    margin: 20px auto; /* Centraliza na página */
+}
+
+/* Estilo de cada alerta */
+.alert {
+    border-left: 10px solid #FFC300; /* Borda amarela para destaque */
+    background-color: #292930; /* Fundo igual aos gráficos */
+    color: #FFFFFF;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 12px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Sombra marcante */
+    width: 100%;
+    font-size: 18px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.alert:hover {
+    transform: translateY(-10px); /* Leve movimento ao passar o mouse */
+    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilo interno do conteúdo dos alertas */
+.alert-content {
+    text-align: left;
+    background-color: #292930;
+    border-radius: 12px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Sombra marcante */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 15px;
+    margin-top: 50px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Hover efeito nos alertas */
+.alert-content:hover {
+    background-color: #292930;
+    transform: scale(1.05);
+}
+
+/* Títulos dos alertas */
+.alert-content h2 {
+    color: #FFC300;
+    font-size: 22px;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.alert-content h2:hover {
+    color: #292930;
+}
+
+/* Estilos de texto dentro dos alertas */
+.alert-content p {
+    font-size: 18px;
+    margin: 5px 0;
+    line-height: 1.5;
+    color: #FFFFFF;
+    transition: color 0.3s ease;
+}
+
+.alert-content .highlight {
+    color: #E74C3C;
+    font-weight: bold;
+}
+
+.alert-content p strong {
+    color: #3498DB;
+}
+
+/* Estilos para o botão de atualizar */
+.botao-atualizar {
+    background-color: #FFC300; /* Cor de fundo verde */
+    color: white; /* Cor do texto branca */
+    padding: 6px 15px; /* Espaçamento interno reduzido */
+    border: none; /* Remove a borda */
+    border-radius: 5px; /* Bordas arredondadas */
+    font-size: 14px; /* Tamanho da fonte reduzido */
+    cursor: pointer; /* Cursor de mão ao passar por cima */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Efeito de transição */
+}
+
+.botao-atualizar:hover {
+    background-color: #45a049; /* Cor mais escura no hover */
+    transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+}
+
+.botao-atualizar:active {
+    background-color: #388e3c; /* Cor ainda mais escura quando pressionado */
+}
+
+/* Estilos para o select */
+#selectServidor {
+    padding: 6px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+/* Estilo do corpo da página */
+.body { 
+    height: 100%;
+    width: 100%;
+}
+
+/* Centralizar e estilizar a seleção de servidores */
+.selecao-servidor-container {
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+    background: #292930;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    margin-left: 20px; /* Centraliza horizontalmente */
+    gap: 10px;
+}
+
+/* Estilo do título */
+.selecao-servidor-container h1 {
+    color: #FFC300;
+    font-size: 24px;
+    margin: 0;
+}
+
+/* Estilo do select */
+#selectServidor {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #000;
+}
+
+/* Estilo do botão */
+.botao-atualizar {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #FFC300;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.botao-atualizar:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.botao-atualizar:active {
+    background-color: #388e3c;
+}
+.charts-container {
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: center;
+    /* padding: 20px; */
+    /* gap: 20px; */
+}
+
+/* Estilo das colunas dos gráficos */
+.chart-column {
+    /* flex: 1; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Centralizar o seletor no centro */
+.chart-center {
+    flex: 0.5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo do seletor de servidores */
+.selecao-servidor-container {
+    background: #292930;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+}
+
+/* Título da seleção */
+.selecao-servidor-container h1 {
+    color: #FFC300;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+/* Campo de seleção */
+#selectServidor {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+/* Botão atualizar */
+.botao-atualizar {
+    padding: 10px 15px;
+    background-color: #FFC300;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.charts-container {
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: flex-start;
+    /* padding: 20px;
+    gap: 20px; */
+}
+
+/* Estilo das colunas dos gráficos */
+.chart-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    /* gap: 20px; */
+    padding-right: 60px;
+}
+
+/* Centralizar o seletor de servidores */
+.chart-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo do seletor de servidores */
+.selecao-servidor-container {
+    background: #292930;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+}
+
+/* Gráficos */
+.chart {
+    background-color: #1f1f27;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    height: 200px;
+}
+
+/* Botão atualizar */
+.botao-atualizar {
+    padding: 10px 15px;
+    background-color: #FFC300;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* Container geral dos gráficos */
+#charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; Distribui os gráficos uniformemente */
+    align-items: flex-start;
+    /* padding: 20px; */
+    margin-left: 200px; /* Afastamento da navbar */
+    /* margin-top: 80px; Espaçamento para evitar sobreposição da navbar */
+    margin-right: 30px; /* Espaçamento lateral */
+    /* gap: 15px; Espaçamento entre os gráficos */
+}
+/* Estilo da navbar */
+.navbar {
+    position: fixed; /* Fixa no topo da página */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Ajuste conforme o tamanho real da navbar */
+    background-color: #292930; /* Exemplo de cor de fundo */
+    z-index: 1000; /* Garante que fique acima dos outros elementos */
+}
+
+/* Container geral dos gráficos */
+#charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    align-items: flex-start;
+    /* padding: 20px; */
+    /* margin-left: 260px; Afastamento lateral */
+    /* margin-top: 80px; Garante espaço abaixo da navbar */
+    margin-right: 30px;
+    /* gap: 15px; */
+}
+/* Adicionar espaço ao corpo da página para acomodar a navbar */
+.selecao-servidor-container {
+    width: 50%; /* Reduz o tamanho para 50% da largura disponível */
+    margin: 20px auto; /* Centraliza horizontalmente e adiciona espaço acima */
+    padding: 10px;
+    /* border: 1px solid #ccc; Linha ao redor para destaque */
+    background-color: #f9f9f9; /* Fundo claro */
+    border-radius: 5px;
+}
+/* Estilo para a seleção de servidor */
+.selecao-servidor-container {
+    width: 50%; /* Reduz o tamanho para 50% da largura disponível */
+    margin: 20px auto; /* Centraliza horizontalmente e adiciona espaço acima */
+    padding: 20px;
+    /* border: 1px solid #ccc;  Linha ao redor para destaque */
+    background-color: #f9f9f9; /* Fundo claro */
+    border-radius: 5px;
+    text-align: center; /* Centraliza o conteúdo dentro */
+}
+
+.selecao-servidor-container h1 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.selecao-servidor-container select {
+    width: 100%; /* Faz o select ocupar toda a largura disponível */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd; /* Borda leve */
+    border-radius: 5px; /* Bordas arredondadas */
+    font-size: 1em;
+    background-color: #fff; /* Fundo branco para o select */
+    color: #333; /* Texto escuro */
+}
+
+.selecao-servidor-container button {
+    padding: 10px 20px;
+    background-color: #FFC300; /* Cor verde para o botão */
+    color: white; /* Texto branco */
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Transição suave para o fundo do botão */
+}
+
+.selecao-servidor-container button:hover {
+    background-color: #45a049; /* Cor do botão quando em hover */
+}
+/* Estilo para o container de seleção de servidor */
+.selecao-servidor-container {
+    background-color: #292930;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 350px; /* Tamanho máximo do container */
+    margin-left: 220px; /* Distância da navbar */
+    margin-right: 30px;
+    margin-bottom: 20px; /* Espaçamento entre as seções */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Espaçamento entre os elementos */
+}
+
+/* Estilo do título dentro do container */
+.selecao-servidor-container h1 {
+    font-size: 20px;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Estilo do select */
+#selectServidor {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #444444;
+    border: 1px solid #555555;
+    color: #ffffff;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Estilo do botão de atualização */
+.botao-atualizar {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #5c6bc0;
+    /* color: #ffffff; */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Estilo do botão ao passar o mouse */
+.botao-atualizar:hover {
+    background-color: #3f4a92;
+}
+
+
+
+/* Estilo do container de alertas */
+.alerts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    max-width: 600px;
+    background: #292930;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* color: white; */
+    margin: 20px auto; /* Reduzido de 20px para 10px para diminuir a margem */
+}
+
+/* Estilo do container do seletor de servidor */
+.selecao-servidor-container {
+    width: 100%;
+    margin: 10px auto; /* Reduzido de 20px para 10px para diminuir a margem */
+    /* padding: 20px; */
+    /* border: 1px solid #ccc; */
+    background-color: #292930;
+    border-radius: 5px;
+    text-align: center;
+}
+.card,
+.kpi-card {
+    position: relative;
+    width: 300px;
+    height: 150px;
+    background: #3B3B45;
+    border-radius: 10px;
+    /* padding: 20px; */
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* margin: 20px; */
+    text-align: center;
+}
+
+.card-title{
+font-size: 16px;
+font-weight: bold;
+color: yellow;
+margin-bottom: 10px;
+
+}
+
+#chart-CPU, #chart-Bytes, #chart-Packages, #chart-Ping{
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+
+}
+#chart-bytes{
+    height: 20px;
+
+}
+
+.kpi-cards-container {
+    display: flex;
+    justify-content: center;
+    /* padding: 20px; */
+}
+
+.kpi-description {
+    font-size: 14px;
+    color: #d1d1d1;
+}
+
+.card {
+    position: relative;
+    width: 250px;
+    height: 150px;
+    background: #3B3B45;
+    border-radius: 10px;
+    /* padding: 15px; */
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: yellow;
+    margin-bottom: 10px;
+}
+
+#desviopadraocpu {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#desviopadraoram {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#iodisco {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+#downtimetempo{
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.kpi-cards-container {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    /* padding: 20px; */
+}
+
+.kpi-card {
+    background-color: #3B3B45;
+    border-radius: 10px;
+    /* padding: 20px; */
+    width: 300px;
+    height: 40vh;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.kpi-card h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#kpi-value {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
+#estabilidade {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
+#eficiencia {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
+
+
+
+#taxaup {
+    font-size: 36px;
+    font-weight: bold;
+    color: yellow;
+    margin: 10px 0;
+}
+
+.kpi-description {
+    font-size: 14px;
+    color: #d1d1d1;
+}
+#chart-bytes {
+    max-width: 300px; /* Diminui a largura máxima */
+   /* max-height: 20px; Ajusta a altura */
+    margin: 0 auto; /* Centraliza */
+}
+
+#charts-container {
+    flex-wrap: wrap; /* Permite quebra de linha */
+    /* gap: 10px; Diminui o espaçamento entre gráficos */
+    justify-content: center; /* Centraliza todos os gráficos */
+}
+#selecao-servidor-container {
+    width: 100%; /* Ajuste inicial */
+    max-width: 400px; /* Defina a mesma largura máxima do alerta-container */
+    margin: 0 auto; /* Centralize, se necessário */
+}
+
+/* Estilos globais */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.charts-container {
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: center;
+    /* align-items: center; */
+    /* padding: 20px; */
+    width: 100%;
+    /* max-width: 1600px; Define uma largura máxima para o container */
+}
+
+.chart-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    margin: 5px; /* Reduz a margem entre as colunas */
+    min-width: 300px; /* Define uma largura mínima para cada coluna */
+}
+
+.chart {
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* padding: 10px; Reduz o padding dos gráficos */
+    margin: 5px; /* Reduz a margem dos gráficos */
+    color: #fff;
+    width: 100%;
+    max-width: 350px; /* Define uma largura máxima para cada gráfico */
+}
+
+h2 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+/* Container geral dos gráficos */
+#charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; Distribui os gráficos uniformemente */
+    align-items: flex-start;
+    /* padding: 20px; */
+    margin-left: 200px; /* Afastamento da navbar */
+    /* margin-top: 80px; Espaçamento para evitar sobreposição da navbar */
+    margin-right: 30px; /* Espaçamento lateral */
+    /* gap: 40px; Aumenta o espaçamento entre os gráficos */
+}
+
+/* Estilo padrão dos gráficos */
+.chart {
+    position: relative;
+    width: 300px;
+    height: 250px;
+    background: #3B3B45;
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    text-align: center;
+}
+
+.chart:hover {
+    transform: scale(1.05); /* Leve aumento ao passar o mouse */
+    box-shadow: 0 12px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Tamanho dos gráficos específicos */
+#chart-CPU, #chart-Packages, #chart-Ping {
+    width: 100%;
+    max-width: 400px; /* Limita o tamanho máximo dos gráficos */
+    height: 350px; /* Altura consistente para todos os gráficos */
+    margin: 0 auto;
+}
+
+/* Diminuir padding do gráfico de bytes */
+#chart-bytes {
+    padding: 5px; /* Diminuindo o padding do gráfico de bytes */
+    height: 200px; /* Ajuste de altura caso necessário */
+}
+
+.titulo-monitoramento {
+    text-align: center;
+    font-size: 2.5em;
+    color: #fff;
+    margin-bottom: 30px; /* Espaço abaixo do título */
+}
+
+/* Estilo do seletor de horas */
+#seletorHoras {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Estilo para a seção de alertas */
+.alert-content {
+    background-color: #292930;
+    /* padding: 20px; */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 550px;animation: moveGlow 3s linear infinite;
+}
+@keyframes moveGlow {
+    0% {
+        box-shadow: 0 -10px 20px rgba(255, 0, 0, 0.8), 
+                    10px 0 20px rgba(255, 0, 0, 0.6), 
+                    0 0 0 rgba(255, 0, 0, 0);
+    }
+    25% {
+        box-shadow: 10px 0 20px rgba(255, 0, 0, 0.8), 
+                    0 10px 20px rgba(255, 0, 0, 0.6), 
+                    0 0 0 rgba(255, 0, 0, 0);
+    }
+    50% {
+        box-shadow: 0 10px 20px rgba(255, 0, 0, 0.8), 
+                    -10px 0 20px rgba(255, 0, 0, 0.6), 
+                    0 0 0 rgba(255, 0, 0, 0);
+    }
+    75% {
+        box-shadow: -10px 0 20px rgba(255, 0, 0, 0.8), 
+                    0 -10px 20px rgba(255, 0, 0, 0.6), 
+                    0 0 0 rgba(255, 0, 0, 0);
+    }
+    100% {
+        box-shadow: 0 -10px 20px rgba(255, 0, 0, 0.8), 
+                    10px 0 20px rgba(255, 0, 0, 0.6), 
+                    0 0 0 rgba(255, 0, 0, 0);
+    }
+}
+.alert-content h2 {
+    font-size: 24px;color: red;
+}
+
+.alert-content p {
+    font-size: 18px;
+    /* margin: 10px 0; */
+}
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0.8);
+    }
+    50% {
+        box-shadow: 0 0 30px 10px rgba(255, 0, 0, 0.6);
+    }
+    100% {
+        box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0.8);
+    }
+}

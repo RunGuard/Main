@@ -1,0 +1,21 @@
+services:
+        site:
+                image: diegocampos2507/runguard:latest
+                container_name: site
+                ports:
+                      - "8080:8080"
+                networks:
+                      - rede-compose
+                depends_on: 
+                      - db
+        db:
+                image: diegocampos2507/docker-pessoal:latest
+                container_name: banco
+                ports: 
+                      - "3307:3306"
+                networks:
+                      - rede-compose
+
+networks:
+          rede-compose:
+              driver: bridge
