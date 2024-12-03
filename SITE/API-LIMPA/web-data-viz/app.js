@@ -43,8 +43,6 @@ app.use("/medidas", medidasRouter);
 app.use("/empresas", empresasRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/dashboard-Diego", dashboardDiegoRouter);
-app.use("/dashboard-Anne", dashboardAnneRouter);
-app.use("/ale",dashboardAleRouter)
 
 app.listen(PORTA_APP, function () {
     console.log(`
@@ -130,6 +128,7 @@ app.post("/perguntar", async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Erro interno do servidor' });
     }
+    
 
 });
 
