@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 import psutil
 import time
 import mysql.connector
@@ -180,3 +182,4 @@ while run:
     # Faz upload de um arquivo para um bucket específico com um nome específico para o arquivo
     # s3_client.upload_file(caminho_arquivo, nome_bucket, chave_bucket)
     time.sleep(tempo)
+>>>>>>> main

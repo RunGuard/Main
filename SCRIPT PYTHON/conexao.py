@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 # API do Captura dados - Sprint 2 - RunGuard
 
 # Importação das bibliotecas
@@ -105,3 +107,4 @@ Total de memória usada: {memoria_usada_formatada} GB""")
 
     time.sleep(tempo)
     
+>>>>>>> main
