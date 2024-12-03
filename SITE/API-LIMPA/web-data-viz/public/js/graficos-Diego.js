@@ -1,3 +1,4 @@
+var ranking = false
 async function atualizarGrafico() {
     var mes1 = sessionStorage.MINVALUE
     var mes2 = sessionStorage.MAXVALUE
@@ -19,14 +20,19 @@ async function atualizarGrafico() {
             console.log(dado)
             document.getElementById("servidor-alerta").innerHTML = `${dado[0].nomeEquipamento} <span id="qtd-servidor-alerta" style="font-size: 0.6em;"> XX</span><span
                         style="font-size: 0.6em;"> alertas</span>`
-
             document.getElementById("qtd-servidor-alerta").innerHTML = "/" + dado[0].total_alerta
-            document.getElementById("ranking-primeiro").innerHTML = dado[0].nomeEquipamento
-            document.getElementById("ranking-primeiro-qtd").innerHTML = dado[0].total_alerta
-            document.getElementById("ranking-segundo").innerHTML = dado[1].nomeEquipamento
-            document.getElementById("ranking-segundo-qtd").innerHTML = dado[1].total_alerta
-            document.getElementById("ranking-terceiro").innerHTML = dado[2].nomeEquipamento
-            document.getElementById("ranking-terceiro-qtd").innerHTML = dado[2].total_alerta
+
+            if (!ranking){
+                document.getElementById("ranking-primeiro").innerHTML = dado[0].nomeEquipamento
+                document.getElementById("ranking-primeiro-qtd").innerHTML = dado[0].total_alerta
+                document.getElementById("ranking-segundo").innerHTML = dado[1].nomeEquipamento
+                document.getElementById("ranking-segundo-qtd").innerHTML = dado[1].total_alerta
+                document.getElementById("ranking-terceiro").innerHTML = dado[2].nomeEquipamento
+                document.getElementById("ranking-terceiro-qtd").innerHTML = dado[2].total_alerta
+                ranking = true
+            } else {
+
+            }
         })
 
     fetch(`/dashboard-Diego/atualizarGrafico/${mes1}/${mes2}`, {
@@ -49,20 +55,30 @@ async function atualizarGrafico() {
         .then(() => {
             var x = categoriaNum;
             var y = data;
+            var mes = categoria[categoria.length-1];
+            var mesPrevisto = meses[meses.indexOf(mes)+1];
+            var valorPrevisto = meses.indexOf(mes)+2; // A soma do valor 2 é necessária pois o index do mes no caso de dezembro é 11, porém quero prever o mês 13
 
             var m = (somar(multiplicar(x, y)) - (somar(x) * somar(y)) / x.length) /
                 (somar(quadrado(x)) - (somar(x) * somar(x)) / x.length);
             var b = media(y) - m * media(x);
 
-            var total = somar(data)
-
-            document.getElementById("alerta-info").innerHTML = total
-
             var r2 = (calcularR2(x, y) * 100).toFixed()
 
+            var total = somar(data)
+            document.getElementById("alerta-info").innerHTML = total // Total de alertas no período
+
             if (r2 != "NaN") {
-                document.getElementById("previsao").innerHTML = `${(m * 13 + b).toFixed()}<span id="rquadrado"></span>`
+
+                if(meses.indexOf(mes)+1 >= 12) {
+                    mesPrevisto = meses[(meses.indexOf(mes)-11)]
+                    valorPrevisto = 13
+                }
+                
+                document.getElementById("mesPrevisto").innerHTML = `${mesPrevisto}`
+                document.getElementById("previsao").innerHTML = `${(m * (valorPrevisto) + b).toFixed()}<span id="rquadrado"></span>`
                 document.getElementById("rquadrado").innerHTML = ` / Precisão: ${r2}%`
+
             } else {
                 document.getElementById("previsao").innerHTML = `<span id="rquadrado">Dados insuficientes</span>`
             }
@@ -76,8 +92,8 @@ async function atualizarGrafico() {
                 }],
                 chart: {
                     type: 'bar',
-                    height: 375,
-                    width: 600,
+                    height: '90%',
+                    width: 510,
                 },
                 plotOptions: {
                     bar: {
@@ -208,8 +224,9 @@ function graficoDetails() {
                 }],
                 chart: {
                     type: 'bar',
-                    height: 375,
-                    width: 600,
+                    height: 250,
+                    width: 350,
+
                 },
                 plotOptions: {
                     bar: {
@@ -220,10 +237,13 @@ function graficoDetails() {
                 },
                 colors: ['#ffdc60'],
                 title: {
-                    text: 'Quantidade de alertas por dia no mês selecionado',
+                    text: 'Quantidade de alertas por dia ',
                     align: 'center',
+                    margin: 20,
                     style: {
-                        color: 'white'
+                        fontWeight: '400',
+                        fontSize: '1em',
+                        color: 'white',
                     }
                 },
                 dataLabels: {
@@ -261,7 +281,7 @@ function graficoDetails() {
                 yaxis: {
                     labels: {
                         style: {
-                            colors: Array(dias.length).fill('#696969')
+                            colors: Array(dias.length).fill('white')
                         },
                     },
                     min: 0,

@@ -22,6 +22,10 @@
     justify-content: center;
 }
 
+.js-center {
+    justify-self: center;
+}
+
 .as-end {
     align-self: end;
 }
@@ -51,9 +55,10 @@
     height: 100vh;
 }
 
-.content2 {
-    width: 100%;
-    gap: 1%;
+.media {
+    border: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #3B3B45;
 }
 
 .media span {
@@ -81,52 +86,83 @@
 }
 
 .ranking {
-    background-color: #292930;
-    width: 30vw;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #3B3B45;
+    width: 45%;
+    height: 50vh;
     border-radius: 7px;
-    height: 45vh;
     color: white;
     padding: 7px;
-    border: 2px solid #ffff;
-    justify-content: center;
-    align-items: center;
 }
 
 .ranking table{
-    text-align: center;
     width: 100%;
-    height: 92%;
+    height: 90%;
+    text-align: center;
     border-collapse: collapse;
-    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #FFFFFF;
 }
 
-
 .filtro {
+    margin-left: 4.5%;
     text-align: center;
     color: #ffff;
-    border: 2px solid #ddd;
-    background-color: #292930;
     border-radius: 7px;
-    width: 65%;
+    width: 43%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #3B3B45;
 }
 
 .filtro input {
     width: 75%;
 }
 
+.ranking thead th {
+    background-color: #5C5C7C;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.ranking tbody tr:nth-child(even) {
+    background-color: #35353D;
+}
+
+.ranking tbody td {
+    color: #FFFFFF;
+}
+
+.ranking td:nth-child(3) {
+    color: #FFDC60;
+    font-weight: bold;
+}
+
+.ranking td:nth-child(1) {
+    color: #73B7FF;
+    font-weight: bold;
+}
+
+.ranking tbody tr:hover {
+    background-color: #3D3D4D;
+}
+
 td, th {
-    border: 1px solid rgb(190,190,190);
     margin: 0;
-    padding: 1px;
+    padding: 12px 15px;
+    border-bottom: 1px solid #444;
 }
 
 h1 {
+    font-size: 3em;
+    text-align: center;
     color: #fff;
     margin: 0.5%;
     margin-bottom: 0;
 }
 
-h2 {
+h3 {
     margin-bottom: 10%;
     width: 100%;
     justify-self: center;
@@ -217,12 +253,6 @@ input[type="range"]::-moz-range-thumb {
     justify-content: space-between;
 }
 
-.separador {
-    height: 86%;
-    width: 1px;
-    border: 1px solid #ddd;
-}
-
 .tickmarks {
     display: flex;
     justify-content: space-around;
@@ -234,32 +264,28 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .grafico {
-    background-color: #292930;
-    width: fit-content;
-    height: fit-content;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #3B3B45;
+    width: 45%;
+    height: 100%;
     border-radius: 7px;
     color: white;
-    border: 2px solid #ffff;
+    justify-content: center;
+}
+
+.graficoDetalhe {
+    box-shadow: #000000 -2px -2px 10px inset, #797979 2px 2px 10px inset;
+    background-color: #292930;
+    width: 70%;
+    height: 35vh;
+    border-radius: 7px;
+    color: white;
+    border: 1px solid #ffff;
+    justify-content: center;
 }
 
 .apexcharts-menu-item {
     color: black !important;
-}
-
-.previsto {
-    background-color: #292930;
-    width: 15vw;
-    height: 15vh;
-    text-align: center;
-    border-radius: 7px;
-    align-self: center;
-    color: white;
-    padding: 7px;
-    border: 2px solid #ffff;
-}
-
-.previsto span {
-    color: #ffdc60;
 }
 
 #rquadrado {
@@ -267,14 +293,14 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .total-alertas {
-    width: 70%;
+    width: 15vw;
 }
 
 .r2 {
     display: none;
     position: absolute;
     top: 3vh;
-    right: 1vw;
+    left: 20vw;
     background-color: #acacaceb;
     height: fit-content;
     width: 15vw;
@@ -320,22 +346,65 @@ input[type="range"]::-moz-range-thumb {
     z-index: 100;
     position: absolute;
     top: 7%;
-    left: 30%;
-    gap: 50px;
+    left: 35%;
+    gap: 40px;
     background-color: #919191;
     border: 2px solid white;
     border-radius: 2px;
-    width: 750px;
+    width: 650px;
     height: fit-content;
 }
 
+.width {
+    width: 70vw;
+}
+
 .visao-detalhada {
-    margin: 2%;
-    border: 1px dashed #fff;
-    box-shadow: #1a1a1a 5px 5px 10px;
+    margin-left: 13%;
+    height: 40%;
+    width: 25%;
+    box-shadow: #131313 2px 2px 10px, #797979 -2px -2px 10px;
     text-align: center;
     cursor: pointer;
     color: #ececec;
+    position: relative;
+    background-color: #3B3B45;
+    border-radius: 5px;
+}
+
+@property --angulo {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.visao-detalhada::after, .visao-detalhada::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-image: conic-gradient(from var(--angulo), transparent 75%, #1e8cfa);
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    z-index: -1;
+    padding: 4px;
+    border-radius: 5px;
+    animation: 2.5s rodar linear infinite;
+}
+
+.visao-detalhada::before{
+    filter: blur(1.5rem);
+    opacity: 0.5;
+}
+
+@keyframes rodar {
+    from{
+        --angulo: 0deg
+    }
+    to{
+        --angulo: 360deg
+    }
 }
 
 .visao-detalhada:hover {
@@ -349,7 +418,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .visao-detalhada:hover span {
-    transform: translateX(110px);
+    transform: translateX(35%);
 }
 
 .modal h1 {
