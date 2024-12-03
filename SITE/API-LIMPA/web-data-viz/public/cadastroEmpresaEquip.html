@@ -13,7 +13,7 @@
 </head>
 
 <body onload="listar()">
-   
+
 
     <div class="container">
         <div class="signin-signup">
@@ -64,20 +64,22 @@
             <div class="panel left-panel">
                 <div class="content">
 
-                    <a style="color: aliceblue;" href="index.html"><-Home</a>
-                    <h3>Não possue uma Empresa Cadastrada?</h3>
-                    <p>Se redirecione para o outro formuário clicando no botão abaixo para cadastrar uma empresa!</p>
-                    <button class="btn" id="sign-in-btn">Clique aqui</button>
+                    <a style="color: aliceblue;" href="index.html"><-Home< /a>
+                            <h3>Não possue uma Empresa Cadastrada?</h3>
+                            <p>Se redirecione para o outro formuário clicando no botão abaixo para cadastrar uma
+                                empresa!</p>
+                            <button class="btn" id="sign-in-btn">Clique aqui</button>
                 </div>
                 <img src="imagens/logo.png" alt="" class="image">
             </div>
             <div class="panel right-panel">
                 <div class="content">
-                    <a style="color: aliceblue;" href="index.html"><-Home</a>
-                    <h3>Empresa cadastrada?</h3>
-                    <p>Se redirecione para o outro formuário clicando no botão abaixo para cadastrar um Equipamento da
-                        empresa!</p>
-                    <button class="btn" id="sign-up-btn">Clique aqui</button>
+                    <a style="color: aliceblue;" href="index.html"><-Home< /a>
+                            <h3>Empresa cadastrada?</h3>
+                            <p>Se redirecione para o outro formuário clicando no botão abaixo para cadastrar um
+                                Equipamento da
+                                empresa!</p>
+                            <button class="btn" id="sign-up-btn">Clique aqui</button>
                 </div>
                 <img src="imagens/logo.png" alt="" class="image">
             </div>
@@ -155,7 +157,7 @@
             var cpuVersao = input_cpuVersao.value;
             var memoriaRam = input_memoriaRam.value;
             var sistemaOperacional = input_sistemaOperacional.value;
-            var fkEmpresa= select_empresa.value;
+            var fkEmpresa = select_empresa.value;
 
             // if (
             //     nomeEquipamento == "" ||
@@ -239,17 +241,17 @@
                     console.log("resposta: ", resposta);
 
 
-                    } else {
-                        throw "Houve um erro ao tentar realizar o cadastro!";
-                    }
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro!";
+                }
                 })
-                .catch(function (resposta) {
-                    console.log(`#ERRO: ${resposta}`);
-                    finalizarAguardar();
-                });
-
+                .catch (function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+            finalizarAguardar();
+        });
+        
             return false;
-        }
+
 
         function listar() {
             fetch("/empresas/listar", {
