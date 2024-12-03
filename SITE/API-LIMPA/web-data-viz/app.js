@@ -23,8 +23,7 @@ var medidasRouter = require("./src/routes/medidas");
 var empresasRouter = require("./src/routes/empresas");
 var dashboardRouter = require("./src/routes/dashboard");
 var dashboardDiegoRouter = require("./src/routes/dashboard-Diego");
-var rotaRoqueRouter = require("./src/routes/rotaRoque");
-
+var dashboardAnneRouter = require("./src/routes/dashboard-Anne");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -43,7 +42,7 @@ app.use("/medidas", medidasRouter);
 app.use("/empresas", empresasRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/dashboard-Diego", dashboardDiegoRouter);
-app.use("/rotaRoque", rotaRoqueRouter);
+app.use("/dashboard-Anne", dashboardAnneRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`
