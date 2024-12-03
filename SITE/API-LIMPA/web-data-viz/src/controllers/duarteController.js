@@ -124,6 +124,28 @@ function buscarRanking(req, res) {
         });
 }
 
+function buscarMaiorCpu(req, res) {
+    duarteModel.buscarCpus()
+        .then(function (maiorCpu) {
+            res.status(200).json(maiorCpu[0]);
+        })
+        .catch(function (error) {
+            console.error("Erro ao buscar dados da maiorCpu:", error);
+            res.status(500).send("Erro ao buscar dados da maiorCpu");
+        });
+}
+
+function buscarMaiorRam(req, res) {
+    duarteModel.buscarRams()
+        .then(function (maiorRam) {
+            res.status(200).json(maiorRam[0]);
+        })
+        .catch(function (error) {
+            console.error("Erro ao buscar dados da maiorRam:", error);
+            res.status(500).send("Erro ao buscar dados da maiorRam");
+        });
+}
+
 module.exports = {
     puxarPercentualRam,
     puxarPercentualCPU,
@@ -132,5 +154,7 @@ module.exports = {
     puxarSobrecargaRAM,
     buscarServidor,
     buscarTabela,
-    buscarRanking
+    buscarRanking,
+    buscarMaiorCpu,
+    buscarMaiorRam
 }

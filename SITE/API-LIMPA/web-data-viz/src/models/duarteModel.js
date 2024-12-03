@@ -169,6 +169,30 @@ function buscarRankings() {
     return database.executar(instrucaoSql);
 }
 
+function buscarCpus() {
+    var instrucaoSql = `
+        SELECT cpuPercent AS maiorCpu, nomeEquipamento AS servidor
+            FROM dado
+                JOIN equipamento ON fkEquipamento = idEquipamento
+            ORDER BY cpuPercent DESC
+        LIMIT 1;
+    `;
+    return database.executar(instrucaoSql);
+}
+
+function buscarRams() {
+    console.log("Executando a instrução SQL para buscar dados de todos os servidores.");
+    var instrucaoSql = `
+        SELECT memoriaPercent AS maiorRam, nomeEquipamento AS servidor
+            FROM dado
+                JOIN equipamento ON fkEquipamento = idEquipamento
+            ORDER BY memoriaPercent DESC
+        LIMIT 1;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     puxarPercentualRam,
     puxarPercentualCPU,
@@ -177,5 +201,7 @@ module.exports = {
     puxarSobrecargaRAM,
     buscarServidores,
     buscarTabelinha,
-    buscarRankings
+    buscarRankings,
+    buscarCpus,
+    buscarRams
 }

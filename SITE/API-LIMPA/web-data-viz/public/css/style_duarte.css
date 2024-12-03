@@ -16,7 +16,7 @@
 }
 
 body {
-    background-color: #292930eb;
+    background-color: #292930;
     display: flex;
     flex-direction: row;
     overflow-y: auto;
@@ -103,6 +103,11 @@ nav:hover {
     align-items: center;
 }
 
+.titulo{
+    margin-top: 10px;
+    color: white;
+}
+
 .fundo_grafico {
     width: 30%;
     height: 35vh;
@@ -111,7 +116,8 @@ nav:hover {
 .botao-voltar {
     margin-right: 1350px;
     top: 20px; /* Distância do topo da tela */
-    left: 20px; /* Distância da borda esquerda */
+    left: 300px; /* Distância da borda esquerda */
+    position: absolute;
     background-color: #FFDC60; /* Cor do botão */
     padding: 10px 20px;
     border-radius: 5px;
@@ -201,10 +207,10 @@ nav:hover {
     background: linear-gradient(135deg, #2e2e38 0%, #3a3a47 100%);
     width: 18vw;
     border-radius: 12px;
-    height: 25vh;
+    height: 30vh;
     color: #ffffff;
     padding: 20px;
-    border: 1px solid #ffdc60;
+    /* border: 1px solid #ffdc60; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
@@ -215,7 +221,7 @@ nav:hover {
 }
 
 .media p {
-    font-size: 1em;
+    font-size: 1.3em;
     margin: 0;
     line-height: 1.4em;
     color: #c9c9c9;
@@ -347,24 +353,24 @@ nav:hover {
 
 
 .alinhamento {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     background-color: #3D3D4D;
     margin-top: 60px;
     display: flex;
     justify-content: space-evenly;
-    height: 55%;
+    height: 45%;
     width: 95%;
 }
 
 .alinhamento2 {
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     background-color: #3D3D4D;
     flex-direction: row;
     margin-top: 5px;
     gap: 30px;
     display: flex;
     justify-content: space-evenly;
-    height: 600px;
+    height: 50%;
     width: 95%;
 }
 

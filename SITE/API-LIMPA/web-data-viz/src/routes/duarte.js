@@ -34,4 +34,12 @@ router.get("/tabela", function (req, res) {
 router.get("/ranking", function (req, res) {
     duarteController.buscarRanking(req, res);
 });
+
+router.get("/maiorCpu", function (req, res) {
+    duarteController.buscarMaiorCpu(req, res);
+});
+
+router.get("/maiorRam", function (req, res) {
+    duarteController.buscarMaiorRam(req, res);
+});
 module.exports = router;
