@@ -62,7 +62,7 @@
                     <i class="fas fa-chart-pie"></i>
                     <span class="nav-item">Dashboard 3</span>
                 </a></li>
-            <li><a href="Dashboard - Guilherme.html">
+            <li><a href="Dashboard - GuilhermeAlerta.html">
                     <i class="fas fa-chart-column"></i>
                     <span class="nav-item">Dashboard 4</span>
                 </a></li>
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const mes = selectMes.value || 0;
         const semana = selectSemana.value || 0;
 
-        if (mes == 0 && semana == 0) {
+        if (mes == 0 || semana == 0) {
             buscarDadosGrafico(fkEquipamento);
         } else {
             buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana);
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         intervalId = setInterval(() => {
-            if (mes == 0 && semana == 0) {
+            if (mes == 0 || semana == 0) {
                 buscarDadosGrafico(fkEquipamento);
             } else {
                 buscarDadosPorPeriodoFetch(fkEquipamento, mes, semana);

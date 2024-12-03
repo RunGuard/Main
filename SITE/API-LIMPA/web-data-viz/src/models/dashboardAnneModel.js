@@ -5,7 +5,7 @@ function minimoRAM() {
         SELECT 
     d.memoriaPercent AS "Menor Percentual de Uso de Memória RAM (%)"
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -37,7 +37,7 @@ function servidorMinimoRAM() {
         SELECT 
     e.nomeEquipamento AS "Servidor"
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -64,7 +64,7 @@ function servidorMinimoTempoRAM() {
     MIN(d.dtHora) AS data_min_ram, 
     TIMESTAMPDIFF(MINUTE, MIN(d.dtHora), NOW()) AS tempoEmMinutos
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -89,7 +89,7 @@ function maximoRAM() {
         SELECT 
     d.memoriaPercent AS "Maior Percentual de Uso de Memória RAM (%)"
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -112,7 +112,7 @@ function servidorMaximoRAM() {
         SELECT 
     e.nomeEquipamento AS "Servidor"
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -139,7 +139,7 @@ function servidorMaximoTempoRAM() {
     MIN(d.dtHora) AS data_max_ram, 
     TIMESTAMPDIFF(MINUTE, MIN(d.dtHora), NOW()) AS tempoEmMinutos
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -164,7 +164,7 @@ function minimoCPU() {
         SELECT 
     d.cpuPercent AS "Menor Percentual de Uso de CPU (%)"
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -187,7 +187,7 @@ function servidorMinimoCPU() {
         SELECT 
     e.nomeEquipamento AS "Servidor"
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -214,7 +214,7 @@ function servidorMinimoTempoCPU() {
     MIN(d.dtHora) AS data_min_cpu, 
     TIMESTAMPDIFF(MINUTE, MIN(d.dtHora), NOW()) AS tempoEmMinutos
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -238,7 +238,7 @@ function maximoCPU() {
         SELECT 
     d.cpuPercent AS "Maior Percentual de Uso de CPU (%)"
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -261,7 +261,7 @@ function servidorMaximoCPU() {
         SELECT 
     e.nomeEquipamento AS "Servidor"
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -288,7 +288,7 @@ function servidorMaximoTempoCPU() {
     MAX(d.dtHora) AS data_max_cpu, 
     TIMESTAMPDIFF(MINUTE, MAX(d.dtHora), NOW()) AS tempoEmMinutos
 FROM 
-    dados d
+    dado d
 JOIN 
     equipamento e ON d.fkEquipamento = e.idEquipamento
 WHERE 
@@ -327,7 +327,7 @@ function obterVariabilidadeCPU(idEquipamento) {
             d.dtHora AS timestamp,
             d.cpuPercent AS cpu_percent
         FROM 
-            dados d
+            dado d
         JOIN 
             equipamento e ON d.fkEquipamento = e.idEquipamento
         WHERE 
@@ -364,7 +364,7 @@ function obterDadosComp1(idEquipamento) {
     DATE_FORMAT(dtHora, '%d/%m/%Y') AS data,
     cpuPercent,
     memoriaPercent
-FROM dados
+FROM dado
 WHERE fkEquipamento = ${idEquipamento}
   AND MONTH(dtHora) = MONTH(CURRENT_DATE())
   AND YEAR(dtHora) = YEAR(CURRENT_DATE())
@@ -400,7 +400,7 @@ function obterDadosComp2(idEquipamento) {
     DATE_FORMAT(dtHora, '%d/%m/%Y') AS data,
     cpuPercent,
     memoriaPercent
-FROM dados
+FROM dado
 WHERE fkEquipamento = ${idEquipamento}
   AND MONTH(dtHora) = MONTH(CURRENT_DATE())
   AND YEAR(dtHora) = YEAR(CURRENT_DATE())
