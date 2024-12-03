@@ -55,14 +55,25 @@ while run:
     cpu = psutil.cpu_percent()  # Porcentagem de uso da CPU
     memoria = psutil.virtual_memory()  # Informações da memória
 
+    net_io = psutil.net_io_counters()
+
+    bytes_enviados = net_io.bytes_sent
+    bytes_recebidos = net_io.bytes_recv
+    pacotes_enviados = net_io.packets_sent
+    pacotes_recebidos = net_io.packets_recv
     memoria_usada = byte_para_gb(memoria.used)  # Converte bytes para Gigabytes
     memoria_usada_formatada = f'{memoria_usada:.1f}'  # Formata o número
-
+    idEquipamento =1
     # Imprime as informações no terminal
 
     print(f'Nome salvo: {nomeMaquina}')
     print(f'A CPU está em {cpu} %')
     print(f'A memória está em {memoria.percent} %')
+    print(f'O envio de bytes está em {bytes_enviados:.2f} bytes')
+    print(f'O recebimento de bytes está em {bytes_recebidos:.2f} bytes')
+    print(f'O envio de pacotes está em {pacotes_enviados:.2f} bytes')
+    print(f'O recebimento de pacotes está em {pacotes_recebidos:.2f} bytes')
+    
 
     #Select para verificação da inserção do equipamento
     instrucaoVerEquipamento = "SELECT * FROM equipamento WHERE nomeEquipamento = %s" 
@@ -86,15 +97,22 @@ while run:
 
     #Seleção do id selecionado
     idEquipamento = idEquipamento_tupla[0]
+   
 
     # Imprime as informações no terminal para visualização
     print(f"""A CPU está em {cpu} %
 A memória está em {memoria.percent} %
-Total de memória usada: {memoria_usada_formatada} GB""")
+Total de memória usada: {memoria_usada_formatada} GB %
+O envio de bytes está em {bytes_enviados/ 1024 :.2f} bytes %
+O recebimento de bytes está em {bytes_recebidos/ 1024 :.2f} bytes %
+O envio de pacotes está em {pacotes_enviados/ 1024 :.2f} bytes %
+O recebimento de pacotes está em {pacotes_recebidos/ 1024 :.2f} bytes""")
+    
+
 
     # Faz as inserções no banco de dados passando os componentes
-    sql = "INSERT INTO dados (idDado, cpuPercent, memoriaPercent, memoriaUsada, dtHora, fkEquipamento) VALUES (default, %s, %s, %s, default, %s)"
-    val = (cpu,memoria.percent,memoria_usada_formatada, idEquipamento)
+    sql = "INSERT INTO dados (idDado, cpuPercent, memoriaPercent, memoriaUsada,bytes_recebidos ,bytes_enviados ,pacotes_recebidos ,pacotes_enviados , dtHora, fkEquipamento) VALUES (default, %s, %s, %s,%s,%s,%s,%s, default, %s)"
+    val = (cpu,memoria.percent,memoria_usada_formatada,bytes_recebidos,bytes_enviados,pacotes_recebidos,pacotes_enviados,idEquipamento)
 
     mycursor.execute(sql,val)
     mydb.commit()
@@ -111,7 +129,11 @@ Total de memória usada: {memoria_usada_formatada} GB""")
     dados.append({
         'nome': nomeMaquina,
         'cpu': cpu,
-        'memoria': memoria.percent
+        'memoria': memoria.percent,
+        'dados_enviados': bytes_enviados,
+        'dados_recebidos': bytes_recebidos,
+        'pacotes_enviados':pacotes_enviados,
+        'pacotes_recebidos':pacotes_recebidos       
     })
 
     # Cria um DataFrame a partir da lista de dados
@@ -125,7 +147,7 @@ Total de memória usada: {memoria_usada_formatada} GB""")
 
     print('Dados salvos com sucesso!')
 
-    nome_bucket = "s3-raw-runguard"
+    nome_bucket = "raw-stocks-alexandre"
     chave_bucket = "dados.json"
 
 

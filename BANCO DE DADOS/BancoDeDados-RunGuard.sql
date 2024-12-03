@@ -158,6 +158,7 @@ FROM
 JOIN 
     equipamento AS e ON d.fkEquipamento = e.idEquipamento;
 
+
 -- CRIPTOGRAFIA - Explicação de como funciona
 -- MUDA O DELIMITADOR DE ';' PARA '$$', POIS DENTRO DE UMA FUNÇÃO HÁ MUITAS ULTILIZAÇÕES DE ';'
 DELIMITER $$
