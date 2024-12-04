@@ -83,17 +83,18 @@
 
     <!-- Alertas de Monitoramento -->
     <div class="alert-container">
-        <div class="alert-content ">
+        <div class="alert-content">
             <h2>Alertas de Monitoramento - Última hora</h2>
             <p><strong>Quantidade de Alertas de Pacotes:</strong></p>
-            <p> <strong> <span id="perdaPacotes" ></span></strong></p>
+            <p><strong><span id="perdaPacotes"></span></strong></p>
             <p><strong>Quantidade de Alertas:</strong></p>
-            <p> <strong><span id="perdaBytes" ></span></strong></p>
+            <p><strong><span id="perdaBytes"></span></strong></p>
             <p><strong>Eventos de Latência Alta:</strong></p>
-            <p> <strong> <span id="pingAlerta" ></span></strong></p>
+            <p><strong><span id="pingAlerta"></span></strong></p>
             <p><strong>Eventos de Uso Alto CPU:</strong></p>
-            <p> <strong> <span id="cpuAlerta" ></span></strong></p>
-            
+            <p><strong><span id="cpuAlerta"></span></strong></p>
+        
+            <a href="Dashboard - Ilys.html" class="botao-animado">Ver Detalhes</a>
         </div>
            
         <div class="selecao-servidor-container">
@@ -304,30 +305,13 @@ function atualizarGraficoBytes(ultimoBytesEnviados, ultimoBytesRecebidos, horari
     colors: ['#FFD700', '#1E90FF'], // Amarelo e Azul
     stroke: { curve: 'smooth' },
     markers: { size: 4 },
-    tooltip: { shared: true, intersect: false,theme: 'dark', // Define o tema como "dark" para começar
-        style: {
-            fontSize: '14px',
-            color: '#FFFFFF'
-        },
-        x: {
-            show: true,
-            formatter: (val) => `Horário: ${val}`
-        },
-        y: {
-            formatter: (value) => `${value} bytes`
-        },
-        fillSeriesColor: false,
-        onDatasetHover: {
-            highlightDataSeries: true
-        },
-        background: '#292930', // Define o fundo como #292930
-        borderColor: '#FFF', // Define a borda
-        shared: true,
-        intersect: false
-    } }
+    tooltip: { shared: true, intersect: false, }
+};
 
-
-    }
+        // Inicializa o gráfico
+        chartBytes = new ApexCharts(document.querySelector("#chart-bytes"), options);
+        chartBytes.render();
+    } 
     else {
         chartBytes.updateOptions({
             series: [
@@ -337,8 +321,8 @@ function atualizarGraficoBytes(ultimoBytesEnviados, ultimoBytesRecebidos, horari
             xaxis: { categories: horarios }
         });
     }
-
 }
+
 function atualizarGraficoPackets(ultimoPacotesEnviados = 0, ultimoPacotesRecebidos = 0) {
     const contadorEnviados = document.getElementById("contador-enviados");
     const contadorRecebidos = document.getElementById("contador-recebidos");
