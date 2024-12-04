@@ -858,3 +858,39 @@ h2 {
         box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0.8);
     }
 }
+.botao-animado {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    background-color: #FFD700;
+    color: #292930;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.botao-animado::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 215, 0, 0.2);
+    transition: left 0.5s ease;
+}
+
+.botao-animado:hover::after {
+    left: 100%;
+}
+
+.botao-animado:hover {
+    background-color: transparent;
+    color: #FFD700;
+    border-color: #FFD700;
+}
