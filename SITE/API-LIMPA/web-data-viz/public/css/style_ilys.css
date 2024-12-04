@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
@@ -16,11 +17,11 @@ html, body {
 .grid-container {
   display: grid;
   grid-template-areas:
-    'a b b b b c'
-    'd b b b b c'
-    'e b b b b c'
-    'e b b b b c'
-    'e b b b b c';
+    "a b b b b c"
+    "d b b b b c"
+    "e b b b b c"
+    "e b b b b c"
+    "e b b b b c";
   grid-template-rows: 1fr 1fr 1fr;
   gap: 20px;
   padding: 20px;
@@ -29,44 +30,44 @@ html, body {
   box-sizing: border-box;
 }
 
-.item1 { 
+.item1 {
   grid-area: a;
   min-height: 0;
 }
 
-.item2 { 
+.item2 {
   grid-area: b;
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
-.item3 { 
+.item3 {
   grid-area: c;
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
-.item4 { 
+.item4 {
   grid-area: d;
   min-height: 0;
 }
 
-.item5 { 
+.item5 {
   grid-area: e;
   min-height: 0;
 }
 
 .grid-container > div {
-  background-color: #28292F;
+  background-color: #28292f;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 20px;
   text-align: center;
 }
 
 .graficosFundo {
-  background-color: #28292F;
+  background-color: #28292f;
   border-radius: 20px;
   padding: 15px;
   height: 100%;
@@ -91,7 +92,7 @@ html, body {
 .item5 .graficosFundo {
   padding: 15px;
   height: 100%;
-  background-color: #28292F;
+  background-color: #28292f;
 }
 
 .item5 .apexcharts-canvas {
@@ -113,7 +114,7 @@ html, body {
 }
 
 .filtroChamados {
-  background: #28292F;
+  background: #28292f;
   border-radius: 15px;
   margin: 10px;
   padding: 15px;
@@ -138,7 +139,7 @@ html, body {
 }
 
 .global {
-  background: #7C7C8C;
+  background: #7c7c8c;
   border-radius: 10px;
   padding: 15px;
   font-size: 14px;
@@ -150,38 +151,39 @@ html, body {
   transform: translateY(-2px);
 }
 
-.top, .bottom {
+.top,
+.bottom {
   display: flex;
   justify-content: space-between;
   padding: 5px 0;
 }
 
-.up{
+.up {
   text-align: end;
-
 }
-.down{
+.down {
   text-align: end;
-
 }
 
 .central {
   padding: 10px 0;
   text-align: center;
-  background-color: #5C5C7C;
+  background-color: #5c5c7c;
   border-radius: 15px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin: 5px 0;
 }
 
-.bottom .left{
+.bottom .left {
   text-align: left;
   align-self: flex-end;
 }
 
-.top .left, .bottom .left,
-.top .right, .bottom .right {
+.top .left,
+.bottom .left,
+.top .right,
+.bottom .right {
   font-size: 12px;
 }
 
@@ -194,7 +196,7 @@ html, body {
 }
 
 #listaFuncionarios > li {
-  background: #3B3B45;
+  background: #3b3b45;
   border-radius: 10px;
   padding: 15px;
   margin: 10px;
@@ -210,13 +212,29 @@ html, body {
 
 #listaFuncionarios > li:hover {
   transform: translateY(-2px);
-  background: #28292F;
+  background: #28292f;
 }
 
 #valorChamadosAbertos {
   font-size: 3.5rem;
   font-weight: bold;
-  color: #FFDC60;
+  color: #ffdc60;
+}
+
+.filtros {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+#filtroServidor {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  background: #3b3b45;
+  color: #ffffff;
+  border: none;
+  font-size: 14px;
 }
 
 #filtroPrioridade {
@@ -224,8 +242,8 @@ html, body {
   padding: 8px;
   margin-bottom: 15px;
   border-radius: 8px;
-  background: #3B3B45;
-  color: #FFFFFF;
+  background: #3b3b45;
+  color: #ffffff;
   border: none;
   font-size: 14px;
 }
@@ -235,7 +253,7 @@ h5 {
   padding: 15px;
   font-size: 18px;
   text-align: left;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .graficosFundo h5 + div {
@@ -247,12 +265,12 @@ h5 {
 }
 
 ::-webkit-scrollbar-track {
-  background: #28292F;
+  background: #28292f;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #FFDC60;
+  background: #ffdc60;
   border-radius: 4px;
 }
 
@@ -270,9 +288,9 @@ h5 {
 @media (max-width: 1200px) {
   .grid-container {
     grid-template-areas:
-      'a b b b c'
-      'd b b b c'
-      'e b b b c';
+      "a b b b c"
+      "d b b b c"
+      "e b b b c";
     gap: 15px;
   }
 }
@@ -280,18 +298,19 @@ h5 {
 @media (max-width: 768px) {
   .grid-container {
     grid-template-areas:
-      'a'
-      'b'
-      'c'
-      'd'
-      'e';
+      "a"
+      "b"
+      "c"
+      "d"
+      "e";
     margin-left: 0;
     gap: 10px;
     height: auto;
     padding: 10px;
   }
-  
-  .item4, .item5 {
+
+  .item4,
+  .item5 {
     height: 250px;
   }
 
@@ -312,4 +331,85 @@ h5 {
     padding: 10px;
     font-size: 16px;
   }
+}
+
+.filtroFuncionarios {
+  background: #35353d;
+  border-radius: 15px;
+  margin: 10px;
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.inputContainer {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+#filtroNome {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  background: #3b3b45;
+  color: #ffffff;
+  border: none;
+  font-size: 14px;
+}
+
+#btnBuscar {
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #ffdc60;
+  color: #000000;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+#btnBuscar:hover {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+#listaFuncionarios {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;
+}
+
+#listaFuncionarios > li {
+  background: #7c7c8c;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#listaFuncionarios > li:hover {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  background: #7c7c8c;
+}
+
+#filtroNome::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#filtroNome:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffdc60;
 }
