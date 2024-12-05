@@ -18,5 +18,5 @@ FROM node:lts-alpine3.20 AS deploy
 WORKDIR /
 COPY --from=dependencies ./node_modules ./node_modules
 COPY ./SITE/API-LIMPA/web-data-viz .
-EXPOSE 3333
+EXPOSE 80
 CMD ["node", "app.js"]

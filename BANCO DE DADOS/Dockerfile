@@ -7,3 +7,4 @@ ENV MYSQL_PASSWORD=12345
 ENV MYSQL_ROOT_PASSWORD=urubu100
 
 COPY BancoDeDados-RunGuard.sql /docker-entrypoint-initdb.d/
+EXPOSE 3306

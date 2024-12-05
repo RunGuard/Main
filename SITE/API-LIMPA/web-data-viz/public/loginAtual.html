@@ -141,7 +141,11 @@
                 });
 
                 setTimeout(()=>{
-                    window.location.href = "dashs.html"
+                    if(sessionStorage.CARGO_USUARIO == "Analista"){
+                        window.location.href = "Dashboard - GuilhermeAlerta.html"
+                    } else {
+                        window.location.href = "Dashboard - Lucas.html"
+                    }
                 }, 2000)
 
             } else {

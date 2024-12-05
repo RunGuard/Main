@@ -1,21 +1,29 @@
 services:
         site:
-                image: diegocampos2507/runguard:latest
+                image: diegocampos2507/runguard-site:latest
                 container_name: site
                 ports:
-                      - "8080:8080"
+                      - "80:80"
+                restart: always
                 networks:
                       - rede-compose
                 depends_on: 
                       - db
         db:
-                image: diegocampos2507/docker-pessoal:latest
+                image: diegocampos2507/runguard-banco:latest
                 container_name: banco
                 ports: 
-                      - "3307:3306"
+                      - "3306:3306"
+                restart: always
+                volumes:
+                  - db_data:/var/lib/mysql
+                  - ./BANCO\DE\DADOS:/docker-entrypoint-initdb.d/
                 networks:
                       - rede-compose
 
 networks:
           rede-compose:
               driver: bridge
+
+volumes:
+      db_data:

@@ -53,7 +53,7 @@
                 </a></li>
             <li><a href="Dashboard - Ale.html">
                     <i class="fas fa-chart-line"></i>
-                    <span class="nav-item">Dashboard 1</span>
+                    <span class="nav-item">Latência do Servidor</span>
                 </a></li>
             <li><a href="Dashboard - Anne.html">
                     <i class="fas fa-chart-bar"></i>
@@ -63,17 +63,21 @@
                     <i class="fas fa-chart-pie"></i>
                     <span class="nav-item">Histórico de Alertas</span>
                 </a></li>
+            <li><a href="Dashboard - GuilhermeAlerta.html">
+                    <i class="fas fa-chart-column"></i>
+                    <span class="nav-item">Near Real Time Alerta</span>
+                </a></li>
             <li><a href="Dashboard - Guilherme.html">
                     <i class="fas fa-chart-column"></i>
-                    <span class="nav-item">Dashboard 4</span>
+                    <span class="nav-item">Near Real Time</span>
                 </a></li>
             <li><a href="Dashboard - Ilys.html">
                     <i class="fas fa-chart-simple"></i>
-                    <span class="nav-item">Dashboard 5</span>
+                    <span class="nav-item">Detalhes de Chamados</span>
                 </a></li>
             <li><a href="Dashboard - Lucas.html">
                     <i class="fas fa-chart-area"></i>
-                    <span class="nav-item">Dashboard 6</span>
+                    <span class="nav-item">Downtime e Uptime</span>
                 </a></li>
             <li> <a href="insights-run-guard.pdf" download>
                     <i class="fas fa-file-pdf"></i>
@@ -87,7 +91,9 @@
     </nav>
 
     <div class="geral">
-        <h1 class="titulo" style="display: flex; align-items: center;width: 100vh; justify-content: center; color: white;">Benchmark de Servidores</h1>
+        <h1 class="titulo"
+            style="display: flex; align-items: center;width: 100vh; justify-content: center; color: white;">Benchmark de
+            Servidores</h1>
         <div class="informacoes">
             <div class="info-1 info">
                 <div class="info1">
@@ -251,19 +257,19 @@
     }
 
     async function buscarServidorMinimoTempoRAM() {
-    try {
-        const response = await fetch('dashboard-Anne/servidorMinimoTempoRAM'); 
-        if (response.status === 200) {
-            const dados = await response.json();
-            document.getElementById('tempoEstado').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
-        } else {
-            document.getElementById('tempoEstado').innerText = 'Nada capturado';
+        try {
+            const response = await fetch('dashboard-Anne/servidorMinimoTempoRAM');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('tempoEstado').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
+            } else {
+                document.getElementById('tempoEstado').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o tempo mínimo de RAM:', error);
+            document.getElementById('tempoEstado').innerText = 'Erro ao capturar dados';
         }
-    } catch (error) {
-        console.error('Erro ao buscar o tempo mínimo de RAM:', error);
-        document.getElementById('tempoEstado').innerText = 'Erro ao capturar dados';
     }
-}
 
     async function buscarMaximoRAM() {
         try {
@@ -296,19 +302,19 @@
     }
 
     async function buscarServidorMaximoTempoRAM() {
-    try {
-        const response = await fetch('dashboard-Anne/servidorMaximoTempoRAM'); 
-        if (response.status === 200) {
-            const dados = await response.json();
-            document.getElementById('tempoEstado1').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
-        } else {
-            document.getElementById('tempoEstado1').innerText = 'Nada capturado';
+        try {
+            const response = await fetch('dashboard-Anne/servidorMaximoTempoRAM');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('tempoEstado1').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
+            } else {
+                document.getElementById('tempoEstado1').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o tempo mínimo de RAM:', error);
+            document.getElementById('tempoEstado1').innerText = 'Erro ao capturar dados';
         }
-    } catch (error) {
-        console.error('Erro ao buscar o tempo mínimo de RAM:', error);
-        document.getElementById('tempoEstado1').innerText = 'Erro ao capturar dados';
     }
-}
 
     async function buscarMinimoCPU() {
         try {
@@ -341,19 +347,19 @@
     }
 
     async function buscarServidorMinimoTempoCPU() {
-    try {
-        const response = await fetch('dashboard-Anne/servidorMinimoTempoCPU'); 
-        if (response.status === 200) {
-            const dados = await response.json();
-            document.getElementById('tempoEstado2').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
-        } else {
-            document.getElementById('tempoEstado2').innerText = 'Nada capturado';
+        try {
+            const response = await fetch('dashboard-Anne/servidorMinimoTempoCPU');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('tempoEstado2').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
+            } else {
+                document.getElementById('tempoEstado2').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o tempo mínimo de CPU:', error);
+            document.getElementById('tempoEstado2').innerText = 'Erro ao capturar dados';
         }
-    } catch (error) {
-        console.error('Erro ao buscar o tempo mínimo de CPU:', error);
-        document.getElementById('tempoEstado2').innerText = 'Erro ao capturar dados';
     }
-}
 
     async function buscarMaximoCPU() {
         try {
@@ -386,19 +392,19 @@
     }
 
     async function buscarServidorMaximoTempoCPU() {
-    try {
-        const response = await fetch('dashboard-Anne/servidorMaximoTempoCPU'); 
-        if (response.status === 200) {
-            const dados = await response.json();
-            document.getElementById('tempoEstado3').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
-        } else {
-            document.getElementById('tempoEstado3').innerText = 'Nada capturado';
+        try {
+            const response = await fetch('dashboard-Anne/servidorMaximoTempoCPU');
+            if (response.status === 200) {
+                const dados = await response.json();
+                document.getElementById('tempoEstado3').innerText = `${dados[0].tempoEmMinutos} minutos nesse estado`;
+            } else {
+                document.getElementById('tempoEstado3').innerText = 'Nada capturado';
+            }
+        } catch (error) {
+            console.error('Erro ao buscar o tempo mínimo de CPU:', error);
+            document.getElementById('tempoEstado3').innerText = 'Erro ao capturar dados';
         }
-    } catch (error) {
-        console.error('Erro ao buscar o tempo mínimo de CPU:', error);
-        document.getElementById('tempoEstado3').innerText = 'Erro ao capturar dados';
     }
-}
 
     async function carregarServidoresCPU() {
         const selectElement = document.getElementById('servidoresSelect');
