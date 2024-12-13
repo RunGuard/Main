@@ -14,30 +14,32 @@ Nesse contexto surge a **RunGuard**, com o intuito de monitorar os servidores de
 <table>
   <tr>
     <td>Web Development</td>
-    <td>Css</td>
-    <td>Html</td>
-    <td>JS</td>
-    <td>Node</td>
-  </tr>
-  <tr>
     <td>Infra (AWS)</td>
-    <td>Instância EC2</td>
-    <td>Bucket S3</td>
-    <td>Lambda Function</td>
-    <td>Docker</td>
-  </tr>
-  <tr>
     <td>Back End</td>
-    <td>Java</td>
-    <td>Python</td>
-    <td>R</td>
-    <td>MySQL</td>
+    <td>Ferramentas Extras</td>
   </tr>
   <tr>
-    <td>Ferramentas Extras</td>
-    <td>GitHub</td>
+    <td>Css</td>
+    <td>Instância EC2</td>
+    <td>Java</td>
     <td>Slack</td>
+  </tr>
+  <tr>
+    <td>Html</td>
+    <td>Bucket S3</td>
+    <td>Python</td>
+    <td>GitHub</td>
+  </tr>
+  <tr>
+    <td>JS</td>
+    <td>Lambda Function</td>
+    <td>R</td>
     <td>Jira</td>
+  </tr>
+  <tr>
+    <td>Node</td>
+    <td>Docker</td>
+    <td>MySQL</td>
     <td>Apex Charts</td>
   </tr>
 </table>
