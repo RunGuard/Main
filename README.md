@@ -13,10 +13,11 @@ Nesse contexto surge a **RunGuard**, com o intuito de monitorar os servidores de
 
 <table>
   <tr>
-    <td>Web Development</td>
-    <td>Infra (AWS)</td>
-    <td>Back End</td>
-    <td>Ferramentas Extras</td>
+    <th>Teste</th>
+    <td>Web Development:</td>
+    <td>Infra (AWS):</td>
+    <td>Back End:</td>
+    <td>Ferramentas Extras:</td>
   </tr>
   <tr>
     <td>Css</td>
@@ -43,3 +44,7 @@ Nesse contexto surge a **RunGuard**, com o intuito de monitorar os servidores de
     <td>Apex Charts</td>
   </tr>
 </table>
+
+## Conclusão
+
+  Conlui-se portanto que o projeto RunGuard é de suma importância, fazendo com que a locomoção da sociedade se mantenha constante e protegida.
