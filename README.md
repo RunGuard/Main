@@ -13,8 +13,7 @@ Nesse contexto surge a **RunGuard**, com o intuito de monitorar os servidores de
 
 <table>
   <tr>
-    <th>Teste</th>
-    <td>Web Development:</td>
+    <th>Web Development:</th>
     <td>Infra (AWS):</td>
     <td>Back End:</td>
     <td>Ferramentas Extras:</td>
