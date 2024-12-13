@@ -6,7 +6,7 @@
 
 ## Contexto
 
-Considerando o intenso crescimento urbano nas últimas décadas, a utilização de aplicativos de corrida se tornou essencial visto que o transporte público foi ficando precário e insalubre. Portanto, esses aplicativos se tornaram uma espécie de engrenagem da sociedade onde, em caso de problemas e falhas, a comunidade como um todo tende a desacelerar. 
+Considerando o intenso **crescimento urbano** nas últimas décadas, a **utilização de aplicativos de corrida** se tornou essencial visto que o **transporte público** foi ficando **precário e insalubre**. Portanto, esses aplicativos se tornaram uma **espécie de engrenagem** da sociedade onde, em caso de problemas e falhas, a comunidade como um todo tende a **desacelerar**. 
 Nesse contexto surge a **RunGuard**, com o intuito de monitorar os servidores desses serviços e permitir o funcionamento contínuo.
 
 ## Ferramentas Usadas
@@ -14,9 +14,9 @@ Nesse contexto surge a **RunGuard**, com o intuito de monitorar os servidores de
 <table>
   <tr>
     <th>Web Development:</th>
-    <td>Infra (AWS):</td>
-    <td>Back End:</td>
-    <td>Ferramentas Extras:</td>
+    <th>Infra (AWS):</th>
+    <th>Back End:</th>
+    <th>Ferramentas Extras:</th>
   </tr>
   <tr>
     <td>Css</td>
@@ -46,4 +46,4 @@ Nesse contexto surge a **RunGuard**, com o intuito de monitorar os servidores de
 
 ## Conclusão
 
-  Conlui-se portanto que o projeto RunGuard é de suma importância, fazendo com que a locomoção da sociedade se mantenha constante e protegida.
+  Conlui-se portanto que o projeto **RunGuard** é de suma **importância**, fazendo com que a **locomoção da sociedade** se mantenha constante e protegida.
